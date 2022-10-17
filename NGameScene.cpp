@@ -98,7 +98,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	for (size_t i = 0; i < maxSprite; i++)
 	{
 		sprite[i] = new NSprite();
-		sprite[i]->texNum = i;
+		sprite[i]->texNum = static_cast<int>(i);
 		sprite[i]->CreateSprite(dx12->device, tex[sprite[i]->texNum].texBuff);
 		//sprite[i]->CreateClipSprite(dx12->device,tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
 		sprite[i]->position.x = i * 200.0f + 200.0f;
@@ -228,4 +228,15 @@ void NGameScene::Draw(NDX12* dx12)
 	// 再びコマンドリストを貯める準備
 	result = dx12->GetCommandList()->Reset(dx12->GetCommandAllocator(), nullptr);
 	assert(SUCCEEDED(result));
+}
+
+void NGameScene::Finalize()
+{
+	for (size_t i = 0; i < maxSprite; i++)
+	{
+		delete sprite[i];
+	}
+
+	delete gPipe3d;
+	delete gPipeSprite;
 }

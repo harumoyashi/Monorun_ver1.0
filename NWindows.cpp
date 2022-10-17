@@ -1,5 +1,11 @@
 #include "NWindows.h"
 
+NWindows* NWindows::GetInstance()
+{
+	static NWindows instance;
+	return &instance;
+}
+
 //ウィンドプロシージャ
 //面倒だけど書かなきゃいけない関数
 LRESULT NWindows::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -17,6 +23,8 @@ LRESULT NWindows::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 //Windowクラスの設定
 void NWindows::Set()
 {
+	SetFPS();
+
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;		//ウィンドウプロシージャを設定
 	w.lpszClassName = L"DX12Sample";			//アプリケーションクラス名
@@ -60,4 +68,45 @@ void NWindows::CreateWindowObj()
 void NWindows::Display()
 {
 	ShowWindow(hwnd, SW_SHOW);
+}
+
+bool NWindows::WindowMessage()
+{
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);	//キー入力メッセージの処理
+		DispatchMessage(&msg);	//プロシージャにメッセージを送る
+	}
+
+	//アプリケーションが終わるときにmwssageがWM_QUITになる
+	if (msg.message == WM_QUIT)
+	{
+		return true;	//終了メッセージが来たらループを抜ける
+	}
+
+	return false;
+}
+
+int NWindows::FPSDelay()
+{
+	std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
+	std::chrono::milliseconds
+		premillisec = std::chrono::duration_cast<std::chrono::milliseconds>(preTime.time_since_epoch()),
+		nowmillisec = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime.time_since_epoch());
+	long long lNowMilli = nowmillisec.count();
+	long long nextMilli = premillisec.count() + (1000 / fps);
+	long long leftDelay = nextMilli - lNowMilli;
+
+	if (0 > leftDelay)
+	{
+		preTime = nowTime;
+		return 0;
+	}
+	return 1;
+}
+
+void NWindows::SetFPS()
+{
+	preTime = std::chrono::system_clock::now();	//fps固定用
+	continueFlag = true;
 }

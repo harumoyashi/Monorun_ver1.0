@@ -63,8 +63,12 @@ public:
 	ComPtr<ID3D12Fence> fence;	//CPUとGPUの同期に使われるやつ
 	UINT64 fenceVal = 0;
 
+public:
+	//シングルトンインスタンス取得
+	static NDX12* GetInstance();
+
 	//DirectX初期化
-	void Init(NWindows win);
+	void Init(NWindows* win);
 
 	//ゲッター//
 	//デバイス取得
@@ -84,7 +88,7 @@ private:
 	//コマンドアロケータ、リスト、キューの生成
 	void CreateCommandGroup();
 	// スワップチェーンの生成
-	void CreateSwapChain(NWindows win);
+	void CreateSwapChain(NWindows* win);
 	//シェーダリソースビューのデスクリプタヒープ生成
 	void CreateSRVHeapDesc();
 	//レンダーターゲットビューのデスクリプタヒープ生成

@@ -1,6 +1,12 @@
 #include "NDX12.h"
 
-void NDX12::Init(NWindows win)
+NDX12* NDX12::GetInstance()
+{
+	static NDX12 instance;
+	return &instance;
+}
+
+void NDX12::Init(NWindows* win)
 {
 	HRESULT result;
 
@@ -125,7 +131,7 @@ void NDX12::CreateCommandGroup()
 	assert(SUCCEEDED(result));
 }
 
-void NDX12::CreateSwapChain(NWindows win)
+void NDX12::CreateSwapChain(NWindows* win)
 {
 	HRESULT result;
 
@@ -143,7 +149,7 @@ void NDX12::CreateSwapChain(NWindows win)
 
 	// スワップチェーンの生成
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue.Get(), win.hwnd, &swapChainDesc, nullptr, nullptr,&swapchain1);
+		commandQueue.Get(), win->hwnd, &swapChainDesc, nullptr, nullptr,&swapchain1);
 	assert(SUCCEEDED(result));
 
 	//もとのスワップチェーンに変換
