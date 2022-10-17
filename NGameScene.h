@@ -56,10 +56,13 @@ private:
 public:
 
 public:
+	//‰Šú‰»
 	void Initialize(NDX12* dx12);
+	//XV
 	void Update();
+	//•`‰æ
 	void Draw(NDX12* dx12);
-
+	//I—¹ˆ—
 	void Finalize();
 
 private:
