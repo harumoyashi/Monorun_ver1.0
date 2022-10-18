@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NAudio.h" />
     <ClInclude Include="NGameScene.h" />
     <ClInclude Include="NPreDraw.h" />
     <ClInclude Include="NObj3d.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="NVector3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="NAudio.cpp" />
     <ClCompile Include="NGameScene.cpp" />
     <ClCompile Include="NPreDraw.cpp" />
     <ClCompile Include="NObj3d.cpp" />
