@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	dx12 = NDX12::GetInstance();
 	dx12->Init(win);
 	//input初期化
-	NInput::KeyInit(win->w.hInstance, win->hwnd);
+	NInput::KeyInit(win->GetHInstance(), win->GetHwnd());
 #pragma endregion
 #pragma region ゲームシーン初期化
 	NGameScene* gameScene;
@@ -27,10 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	while (true)
 	{
 #pragma region ウィンドウメッセージ処理
-		if (win->WindowMessage()) { win->continueFlag = false; }
-		if (win->continueFlag == false) { break; }
-		//fps固定用
-		if (win->FPSDelay() && win->continueFlag) { continue; }
+		if (win->WindowMessage()) { break; }
 #pragma endregion
 #pragma region DirectX毎フレーム処理
 		//DirectX毎フレーム　ここから
@@ -40,8 +37,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 #pragma endregion
 #pragma region WindowsAPI後始末
-	//もうクラスは使わないので登録解除する
-	UnregisterClass(win->w.lpszClassName, win->w.hInstance);
+	win->Finalize();
 	gameScene->Finalize();
 	delete gameScene;
 #pragma endregion

@@ -19,8 +19,8 @@ void NSprite::CreateSprite(ComPtr<ID3D12Device> device)
 	Unmap();
 	//平行投影を代入
 	matProjection = constMapTransform->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, static_cast<float>(win_width),
-		static_cast<float>(win_height), 0.0f,
+		0.0f, static_cast<float>(NWindows::win_width),
+		static_cast<float>(NWindows::win_height), 0.0f,
 		0.0f, 1.0f
 	);
 }
@@ -50,8 +50,8 @@ void NSprite::CreateSprite(ComPtr<ID3D12Device> device, ComPtr<ID3D12Resource> t
 	Unmap();
 	//平行投影を代入
 	matProjection = constMapTransform->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, static_cast<float>(win_width),
-		static_cast<float>(win_height), 0.0f,
+		0.0f, static_cast<float>(NWindows::win_width),
+		static_cast<float>(NWindows::win_height), 0.0f,
 		0.0f, 1.0f
 	);
 }
@@ -67,7 +67,7 @@ void NSprite::CreateClipSprite(ComPtr<ID3D12Device> device, ComPtr<ID3D12Resourc
 	MatchTexSize(texBuff);	//ここでテクスチャサイズに合わせてる
 	SetAncor(anchorPoint);
 	SetIsFlip(isFlipX, isFlipY);
-	SetClipRange(texLeftTop,texSize);
+	SetClipRange(texLeftTop, texSize);
 	TransferVertex();
 	VertMaping();
 	CreateVertBuffView();
@@ -81,8 +81,8 @@ void NSprite::CreateClipSprite(ComPtr<ID3D12Device> device, ComPtr<ID3D12Resourc
 	Unmap();
 	//平行投影を代入
 	matProjection = constMapTransform->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, static_cast<float>(win_width),
-		static_cast<float>(win_height), 0.0f,
+		0.0f, static_cast<float>(NWindows::win_width),
+		static_cast<float>(NWindows::win_height), 0.0f,
 		0.0f, 1.0f
 	);
 }
@@ -238,15 +238,15 @@ void NSprite::MappingCB()
 
 void NSprite::SetColor(float R, float G, float B, float A)
 {
-	constMapTransform->color = XMFLOAT4(R,G,B,A);
+	constMapTransform->color = XMFLOAT4(R, G, B, A);
 
 }
 
 void NSprite::ParallelProjection()
 {
 	constMapTransform->mat = XMMatrixOrthographicOffCenterLH(
-		0.0f, static_cast<float>(win_width),
-		static_cast<float>(win_height), 0.0f,
+		0.0f, static_cast<float>(NWindows::win_width),
+		static_cast<float>(NWindows::win_height), 0.0f,
 		0.0f, 1.0f
 	);
 }
@@ -266,7 +266,7 @@ void NSprite::UpdateMatrix()
 	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
 
 	matWorld = XMMatrixIdentity();	//単位行列代入
-	matWorld *= matRot;	//ワールド座標に回転を反映
+	matWorld *= matRot;		//ワールド座標に回転を反映
 	matWorld *= matTrans;	//ワールド座標に平行移動を反映
 }
 
@@ -279,8 +279,6 @@ void NSprite::TransferMatrix()
 
 void NSprite::TransferVertex()
 {
-	HRESULT result;
-
 	//UVだけデフォルトで設定
 	VertexUV vert[] = {
 		//		u	v
@@ -291,9 +289,9 @@ void NSprite::TransferVertex()
 	};
 
 	//アンカーポイント設定
-	float left   = (0.0f - anchorPoint.x) * size.x;
-	float right  = (1.0f - anchorPoint.x) * size.x;
-	float top    = (0.0f - anchorPoint.y) * size.y;
+	float left = (0.0f - anchorPoint.x) * size.x;
+	float right = (1.0f - anchorPoint.x) * size.x;
+	float top = (0.0f - anchorPoint.y) * size.y;
 	float bottom = (1.0f - anchorPoint.y) * size.y;
 
 	//左右反転
@@ -316,16 +314,16 @@ void NSprite::TransferVertex()
 	vert[3].pos = { right,top   ,0.0f };	// 右上
 
 	//テクスチャサイズをもとに切り取る部分のuvを計算
-	float tex_left   = texLeftTop.x/resDescVert.Width;
+	float tex_left = texLeftTop.x / resDescVert.Width;
 	float tex_right = (texLeftTop.x + texSize.x) / resDescVert.Width;
-	float tex_top    = texLeftTop.y / resDescVert.Height;
+	float tex_top = texLeftTop.y / resDescVert.Height;
 	float tex_bottom = (texLeftTop.y + texSize.y) / resDescVert.Height;
 
 	//計算したuvに合わせて設定しなおす
-	vert[0].uv = { tex_left ,tex_bottom};	// 左下
-	vert[1].uv = { tex_left ,tex_top   };	// 左上
-	vert[2].uv = { tex_right,tex_bottom};	// 右下
-	vert[3].uv = { tex_right,tex_top   };	// 右上
+	vert[0].uv = { tex_left ,tex_bottom };	// 左下
+	vert[1].uv = { tex_left ,tex_top };	// 左上
+	vert[2].uv = { tex_right,tex_bottom };	// 右下
+	vert[3].uv = { tex_right,tex_top };	// 右上
 
 	//設定したら他でも使える変数に代入
 	std::copy(std::begin(vert), std::end(vert), vertices);

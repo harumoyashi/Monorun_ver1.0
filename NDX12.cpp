@@ -1,4 +1,5 @@
 #include "NDX12.h"
+#include <thread>
 
 NDX12* NDX12::GetInstance()
 {
@@ -16,6 +17,8 @@ void NDX12::Init(NWindows* win)
 		debugController->EnableDebugLayer();
 	}
 #endif
+	InitializeFixFPS();
+
 	// DXGIファクトリーの生成
 	result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory));
 	assert(SUCCEEDED(result));
@@ -32,6 +35,18 @@ void NDX12::Init(NWindows* win)
 	CreateDescHeap();
 	CreateDSV();
 	CreateFence();
+}
+
+void NDX12::PostDraw(D3D12_RESOURCE_BARRIER barrierDesc)
+{
+	BarrierReset(barrierDesc);
+	CmdListClose();
+	ExecuteCmdList();
+	BufferSwap();
+	CommandWait();
+	UpdateFixFPX();
+	ClearQueue();
+	CmdListReset();
 }
 
 void NDX12::ChoiceAdapters()
@@ -90,6 +105,7 @@ void NDX12::CreateDevice()
 	{
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);	//やばいエラーの時止まる
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);		//エラーの時止まる
+		//infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING, true);	//警告の時止まる
 	}
 
 	//抑制するエラー
@@ -135,8 +151,8 @@ void NDX12::CreateSwapChain(NWindows* win)
 {
 	HRESULT result;
 
-	swapChainDesc.Width = win_width;
-	swapChainDesc.Height = win_height;
+	swapChainDesc.Width = NWindows::win_width;
+	swapChainDesc.Height = NWindows::win_height;
 	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 色情報の書式
 	swapChainDesc.SampleDesc.Count = 1; // マルチサンプルしない
 	swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER; // バックバッファ用
@@ -149,7 +165,7 @@ void NDX12::CreateSwapChain(NWindows* win)
 
 	// スワップチェーンの生成
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue.Get(), win->hwnd, &swapChainDesc, nullptr, nullptr,&swapchain1);
+		commandQueue.Get(), win->GetHwnd(), &swapChainDesc, nullptr, nullptr, &swapchain1);
 	assert(SUCCEEDED(result));
 
 	//もとのスワップチェーンに変換
@@ -207,8 +223,8 @@ void NDX12::SetDepthRes()
 {
 	//リソース設定
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = win_width;	//レンダーターゲットに合わせる
-	depthResourceDesc.Height = win_height;	//レンダーターゲットに合わせる
+	depthResourceDesc.Width = NWindows::win_width;	//レンダーターゲットに合わせる
+	depthResourceDesc.Height = NWindows::win_height;	//レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -247,8 +263,6 @@ void NDX12::CreateDescHeap()
 
 void NDX12::CreateDSV()
 {
-	HRESULT result;
-
 	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;	//深度値フォーマット
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	device->CreateDepthStencilView(
@@ -262,5 +276,95 @@ void NDX12::CreateFence()
 	HRESULT result;
 
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	assert(SUCCEEDED(result));
+}
+
+void NDX12::InitializeFixFPS()
+{
+	//現在の時間を記録する
+	reference = std::chrono::steady_clock::now();
+}
+
+void NDX12::UpdateFixFPX()
+{
+	//1/60秒(1フレーム)ぴったりの時間
+	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	//1/60秒よりちょっとだけ短い時間
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+
+	//現在の時間を取得する
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	//前回の記録からの経過時間を取得する
+	std::chrono::microseconds elapsed =
+		std::chrono::duration_cast<std::chrono::microseconds>(now - reference);
+
+	//1/60秒(よりちょっとだけ短い時間)経ってない場合
+	if (elapsed < kMinCheckTime)
+	{
+		//1/60秒経過するまで細かいスリープを繰り返す
+		while (std::chrono::steady_clock::now() - reference < kMinTime)
+		{
+			//1マイクロ秒スリープ
+			std::this_thread::sleep_for(std::chrono::microseconds(1));
+		}
+	}
+	//現在の時間を記録する
+	reference = std::chrono::steady_clock::now();
+}
+
+void NDX12::BarrierReset(D3D12_RESOURCE_BARRIER barrierDesc)
+{
+	// 5.リソースバリアを戻す
+	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;	//描画状態から
+	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT;			//表示状態へ
+	commandList->ResourceBarrier(1, &barrierDesc);
+}
+
+void NDX12::CmdListClose()
+{
+	HRESULT result;
+
+	result = commandList->Close();
+	assert(SUCCEEDED(result));
+}
+
+void NDX12::ExecuteCmdList()
+{
+	ID3D12CommandList* commandLists[] = { commandList.Get() };
+	commandQueue->ExecuteCommandLists(1, commandLists);
+}
+
+void NDX12::BufferSwap()
+{
+	HRESULT result;
+
+	result = swapchain->Present(1, 0);
+	assert(SUCCEEDED(result));
+}
+
+void NDX12::CommandWait()
+{
+	commandQueue->Signal(fence.Get(), ++fenceVal);
+	if (fence->GetCompletedValue() != fenceVal) {
+		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
+		fence->SetEventOnCompletion(fenceVal, event);
+		WaitForSingleObject(event, INFINITE);
+		CloseHandle(event);
+	}
+}
+
+void NDX12::ClearQueue()
+{
+	HRESULT result;
+
+	result = commandAllocator->Reset();
+	assert(SUCCEEDED(result));
+}
+
+void NDX12::CmdListReset()
+{
+	HRESULT result;
+
+	result = commandList->Reset(commandAllocator.Get(), nullptr);
 	assert(SUCCEEDED(result));
 }

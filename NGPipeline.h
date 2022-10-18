@@ -40,7 +40,7 @@ private:
 
 	//頂点インデックス//
 	unsigned short indices[1000]{};		//インデックス代入用
-	
+
 	ComPtr<ID3D12Resource> indexBuff;	//インデックスバッファ
 	uint16_t* indexMap = nullptr;		//マップ用
 
@@ -70,6 +70,7 @@ public:
 	D3D12_VERTEX_BUFFER_VIEW vbView{};	//頂点バッファビュー
 	D3D12_INDEX_BUFFER_VIEW ibView{};	//インデックスバッファビュー
 	UINT sizeIB;						//インデックスバッファ全体のサイズ
+	UINT numIB;							//インデックスバッファの数
 
 public:
 	//パイプラインの初期化(生成)
@@ -155,4 +156,3 @@ public:
 private:
 
 };
-

@@ -8,12 +8,12 @@ void NGameScene::Initialize(NDX12* dx12)
 	rootParams.SetRootParam();
 
 	//マテリアル(定数バッファ)
-	material.Initialize(dx12->device);
+	material.Initialize(dx12->GetDevice());
 
 	//オブジェクト(定数バッファ)
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i].Initialize(dx12->device);
+		obj3d[i].Initialize(dx12->GetDevice());
 	}
 	obj3d[0].texNum = 0;
 	obj3d[1].texNum = 1;
@@ -62,7 +62,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	//射影投影変換//
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0f),		//上下画角45度
-		(float)win_width / win_height,	//アスペクト比(画面横幅/画面縦幅)
+		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
 		0.1f, 1000.0f					//前端、奥端
 	);
 
@@ -87,33 +87,49 @@ void NGameScene::Initialize(NDX12* dx12)
 		//テクスチャバッファ設定
 		tex[i].SetTBHeap();
 		tex[i].SetTBResource();
-		tex[i].CreateTexBuff(dx12->device);
+		tex[i].CreateTexBuff(dx12->GetDevice());
 		tex[i].TexBuffMaping();
 		//シェーダーリソースビュー設定
 		tex[i].SetSRV();
-		tex[i].CreateSRV(dx12->device, dx12->srvHeap, i);
+		tex[i].CreateSRV(dx12->GetDevice(), dx12->GetSRVHeap(), i);
 	}
 
-	//スプライト生成
-	for (size_t i = 0; i < maxSprite; i++)
+	//背景スプライト生成
+	for (size_t i = 0; i < maxBackSprite; i++)
 	{
-		sprite[i] = new NSprite();
-		sprite[i]->texNum = static_cast<int>(i);
-		sprite[i]->CreateSprite(dx12->device, tex[sprite[i]->texNum].texBuff);
-		//sprite[i]->CreateClipSprite(dx12->device,tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
-		sprite[i]->position.x = i * 200.0f + 200.0f;
-		sprite[i]->position.y = 300.0f;
-		sprite[i]->UpdateMatrix();
-		sprite[i]->TransferMatrix();
+		backSprite[i] = new NSprite();
+		backSprite[i]->texNum = static_cast<int>(i);
+		backSprite[i]->CreateSprite(dx12->GetDevice(), tex[backSprite[i]->texNum].texBuff);
+		//sprite[i]->CreateClipSprite(dx12->GetDevice(),tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
+		backSprite[i]->position.x = i * 300.0f + 400.0f;
+		backSprite[i]->position.y = 400.0f;
+		backSprite[i]->UpdateMatrix();
+		backSprite[i]->TransferMatrix();
+	}
+
+	//前景スプライト生成
+	for (size_t i = 0; i < maxForeSprite; i++)
+	{
+		foreSprite[i] = new NSprite();
+		foreSprite[i]->texNum = static_cast<int>(i);
+		foreSprite[i]->CreateSprite(dx12->GetDevice(), tex[backSprite[i]->texNum].texBuff);
+		//sprite[i]->CreateClipSprite(dx12->GetDevice(),tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
+		foreSprite[i]->SetColor(1, 1, 1, 0.5f);
+		foreSprite[i]->size = { 150,150 };
+		foreSprite[i]->TransferVertex();
+		foreSprite[i]->position.x = i * 200.0f + 200.0f;
+		foreSprite[i]->position.y = 200.0f;
+		foreSprite[i]->UpdateMatrix();
+		foreSprite[i]->TransferMatrix();
 	}
 
 #pragma region グラフィックスパイプライン
 	gPipe3d = new NGPipeline();
-	gPipe3d->Initialize3d(dx12->device);
-	gPipe3d->pipelineSet = gPipe3d->CreatePipeline3d(dx12->device, rootParams.entity);
+	gPipe3d->Initialize3d(dx12->GetDevice());
+	gPipe3d->pipelineSet = gPipe3d->CreatePipeline3d(dx12->GetDevice(), rootParams.entity);
 
 	gPipeSprite = new NGPipeline();
-	gPipeSprite->pipelineSet = gPipeSprite->CreatePipelineSprite(dx12->device, rootParams.entity);
+	gPipeSprite->pipelineSet = gPipeSprite->CreatePipelineSprite(dx12->GetDevice(), rootParams.entity);
 #pragma endregion
 #pragma endregion
 }
@@ -131,25 +147,25 @@ void NGameScene::Update()
 		obj3d[i].TransferMatrix(matView, matProjection);
 	}
 
-	////スプライトの変換テスト
-	//increment += 1.0f;
-	//for (size_t i = 0; i < maxSprite; i++)
-	//{
-	//	sprite[i]->rotation = increment;
-	//	sprite[i]->position.x = increment;
+	//スプライトの変換テスト
+	increment += 1.0f;
+	for (size_t i = 0; i < maxForeSprite; i++)
+	{
+		//foreSprite[i]->rotation = increment;
+		//foreSprite[i]->position.x = increment;
 
-	//	sprite[i]->UpdateMatrix();
-	//	sprite[i]->TransferMatrix();
-	//	sprite[i]->SetColor(1, 0, 1, 1);
+		//foreSprite[i]->UpdateMatrix();
+		//foreSprite[i]->TransferMatrix();*/
+		//foreSprite[i]->SetColor(1, 1, 1, increment*0.01f);
 
-	//	sprite[i]->size = { increment,i * 100.0f + 100.0f };
-	//	sprite[i]->TransferVertex();
+		//foreSprite[i]->size = { increment,i * 100.0f + 100.0f };
+		//foreSprite[i]->TransferVertex();
 
-	//	if (increment > 300.0f)
-	//	{
-	//		sprite[i]->isInvisible = true;
-	//	}
-	//}
+		//if (increment > 300.0f)
+		//{
+		//	foreSprite[i]->isInvisible = true;
+		//}
+	}
 #pragma endregion
 }
 
@@ -161,8 +177,8 @@ void NGameScene::Draw(NDX12* dx12)
 	NPreDraw* preDraw = nullptr;
 	preDraw = new NPreDraw();
 
-	preDraw->SetResBarrier(dx12->swapchain, dx12->backBuffers, dx12->GetCommandList());
-	preDraw->SetRenderTarget(dx12->rtvHeap, dx12->device, dx12->rtvHeapDesc, dx12->dsvHeap, dx12->GetCommandList());
+	preDraw->SetResBarrier(dx12->GetSwapchain(), dx12->backBuffers, dx12->GetCommandList());
+	preDraw->SetRenderTarget(dx12->GetRTVHeap(), dx12->GetDevice(), dx12->GetRTVHeapDesc(), dx12->GetDSVHeap(), dx12->GetCommandList());
 	preDraw->ClearScreen(dx12->GetCommandList());
 #pragma endregion
 #pragma region グラフィックスコマンド
@@ -170,71 +186,41 @@ void NGameScene::Draw(NDX12* dx12)
 	preDraw->SetViewport(dx12->GetCommandList());
 	preDraw->SetScissorRect(dx12->GetCommandList());
 
+	//背景スプライト
+	for (size_t i = 0; i < maxBackSprite; i++)
+	{
+		backSprite[i]->CommonBeginDraw(dx12->GetCommandList(), gPipeSprite->pipelineSet.pipelineState, gPipeSprite->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		backSprite[i]->Draw(dx12->GetSRVHeap(), tex[0].incrementSize, dx12->GetCommandList());
+	}
+
 	//3Dオブジェクト
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i].CommonBeginDraw(dx12->GetCommandList(), gPipe3d->pipelineSet.pipelineState, gPipe3d->pipelineSet.rootSig.entity, dx12->srvHeap);
-		obj3d[i].Draw(dx12->GetCommandList(), material, dx12->srvHeap, gPipe3d->vbView, gPipe3d->ibView, gPipe3d->sizeIB, tex[0].incrementSize);
+		obj3d[i].CommonBeginDraw(dx12->GetCommandList(), gPipe3d->pipelineSet.pipelineState, gPipe3d->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		obj3d[i].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), gPipe3d->vbView, gPipe3d->ibView, gPipe3d->numIB, tex[0].incrementSize);
 	}
 
-	//スプライト
-	for (size_t i = 0; i < maxSprite; i++)
+	//前景スプライト
+	for (size_t i = 0; i < maxForeSprite; i++)
 	{
-		sprite[i]->CommonBeginDraw(dx12->GetCommandList(), gPipeSprite->pipelineSet.pipelineState, gPipeSprite->pipelineSet.rootSig.entity, dx12->srvHeap);
-		sprite[i]->Draw(dx12->srvHeap, tex[0].incrementSize, dx12->GetCommandList());
+		foreSprite[i]->CommonBeginDraw(dx12->GetCommandList(), gPipeSprite->pipelineSet.pipelineState, gPipeSprite->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		foreSprite[i]->Draw(dx12->GetSRVHeap(), tex[0].incrementSize, dx12->GetCommandList());
 	}
 	// 4.描画コマンドここまで
 #pragma endregion
-	/*NPostDraw* postDraw = nullptr;
-	postDraw = new NPostDraw;
-	preDraw->BarrierReset(preDraw->barrierDesc, dx12->GetCommandList());
-	preDraw->CmdListClose(dx12->GetCommandList());
-	preDraw->ExecuteCmdList(dx12->GetCommandList(), dx12->commandQueue);
-	preDraw->BufferSwap(dx12->swapchain);
-	preDraw->CommandWait(dx12->commandQueue, dx12->GetFence(), dx12->fenceVal);
-	preDraw->ClearQueue(dx12->GetCommandAllocator());
-	preDraw->CmdListReset(dx12->GetCommandList(), dx12->GetCommandAllocator());*/
-
-	// 5.リソースバリアを戻す
-	preDraw->barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
-	preDraw->barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
-	dx12->GetCommandList()->ResourceBarrier(1, &preDraw->barrierDesc);
-
-	// 命令のクローズ
-	result = dx12->GetCommandList()->Close();
-	assert(SUCCEEDED(result));
-
-	// コマンドリストの実行
-	ID3D12CommandList* commandLists[] = { dx12->GetCommandList() };
-	dx12->commandQueue->ExecuteCommandLists(1, commandLists);
-
-	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result = dx12->swapchain->Present(1, 0);
-	assert(SUCCEEDED(result));
-
-	// コマンドの実行完了を待つ
-	dx12->commandQueue->Signal(dx12->GetFence(), ++dx12->fenceVal);
-	if (dx12->GetFence()->GetCompletedValue() != dx12->fenceVal) {
-		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-		dx12->GetFence()->SetEventOnCompletion(dx12->fenceVal, event);
-		WaitForSingleObject(event, INFINITE);
-		CloseHandle(event);
-	}
-
-	// キューをクリア
-	result = dx12->GetCommandAllocator()->Reset();
-	assert(SUCCEEDED(result));
-
-	// 再びコマンドリストを貯める準備
-	result = dx12->GetCommandList()->Reset(dx12->GetCommandAllocator(), nullptr);
-	assert(SUCCEEDED(result));
+	dx12->PostDraw(preDraw->barrierDesc);
 }
 
 void NGameScene::Finalize()
 {
-	for (size_t i = 0; i < maxSprite; i++)
+	for (size_t i = 0; i < maxForeSprite; i++)
 	{
-		delete sprite[i];
+		delete foreSprite[i];
+	}
+
+	for (size_t i = 0; i < maxBackSprite; i++)
+	{
+		delete backSprite[i];
 	}
 
 	delete gPipe3d;

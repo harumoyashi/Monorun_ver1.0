@@ -1,8 +1,8 @@
 //定数バッファ用構造体
 cbuffer ConstBufferDataMaterial : register(b0)
 {
-	matrix mat;
 	float4 color;	//色(RGBA)
+	matrix mat;
 };
 
 //頂点データの出力構造体

@@ -14,8 +14,8 @@ struct VertexUV
 //定数バッファ用データ構造体（3D変換行列）
 struct  SpriteCBDataTransform
 {
-	XMMATRIX mat;	//3D変換行列
 	XMFLOAT4 color;	//色(RGBA)
+	XMMATRIX mat;	//3D変換行列
 };
 
 class NSprite
@@ -51,7 +51,7 @@ private:
 	XMFLOAT2 texSize = { 100,100 };			//テクスチャ切り出しサイズ
 public:
 	//変換用//
-	XMFLOAT2 size = {};
+	XMFLOAT2 size = {};		//スプライトの大きさ(変更後にTransferVertex()しないと反映されない)
 	float rotation = 0.0f;	//Z軸の回転角
 	XMFLOAT3 position = { 0.0f,0.0f,0.0f };	//座標
 	bool isInvisible = false;	//非表示にするフラグ
@@ -69,8 +69,8 @@ public:
 	//テクスチャを切り取ってスプライト生成(アニメーション、フォントなど)
 	//アンカーポイントも設定できる(設定しないと中心になる)
 	//上下左右の反転フラグも設定できる(設定しないと反転しない)
-	void CreateClipSprite(ComPtr<ID3D12Device> device, ComPtr<ID3D12Resource> texBuff,XMFLOAT2 texLeftTop = { 0,0 },
-		XMFLOAT2 texSize = { 100,100 },XMFLOAT2 anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	void CreateClipSprite(ComPtr<ID3D12Device> device, ComPtr<ID3D12Resource> texBuff, XMFLOAT2 texLeftTop = { 0,0 },
+		XMFLOAT2 texSize = { 100,100 }, XMFLOAT2 anchorPoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 private:
 	//頂点データ設定

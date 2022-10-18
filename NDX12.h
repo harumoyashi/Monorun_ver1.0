@@ -8,13 +8,14 @@
 #include <wrl.h>
 
 #include <DirectXMath.h>
+#include <chrono>
 using namespace DirectX;
 
 #include "NInput.h"
 
 class NDX12
 {
-public:
+private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//デバッグレイヤーをオンにするために使用されるインターフェイス
@@ -47,11 +48,9 @@ public:
 
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
 
-	std::vector<ComPtr<ID3D12Resource>> backBuffers;
-
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle;		//レンダーターゲットビューハンドル
 	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc{};	//レンダーターゲットビューの設定
-	
+
 	D3D12_RESOURCE_DESC depthResourceDesc{};	//深度バッファリソース
 	D3D12_HEAP_PROPERTIES depthHeapProp{};		//ヒーププロパティ
 	D3D12_CLEAR_VALUE depthClearValue{};
@@ -63,22 +62,43 @@ public:
 	ComPtr<ID3D12Fence> fence;	//CPUとGPUの同期に使われるやつ
 	UINT64 fenceVal = 0;
 
+	//fps固定用
+	std::chrono::steady_clock::time_point reference;	//記録時間
+	const long long fps = 60;	//60FPS
+
+public:
+	std::vector<ComPtr<ID3D12Resource>> backBuffers;
+
 public:
 	//シングルトンインスタンス取得
 	static NDX12* GetInstance();
 
 	//DirectX初期化
 	void Init(NWindows* win);
+	//描画後処理
+	void PostDraw(D3D12_RESOURCE_BARRIER barrierDesc);
 
 	//ゲッター//
 	//デバイス取得
-	ID3D12Device* GetDevice() { return device.Get(); }
+	ID3D12Device* GetDevice()const { return device.Get(); }
+	//スワップチェーン取得
+	IDXGISwapChain4* GetSwapchain()const { return swapchain.Get(); }
 	//コマンドアロケーター取得
-	ID3D12CommandAllocator* GetCommandAllocator() { return commandAllocator.Get(); }
+	ID3D12CommandAllocator* GetCommandAllocator()const { return commandAllocator.Get(); }
 	//コマンドリスト取得
-	ID3D12GraphicsCommandList* GetCommandList() { return commandList.Get(); }
+	ID3D12GraphicsCommandList* GetCommandList()const { return commandList.Get(); }
+	//コマンドキュー取得
+	ID3D12CommandQueue* GetCommandQueue()const { return commandQueue.Get(); }
+	//RTVヒープ取得
+	ID3D12DescriptorHeap* GetRTVHeap()const { return rtvHeap.Get(); }
+	//SRVヒープ取得
+	ID3D12DescriptorHeap* GetSRVHeap()const { return srvHeap.Get(); }
+	//RTVヒープデスク取得
+	D3D12_DESCRIPTOR_HEAP_DESC GetRTVHeapDesc()const { return rtvHeapDesc; }
+	//DSVヒープ取得
+	ID3D12DescriptorHeap* GetDSVHeap()const { return dsvHeap.Get(); }
 	//フェンス取得
-	ID3D12Fence* GetFence() { return fence.Get(); }
+	ID3D12Fence* GetFence()const { return fence.Get(); }
 
 private:
 	//アダプター選択
@@ -105,5 +125,25 @@ private:
 	void CreateDSV();
 	//フェンスの生成
 	void CreateFence();
-};
 
+	//FPS固定初期化
+	void InitializeFixFPS();
+	//FPS固定更新
+	void UpdateFixFPX();
+
+	//バリア解除
+	void BarrierReset(D3D12_RESOURCE_BARRIER barrierDesc);
+	//命令のクローズ
+	//もうコマンドリストに積むのおしまい
+	void CmdListClose();
+	// コマンドリストの実行
+	void ExecuteCmdList();
+	// 画面に表示するバッファをフリップ(裏表の入替え)
+	void BufferSwap();
+	// コマンドの実行完了を待つ
+	void CommandWait();
+	// キューをクリア
+	void ClearQueue();
+	// 再びコマンドリストを貯める準備
+	void CmdListReset();
+};

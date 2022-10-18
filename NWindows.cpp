@@ -1,5 +1,7 @@
 #include "NWindows.h"
 
+#pragma comment(lib,"winmm.lib")
+
 NWindows* NWindows::GetInstance()
 {
 	static NWindows instance;
@@ -23,8 +25,6 @@ LRESULT NWindows::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 //Windowクラスの設定
 void NWindows::Set()
 {
-	SetFPS();
-
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc;		//ウィンドウプロシージャを設定
 	w.lpszClassName = L"DX12Sample";			//アプリケーションクラス名
@@ -32,6 +32,14 @@ void NWindows::Set()
 	w.hCursor = LoadCursor(NULL, IDC_ARROW);	//カーソル指定
 
 	RegisterClassEx(&w);	//アプリケーションクラス（ウィンドウクラスの指定をOSに伝える）
+
+	wrc = { 0,0,win_width,win_height };	//ウィンドウサイズを決める
+
+	//関数を使ってウィンドウのサイズを補正する
+	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
+
+	//システムタイマーの分解度を上げる
+	timeBeginPeriod(1);
 }
 
 //コンソールへの文字出力
@@ -43,11 +51,6 @@ void NWindows::DebugText(LPCSTR text)
 //ウィンドウオブジェクトの生成
 void NWindows::CreateWindowObj()
 {
-	wrc = { 0,0,win_width,win_height };	//ウィンドウサイズを決める
-
-	//関数を使ってウィンドウのサイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-
 	//ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(
 		w.lpszClassName,		//クラス名指定
@@ -87,26 +90,8 @@ bool NWindows::WindowMessage()
 	return false;
 }
 
-int NWindows::FPSDelay()
+void NWindows::Finalize()
 {
-	std::chrono::system_clock::time_point nowTime = std::chrono::system_clock::now();
-	std::chrono::milliseconds
-		premillisec = std::chrono::duration_cast<std::chrono::milliseconds>(preTime.time_since_epoch()),
-		nowmillisec = std::chrono::duration_cast<std::chrono::milliseconds>(nowTime.time_since_epoch());
-	long long lNowMilli = nowmillisec.count();
-	long long nextMilli = premillisec.count() + (1000 / fps);
-	long long leftDelay = nextMilli - lNowMilli;
-
-	if (0 > leftDelay)
-	{
-		preTime = nowTime;
-		return 0;
-	}
-	return 1;
-}
-
-void NWindows::SetFPS()
-{
-	preTime = std::chrono::system_clock::now();	//fps固定用
-	continueFlag = true;
+	//もうクラスは使わないので登録解除する
+	UnregisterClass(w.lpszClassName, w.hInstance);
 }

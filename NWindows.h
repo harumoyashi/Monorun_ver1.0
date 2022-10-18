@@ -1,14 +1,14 @@
 #pragma once
 #include <string>
 #include <windows.h>
-#include <chrono>
-
-const int win_width = 1280;
-const int win_height = 720;
 
 class NWindows
 {
 public:
+	static const int win_width = 1280;
+	static const int win_height = 720;
+
+private:
 	//ウィンドウクラスの生成＆登録
 	WNDCLASSEX w{};
 	//ウィンドウハンドルの生成
@@ -18,12 +18,8 @@ public:
 	//メッセージ情報構造体の生成
 	MSG msg = {};
 
-	//fps固定用
-	std::chrono::system_clock::time_point preTime;
-	const long long fps = 60;	//60FPS
-	bool continueFlag = true;
-
 public:
+#pragma region 初期化
 	//シングルトンインスタンス取得
 	static NWindows* GetInstance();
 
@@ -37,12 +33,18 @@ public:
 	void CreateWindowObj();
 	//ウィンドウ表示
 	void Display();
-
+#pragma endregion
+#pragma region 更新
+	//プロシージャにメッセージを送る
 	bool WindowMessage();
-
-	//FPS固定
-	int FPSDelay();
-	//FPS設定
-	void SetFPS();
+#pragma endregion
+#pragma region 終了
+	//終了処理
+	//クラスの解除
+	void Finalize();
+#pragma endregion
+#pragma region ゲッター
+	HWND GetHwnd()const { return hwnd; }
+	HINSTANCE GetHInstance()const { return w.hInstance; }
+#pragma endregion
 };
-

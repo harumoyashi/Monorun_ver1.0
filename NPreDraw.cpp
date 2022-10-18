@@ -33,8 +33,8 @@ void NPreDraw::ClearScreen(ComPtr<ID3D12GraphicsCommandList> commandList)
 
 void NPreDraw::SetViewport(ComPtr<ID3D12GraphicsCommandList> commandList)
 {
-	viewport.Width = win_width;
-	viewport.Height = win_height;
+	viewport.Width = NWindows::win_width;
+	viewport.Height = NWindows::win_height;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
 	viewport.MinDepth = 0.0f;	//最小震度
@@ -46,9 +46,9 @@ void NPreDraw::SetViewport(ComPtr<ID3D12GraphicsCommandList> commandList)
 void NPreDraw::SetScissorRect(ComPtr<ID3D12GraphicsCommandList> commandList)
 {
 	scissorRect.left = 0; // 切り抜き座標左
-	scissorRect.right = scissorRect.left + win_width; // 切り抜き座標右
+	scissorRect.right = scissorRect.left + NWindows::win_width; // 切り抜き座標右
 	scissorRect.top = 0; // 切り抜き座標上
-	scissorRect.bottom = scissorRect.top + win_height; // 切り抜き座標下
+	scissorRect.bottom = scissorRect.top + NWindows::win_height; // 切り抜き座標下
 	// シザー矩形設定コマンドを、コマンドリストに積む
 	commandList->RSSetScissorRects(1, &scissorRect);
 }

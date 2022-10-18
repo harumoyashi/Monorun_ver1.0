@@ -14,7 +14,6 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
-#include "NPostDraw.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -43,9 +42,13 @@ private:
 	static const int maxTex = 3;	//テクスチャ数
 	NTexture tex[maxTex];			//テクスチャ
 
-	//スプライト
-	static const int maxSprite = 3;	//スプライト数
-	NSprite* sprite[maxSprite];		//スプライト
+	//背景スプライト
+	static const int maxBackSprite = 3;	//背景スプライト数
+	NSprite* backSprite[maxBackSprite];	//背景スプライト
+
+	//前景スプライト
+	static const int maxForeSprite = 3;	//前景スプライト数
+	NSprite* foreSprite[maxForeSprite];	//前景スプライト
 
 	//グラフィックスパイプライン
 	NGPipeline* gPipe3d;		//3Dオブジェクト用グラフィックスパイプライン
@@ -69,4 +72,3 @@ private:
 
 
 };
-

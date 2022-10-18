@@ -54,7 +54,7 @@ void NObj3d::MoveKey()
 	rotation.x += 0.2f;
 
 	//Ç¢Ç∏ÇÍÇ©ÇÃÉLÅ[ÇâüÇµÇΩÇ∆Ç´
-	if (NInput::IsKeyDown(DIK_W) ||NInput::IsKeyDown(DIK_S) ||NInput::IsKeyDown(DIK_D) ||NInput::IsKeyDown(DIK_A))
+	if (NInput::IsKeyDown(DIK_W) || NInput::IsKeyDown(DIK_S) || NInput::IsKeyDown(DIK_D) || NInput::IsKeyDown(DIK_A))
 	{
 		if (NInput::IsKeyDown(DIK_W)) { position.y += 2.0f; }
 		else if (NInput::IsKeyDown(DIK_S)) { position.y -= 2.0f; }

@@ -161,6 +161,8 @@ void NGPipeline::SetIndex()
 
 	//頂点バッファのサイズを代入
 	sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+	//使ってる頂点バッファの数を代入
+	numIB = static_cast<UINT>(_countof(index));
 }
 
 void NGPipeline::SetIndexResource()
@@ -450,21 +452,21 @@ void NGPipeline::SetBlend()
 	pipelineDesc.BlendState.IndependentBlendEnable = false;			//それぞれのレンダーターゲットに別々のブレンドするか
 
 	//レンダーターゲットのブレンド設定
-	blenddesc.BlendEnable = false;									//加算、乗算、αなどするか
-	blenddesc.LogicOpEnable = false;								//論理演算するか
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//マスク値：RBGA全てのチャンネルを描画
-	//設定したブレンドを適用
-	pipelineDesc.BlendState.RenderTarget[0] = blenddesc;
-
 	blenddesc.BlendEnable = true;					//ブレンドを有効にする
+	blenddesc.LogicOpEnable = false;				//論理演算するか
+	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	//マスク値：RBGA全てのチャンネルを描画
+
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;	//加算
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を0%使う
 
-	//加算合成
+	//アルファブレンド
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f-ソースのアルファ値
+
+	//設定したブレンドを適用
+	pipelineDesc.BlendState.RenderTarget[0] = blenddesc;
 }
 
 void NGPipeline::SetInputLayout(bool is3d)
