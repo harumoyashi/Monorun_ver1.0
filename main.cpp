@@ -1,6 +1,6 @@
 #include "NWindows.h"
 #include "NDX12.h"
-#include "NGameScene.h"
+#include "NSceneManager.h"
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -19,9 +19,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	NInput::KeyInit(win->GetHInstance(), win->GetHwnd());
 #pragma endregion
 #pragma region ゲームシーン初期化
-	NGameScene* gameScene;
-	gameScene = new NGameScene();
-	gameScene->Initialize(dx12);
+	NSceneManager* sceneMane;
+	sceneMane = new NSceneManager();
+	sceneMane->Initialize(dx12);
 #pragma endregion
 	//ゲームループ
 	while (true)
@@ -32,14 +32,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma region DirectX毎フレーム処理
 		//DirectX毎フレーム　ここから
 		NInput::KeyUpdate();
-		gameScene->Update();
-		gameScene->Draw(dx12);
+		sceneMane->Update(dx12);
+		sceneMane->Draw(dx12);
 	}
 #pragma endregion
 #pragma region WindowsAPI後始末
 	win->Finalize();
-	gameScene->Finalize();
-	delete gameScene;
+	sceneMane->Finalize();
+	delete sceneMane;
 #pragma endregion
 	return 0;
 }

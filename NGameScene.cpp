@@ -1,11 +1,16 @@
 #include "NGameScene.h"
+#include "NSceneManager.h"
+
+NGameScene* NGameScene::GetInstance()
+{
+	static NGameScene instance;
+	return &instance;
+}
 
 void NGameScene::Initialize(NDX12* dx12)
 {
 #pragma region 描画初期化処理
-	//ルートパラメータの設定
-	rootParams.SetDescRange();
-	rootParams.SetRootParam();
+	
 
 	//マテリアル(定数バッファ)
 	material.Initialize(dx12->GetDevice());
@@ -15,8 +20,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	{
 		obj3d[i].Initialize(dx12->GetDevice());
 	}
-	obj3d[0].texNum = 0;
 	obj3d[1].texNum = 1;
+	obj3d[0].texNum = 0;
 	obj3d[2].texNum = 2;
 
 	obj3d[1].position.x = -20.0f;
@@ -59,22 +64,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	//	0.1f, 1000.0f					//前端、奥端
 	//);
 
-	//射影投影変換//
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0f),		//上下画角45度
-		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-		0.1f, 1000.0f					//前端、奥端
-	);
-
-	//ここでビュー変換行列計算
-	matView;
-	eye = { 0, 0, -100 };	//視点座標
-	target = { 0, 0, 0 };	//注視点座標
-	up = { 0, 1, 0 };		//上方向ベクトル
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-	angle = 0.0f;	//カメラの回転角
+	
 #pragma endregion
 	//テクスチャ生成
 	tex[0].Load(L"Resources/mario.jpg");
@@ -123,14 +113,7 @@ void NGameScene::Initialize(NDX12* dx12)
 		foreSprite[i]->TransferMatrix();
 	}
 
-#pragma region グラフィックスパイプライン
-	gPipe3d = new NGPipeline();
-	gPipe3d->Initialize3d(dx12->GetDevice());
-	gPipe3d->pipelineSet = gPipe3d->CreatePipeline3d(dx12->GetDevice(), rootParams.entity);
 
-	gPipeSprite = new NGPipeline();
-	gPipeSprite->pipelineSet = gPipeSprite->CreatePipelineSprite(dx12->GetDevice(), rootParams.entity);
-#pragma endregion
 #pragma endregion
 }
 
@@ -165,50 +148,54 @@ void NGameScene::Update()
 		//{
 		//	foreSprite[i]->isInvisible = true;
 		//}
+
+		//射影投影変換//
+		matProjection = XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),		//上下画角45度
+			(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
+			0.1f, 1000.0f					//前端、奥端
+		);
+
+		//ここでビュー変換行列計算
+		matView;
+		eye = { 0, 0, -100 };	//視点座標
+		target = { 0, 0, 0 };	//注視点座標
+		up = { 0, 1, 0 };		//上方向ベクトル
+		//ビュー変換行列作成
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+		angle = 0.0f;	//カメラの回転角
 	}
 #pragma endregion
 }
 
 void NGameScene::Draw(NDX12* dx12)
 {
-	HRESULT result;
 
-#pragma region 描画前処理
-	NPreDraw* preDraw = nullptr;
-	preDraw = new NPreDraw();
-
-	preDraw->SetResBarrier(dx12->GetSwapchain(), dx12->backBuffers, dx12->GetCommandList());
-	preDraw->SetRenderTarget(dx12->GetRTVHeap(), dx12->GetDevice(), dx12->GetRTVHeapDesc(), dx12->GetDSVHeap(), dx12->GetCommandList());
-	preDraw->ClearScreen(dx12->GetCommandList());
-#pragma endregion
 #pragma region グラフィックスコマンド
 	// 4.描画コマンドここから
-	preDraw->SetViewport(dx12->GetCommandList());
-	preDraw->SetScissorRect(dx12->GetCommandList());
-
 	//背景スプライト
 	for (size_t i = 0; i < maxBackSprite; i++)
 	{
-		backSprite[i]->CommonBeginDraw(dx12->GetCommandList(), gPipeSprite->pipelineSet.pipelineState, gPipeSprite->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		backSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		backSprite[i]->Draw(dx12->GetSRVHeap(), tex[0].incrementSize, dx12->GetCommandList());
 	}
 
 	//3Dオブジェクト
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i].CommonBeginDraw(dx12->GetCommandList(), gPipe3d->pipelineSet.pipelineState, gPipe3d->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-		obj3d[i].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), gPipe3d->vbView, gPipe3d->ibView, gPipe3d->numIB, tex[0].incrementSize);
+		obj3d[i].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		obj3d[i].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), NSceneManager::GetPipeline3d()->vbView, NSceneManager::GetPipeline3d()->ibView, NSceneManager::GetPipeline3d()->numIB, tex[0].incrementSize);
 	}
 
 	//前景スプライト
 	for (size_t i = 0; i < maxForeSprite; i++)
 	{
-		foreSprite[i]->CommonBeginDraw(dx12->GetCommandList(), gPipeSprite->pipelineSet.pipelineState, gPipeSprite->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		foreSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		foreSprite[i]->Draw(dx12->GetSRVHeap(), tex[0].incrementSize, dx12->GetCommandList());
 	}
 	// 4.描画コマンドここまで
 #pragma endregion
-	dx12->PostDraw(preDraw->barrierDesc);
 }
 
 void NGameScene::Finalize()
@@ -222,7 +209,4 @@ void NGameScene::Finalize()
 	{
 		delete backSprite[i];
 	}
-
-	delete gPipe3d;
-	delete gPipeSprite;
 }
