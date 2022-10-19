@@ -10,8 +10,6 @@ NGameScene* NGameScene::GetInstance()
 void NGameScene::Initialize(NDX12* dx12)
 {
 #pragma region 描画初期化処理
-	
-
 	//マテリアル(定数バッファ)
 	material.Initialize(dx12->GetDevice());
 
@@ -20,52 +18,13 @@ void NGameScene::Initialize(NDX12* dx12)
 	{
 		obj3d[i].Initialize(dx12->GetDevice());
 	}
-	obj3d[1].texNum = 1;
 	obj3d[0].texNum = 0;
+	obj3d[1].texNum = 1;
 	obj3d[2].texNum = 2;
 
 	obj3d[1].position.x = -20.0f;
 	obj3d[2].position.x = 20.0f;
-#pragma region 行列の計算
-	/*XMMATRIX oldVer = XMMatrixIdentity();
-	oldVer.r[0].m128_f32[0] = 2.0f / window_width;
-	oldVer.r[1].m128_f32[1] = -2.0f / window_height;
 
-	oldVer.r[3].m128_f32[0] = -1.0f;
-	oldVer.r[3].m128_f32[1] = 1.0f;
-
-	XMMATRIX newVer = XMMatrixOrthographicOffCenterLH(
-		0,window_width,
-		window_height,0,
-		0.0f, 1.0f
-	);*/
-
-	//平行投影変換//
-	//単位行列を代入
-	//material.constMapTransform->mat = XMMatrixIdentity();
-
-	/*constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;
-	constMapTransform->mat.r[1].m128_f32[1] = -2.0f / window_height;
-
-	constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-	constMapTransform->mat.r[3].m128_f32[1] = 1.0f;*/
-
-	//平行投影変換
-	/*material.constMapTransform->mat = XMMatrixOrthographicOffCenterLH(
-		0, win_width,
-		win_height, 0,
-		0.0f, 1.0f
-	);*/
-
-	//透視投影変換//
-	//material.constMapTransform->mat = XMMatrixPerspectiveFovLH(
-	//	XMConvertToRadians(45.0f),		//上下画角45度
-	//	(float)win_width / win_height,	//アスペクト比(画面横幅/画面縦幅)
-	//	0.1f, 1000.0f					//前端、奥端
-	//);
-
-	
-#pragma endregion
 	//テクスチャ生成
 	tex[0].Load(L"Resources/mario.jpg");
 	tex[1].Load(L"Resources/itiro_kimegao.png");
@@ -112,13 +71,33 @@ void NGameScene::Initialize(NDX12* dx12)
 		foreSprite[i]->UpdateMatrix();
 		foreSprite[i]->TransferMatrix();
 	}
+#pragma endregion
+#pragma region	カメラ初期化
+	//射影投影変換//
+	matProjection = XMMatrixPerspectiveFovLH(
+		XMConvertToRadians(45.0f),		//上下画角45度
+		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
+		0.1f, 1000.0f					//前端、奥端
+	);
 
+	//ここでビュー変換行列計算
+	matView;
+	eye = { 0, 0, -100 };	//視点座標
+	target = { 0, 0, 0 };	//注視点座標
+	up = { 0, 1, 0 };		//上方向ベクトル
+	//ビュー変換行列作成
+	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
+	angle = 0.0f;	//カメラの回転角
 #pragma endregion
 }
 
 void NGameScene::Update()
 {
+	if (NInput::IsKeyTrigger(DIK_SPACE))
+	{
+		NSceneManager::SetScene(TITLESCENE);
+	}
 #pragma region 行列の計算
 	//ビュー変換行列再作成
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -148,30 +127,12 @@ void NGameScene::Update()
 		//{
 		//	foreSprite[i]->isInvisible = true;
 		//}
-
-		//射影投影変換//
-		matProjection = XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),		//上下画角45度
-			(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-			0.1f, 1000.0f					//前端、奥端
-		);
-
-		//ここでビュー変換行列計算
-		matView;
-		eye = { 0, 0, -100 };	//視点座標
-		target = { 0, 0, 0 };	//注視点座標
-		up = { 0, 1, 0 };		//上方向ベクトル
-		//ビュー変換行列作成
-		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-		angle = 0.0f;	//カメラの回転角
 	}
 #pragma endregion
 }
 
 void NGameScene::Draw(NDX12* dx12)
 {
-
 #pragma region グラフィックスコマンド
 	// 4.描画コマンドここから
 	//背景スプライト

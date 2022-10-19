@@ -61,11 +61,6 @@ void NObj3d::MoveKey()
 		if (NInput::IsKeyDown(DIK_D)) { position.x += 2.0f; }
 		else if (NInput::IsKeyDown(DIK_A)) { position.x -= 2.0f; }
 	}
-
-	if (NInput::IsKeyTrigger(DIK_SPACE))
-	{
-		position.y = 20.0f;
-	}
 }
 
 void NObj3d::UpdateMatrix()

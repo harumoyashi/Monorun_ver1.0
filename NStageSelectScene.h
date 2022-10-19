@@ -50,8 +50,9 @@ public:
 	//インスタンス取得
 	NStageSelectScene* GetInstance();
 
-	void Initialize();
+	void Initialize(NDX12* dx12);
 	void Update();
-	void Draw();
+	void Draw(NDX12* dx12);
+	void Finalize();
 };
 

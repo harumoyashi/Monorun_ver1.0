@@ -26,8 +26,8 @@ void NSceneManager::Initialize(NDX12* dx12)
 	gPipeSprite = new NGPipeline();
 	gPipeSprite->pipelineSet = gPipeSprite->CreatePipelineSprite(dx12->GetDevice(), rootParams.entity);
 #pragma endregion
-	titleScene->Initialize();
-	stageSelectScene->Initialize();
+	titleScene->Initialize(dx12);
+	stageSelectScene->Initialize(dx12);
 	gameScene->Initialize(dx12);
 }
 
@@ -90,12 +90,12 @@ void NSceneManager::Draw(NDX12* dx12)
 #pragma endregion
 	// --タイトルシーンの描画処理-- //
 	if (scene == TITLESCENE) {
-		titleScene->Draw();
+		titleScene->Draw(dx12);
 	}
 
 	// --ステージセレクトシーンの描画処理-- //
 	else if (scene == STAGESELECTSCENE) {
-		stageSelectScene->Draw();
+		stageSelectScene->Draw(dx12);
 	}
 
 	// --ゲームシーンの描画処理-- //
@@ -107,6 +107,12 @@ void NSceneManager::Draw(NDX12* dx12)
 
 void NSceneManager::Finalize()
 {
+	titleScene->Finalize();
+	stageSelectScene->Finalize();
+	gameScene->Finalize();
+
+	delete gPipe3d;
+	delete gPipeSprite;
 }
 
 void NSceneManager::SetScene(int selectScene)
