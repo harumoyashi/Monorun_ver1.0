@@ -1,5 +1,6 @@
 #include "NSceneManager.h"
 #pragma region staticメンバ変数初期化
+NTexture NSceneManager::tex[];
 NGPipeline* NSceneManager::gPipe3d = nullptr;
 NGPipeline* NSceneManager::gPipeSprite = nullptr;
 //シーンの初期化
@@ -18,6 +19,25 @@ void NSceneManager::Initialize(NDX12* dx12)
 	//ルートパラメータの設定
 	rootParams.SetDescRange();
 	rootParams.SetRootParam();
+
+	//テクスチャ生成
+	tex[0].Load(L"Resources/droppin_title_logo.png");
+	tex[1].Load(L"Resources/player_tex.png");
+	tex[2].Load(L"Resources/hamutaro.jpg");
+	tex[3].Load(L"Resources/mario.jpg");
+
+	for (int i = 0; i < maxTex; i++)
+	{
+		tex[i].CreateMipmap();
+		//テクスチャバッファ設定
+		tex[i].SetTBHeap();
+		tex[i].SetTBResource();
+		tex[i].CreateTexBuff(dx12->GetDevice());
+		tex[i].TexBuffMaping();
+		//シェーダーリソースビュー設定
+		tex[i].SetSRV();
+		tex[i].CreateSRV(dx12->GetDevice(), dx12->GetSRVHeap(), i);
+	}
 #pragma region グラフィックスパイプライン
 	gPipe3d = new NGPipeline();
 	gPipe3d->Initialize3d(dx12->GetDevice());

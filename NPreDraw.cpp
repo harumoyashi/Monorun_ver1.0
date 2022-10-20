@@ -26,7 +26,7 @@ void NPreDraw::SetRenderTarget(ComPtr<ID3D12DescriptorHeap> rtvHeap, ComPtr<ID3D
 void NPreDraw::ClearScreen(ComPtr<ID3D12GraphicsCommandList> commandList)
 {
 	// 3.画面クリア R G B A
-	FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; // 青っぽい色
+	FLOAT clearColor[] = { 0.2f,0.2f,0.2f,0.0f }; // 青っぽい色
 	commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }

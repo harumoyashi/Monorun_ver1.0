@@ -17,6 +17,10 @@ private:
 
 	NRootParam rootParams;	//ルートパラメータ
 
+	//テクスチャ
+	static const int maxTex = 4;	//テクスチャ数
+	static NTexture tex[maxTex];			//テクスチャ
+
 	//グラフィックスパイプライン
 	static NGPipeline* gPipe3d;		//3Dオブジェクト用グラフィックスパイプライン
 	static NGPipeline* gPipeSprite;	//スプライト用グラフィックスパイプライン
@@ -51,6 +55,7 @@ public:
 #pragma region ゲッター
 	static NGPipeline* GetPipeline3d() { return gPipe3d; }
 	static NGPipeline* GetPipelineSprite() { return gPipeSprite; }
+	static NTexture* GetTex() { return tex; }
 #pragma endregion
 private:
 

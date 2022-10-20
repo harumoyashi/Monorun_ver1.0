@@ -24,10 +24,6 @@ private:
 	static const int maxObj = 3;	//オブジェクト数
 	NObj3d obj3d[maxObj];			//オブジェクト(定数バッファ)
 
-	//テクスチャ
-	static const int maxTex = 3;	//テクスチャ数
-	NTexture tex[maxTex];			//テクスチャ
-
 	//背景スプライト
 	static const int maxBackSprite = 3;	//背景スプライト数
 	NSprite* backSprite[maxBackSprite];	//背景スプライト
