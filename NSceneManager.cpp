@@ -24,7 +24,7 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[0].Load(L"Resources/droppin_title_logo.png");
 	tex[1].Load(L"Resources/droppin_start.png");
 	tex[2].Load(L"Resources/player_tex.png");
-	tex[3].Load(L"Resources/mario.jpg");
+	tex[3].Load(L"Resources/block_tex.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{

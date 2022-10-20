@@ -21,16 +21,18 @@ class NGameScene
 private:
 	//オブジェクト
 	NMaterial material;				//マテリアル
-	static const int maxObj = 3;	//オブジェクト数
-	NObj3d obj3d[maxObj];			//オブジェクト(定数バッファ)
+	static const int maxBlock = 3;	//オブジェクト数
+	NObj3d block[maxBlock];			//オブジェクト(定数バッファ)
 
-	//背景スプライト
-	static const int maxBackSprite = 3;	//背景スプライト数
-	NSprite* backSprite[maxBackSprite];	//背景スプライト
+	NObj3d player;					//オブジェクト(定数バッファ)
 
-	//前景スプライト
-	static const int maxForeSprite = 3;	//前景スプライト数
-	NSprite* foreSprite[maxForeSprite];	//前景スプライト
+	////背景スプライト
+	//static const int maxBackSprite = 3;	//背景スプライト数
+	//NSprite* backSprite[maxBackSprite];	//背景スプライト
+
+	////前景スプライト
+	//static const int maxForeSprite = 3;	//前景スプライト数
+	//NSprite* foreSprite[maxForeSprite];	//前景スプライト
 
 	float increment = 0.0f;	//テスト用
 

@@ -63,7 +63,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 
 	//ここでビュー変換行列計算
 	matView;
-	eye = { -100, 0, -1000 };	//視点座標
+	eye = { -100, 100, -1000 };	//視点座標
 	target = { 0, 0, 0 };	//注視点座標
 	up = { 0, 1, 0 };		//上方向ベクトル
 	//ビュー変換行列作成

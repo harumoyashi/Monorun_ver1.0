@@ -13,10 +13,10 @@ enum Scene
 
 enum Texture
 {
-	TITLE,
-	START,
-	PLAYER,
-	MARIO,
+	TITLE,	//タイトル画像
+	START,	//スタートUI
+	PLAYER,	//プレイヤーテクスチャ
+	BLOCK,	//ブロックテクスチャ
 
 	MAXTEX
 };
