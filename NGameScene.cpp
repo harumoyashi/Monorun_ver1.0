@@ -90,13 +90,11 @@ void NGameScene::Update()
 
 	for (size_t i = 0; i < maxBlock; i++)
 	{
-		block[i].UpdateMatrix();
-		block[i].TransferMatrix(matView, matProjection);
+		block[i].UpdateMatrix(matView, matProjection);
 	}
 
 	player.MoveKey();
-	player.UpdateMatrix();
-	player.TransferMatrix(matView, matProjection);
+	player.UpdateMatrix(matView, matProjection);
 #pragma endregion
 }
 

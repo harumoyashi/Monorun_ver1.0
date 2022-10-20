@@ -81,8 +81,7 @@ void NTitleScene::Update()
 	obj3d[0].rotation.z += 0.3f;
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i].UpdateMatrix();
-		obj3d[i].TransferMatrix(matView, matProjection);
+		obj3d[i].UpdateMatrix(matView, matProjection);
 	}
 #pragma endregion
 }

@@ -80,14 +80,10 @@ void NStageSelectScene::Update()
 		NSceneManager::SetScene(GAMESCENE);
 	}
 #pragma region 行列の計算
-	//ビュー変換行列再作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
 	obj3d[0].MoveKey();
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i].UpdateMatrix();
-		obj3d[i].TransferMatrix(matView, matProjection);
+		obj3d[i].UpdateMatrix(matView, matProjection);
 	}
 #pragma endregion
 }

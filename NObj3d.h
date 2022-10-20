@@ -50,7 +50,7 @@ public:
 	//キーボード操作
 	void MoveKey();
 	//ワールド行列の合成
-	void UpdateMatrix();
+	void UpdateMatrix(XMMATRIX matView, XMMATRIX matProjection);
 	//定数バッファへ送信
 	void TransferMatrix(XMMATRIX matView, XMMATRIX matProjection);
 #pragma endregion

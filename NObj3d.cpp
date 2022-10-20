@@ -61,7 +61,7 @@ void NObj3d::MoveKey()
 	}
 }
 
-void NObj3d::UpdateMatrix()
+void NObj3d::UpdateMatrix(XMMATRIX matView, XMMATRIX matProjection)
 {
 	//ワールド行列
 	XMMATRIX matScale;	//スケーリング行列
@@ -87,7 +87,7 @@ void NObj3d::UpdateMatrix()
 		matWorld *= parent->matWorld;
 	}
 
-	MappingCB();
+	TransferMatrix(matView, matProjection);
 }
 
 void NObj3d::TransferMatrix(XMMATRIX matView, XMMATRIX matProjection)
