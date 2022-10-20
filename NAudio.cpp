@@ -2,27 +2,6 @@
 
 #include <assert.h>
 
-//チャンクヘッダー
-struct ChunkHeader
-{
-	char id[4];		//チャンク毎のID
-	int32_t size;	//チャンクサイズ
-};
-
-//RIFFヘッダーチャンク
-struct RiffHeader
-{
-	ChunkHeader chunk;	//"RIFF"
-	char type[4];		//"WAVE"
-};
-
-//FMTチャンク
-struct FormatChunk
-{
-	ChunkHeader chunk;	//"fmt"
-	WAVEFORMATEX fmt;	//波形フォーマット
-};
-
 void NAudio::Initialize()
 {
 	HRESULT result;

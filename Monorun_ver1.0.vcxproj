@@ -152,9 +152,12 @@
     <ClInclude Include="NInput.h" />
     <ClInclude Include="NRootParam.h" />
     <ClInclude Include="NRootSignature.h" />
+    <ClInclude Include="NSceneManager.h" />
     <ClInclude Include="NSprite.h" />
     <ClInclude Include="NSpriteManager.h" />
+    <ClInclude Include="NStageSelectScene.h" />
     <ClInclude Include="NTexture.h" />
+    <ClInclude Include="NTitleScene.h" />
     <ClInclude Include="NWindows.h" />
     <ClInclude Include="NVector2.h" />
     <ClInclude Include="NVector3.h" />
@@ -174,9 +177,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NRootParam.cpp" />
     <ClCompile Include="NRootSignature.cpp" />
+    <ClCompile Include="NSceneManager.cpp" />
     <ClCompile Include="NSprite.cpp" />
     <ClCompile Include="NSpriteManager.cpp" />
+    <ClCompile Include="NStageSelectScene.cpp" />
     <ClCompile Include="NTexture.cpp" />
+    <ClCompile Include="NTitleScene.cpp" />
     <ClCompile Include="NWindows.cpp" />
     <ClCompile Include="NVector2.cpp" />
     <ClCompile Include="NVector3.cpp" />

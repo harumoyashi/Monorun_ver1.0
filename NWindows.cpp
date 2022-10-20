@@ -54,7 +54,7 @@ void NWindows::CreateWindowObj()
 	//ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(
 		w.lpszClassName,		//クラス名指定
-		L"DX12テスト",			//タイトルバーの文字
+		L"DROPPIN",				//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,	//タイトルバーと境界線があるウィンドウ
 		CW_USEDEFAULT,			//表示x座標はOSにお任せ
 		CW_USEDEFAULT,			//表示y座標はOSにお任せ
