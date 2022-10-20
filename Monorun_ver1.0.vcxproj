@@ -158,6 +158,8 @@
     <ClInclude Include="NWindows.h" />
     <ClInclude Include="NVector2.h" />
     <ClInclude Include="NVector3.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NAudio.cpp" />
@@ -178,6 +180,8 @@
     <ClCompile Include="NWindows.cpp" />
     <ClCompile Include="NVector2.cpp" />
     <ClCompile Include="NVector3.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
