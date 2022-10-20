@@ -30,7 +30,7 @@ private:
 
 	//テクスチャ
 	static const int maxTex = 4;	//テクスチャ数
-	static NTexture tex[maxTex];			//テクスチャ
+	static NTexture tex[maxTex];	//テクスチャ
 
 	//グラフィックスパイプライン
 	static NGPipeline* gPipe3d;		//3Dオブジェクト用グラフィックスパイプライン

@@ -268,13 +268,13 @@ void NSprite::UpdateMatrix()
 	matWorld = XMMatrixIdentity();	//単位行列代入
 	matWorld *= matRot;		//ワールド座標に回転を反映
 	matWorld *= matTrans;	//ワールド座標に平行移動を反映
+
+	TransferMatrix();
 }
 
 void NSprite::TransferMatrix()
 {
-	MappingCB();
 	constMapTransform->mat = matWorld * matProjection;
-	Unmap();
 }
 
 void NSprite::TransferVertex()

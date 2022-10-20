@@ -29,8 +29,9 @@ private:
 	//NSprite* backSprite[maxBackSprite];	//背景スプライト
 
 	//前景スプライト
-	static const int maxForeSprite = 2;	//前景スプライト数
-	NSprite* foreSprite[maxForeSprite];	//前景スプライト
+	//static const int maxForeSprite = 2;	//前景スプライト数
+	NSprite* titleSprite;	//タイトルロゴ
+	NSprite* startSprite;	//スタートUI
 
 	//カメラ
 	XMMATRIX matProjection;
