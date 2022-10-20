@@ -18,9 +18,9 @@ void NGameScene::Initialize(NDX12* dx12)
 	{
 		obj3d[i].Initialize(dx12->GetDevice());
 	}
-	obj3d[0].texNum = 1;
+	obj3d[0].texNum = 2;
 	obj3d[1].texNum = 2;
-	obj3d[2].texNum = 3;
+	obj3d[2].texNum = 2;
 
 	obj3d[0].scale = { 24.0f,24.0f,24.0f };
 

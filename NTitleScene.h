@@ -29,7 +29,7 @@ private:
 	//NSprite* backSprite[maxBackSprite];	//背景スプライト
 
 	//前景スプライト
-	static const int maxForeSprite = 1;	//前景スプライト数
+	static const int maxForeSprite = 2;	//前景スプライト数
 	NSprite* foreSprite[maxForeSprite];	//前景スプライト
 
 	//カメラ

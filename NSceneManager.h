@@ -3,11 +3,22 @@
 #include "NStageSelectScene.h"
 #include "NGameScene.h"
 
-enum Scene {
+enum Scene
+{
 	TITLESCENE,
 	STAGESELECTSCENE,
 	GAMESCENE,
 	RESULTSCENE
+};
+
+enum Texture
+{
+	TITLE,
+	START,
+	PLAYER,
+	MARIO,
+
+	MAXTEX
 };
 
 class NSceneManager

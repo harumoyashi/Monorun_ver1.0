@@ -18,7 +18,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	for (size_t i = 0; i < maxObj; i++)
 	{
 		obj3d[i].Initialize(dx12->GetDevice());
-		obj3d[i].texNum = 1;
+		obj3d[i].texNum = 2;
 	}
 
 	obj3d[0].scale = { 24.0f,24.0f,24.0f };
