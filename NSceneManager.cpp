@@ -25,6 +25,7 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[1].Load(L"Resources/droppin_start.png");
 	tex[2].Load(L"Resources/player_tex.png");
 	tex[3].Load(L"Resources/block_tex.png");
+	tex[4].Load(L"Resources/StageSelectImage.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{

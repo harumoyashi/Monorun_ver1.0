@@ -19,18 +19,35 @@
 class NStageSelectScene
 {
 private:
-	//オブジェクト
-	NMaterial material;				//マテリアル
-	static const int maxObj = 3;	//オブジェクト数
-	NObj3d obj3d[maxObj];			//オブジェクト(定数バッファ)
+	////オブジェクト
+	//NMaterial material;				//マテリアル
+	//static const int maxObj = 3;	//オブジェクト数
+	//NObj3d obj3d[maxObj];			//オブジェクト(定数バッファ)
 
-	//背景スプライト
-	static const int maxBackSprite = 3;	//背景スプライト数
-	NSprite* backSprite[maxBackSprite];	//背景スプライト
+	////背景スプライト
+	//static const int maxBackSprite = 3;	//背景スプライト数
+	//NSprite* backSprite[maxBackSprite];	//背景スプライト
 
 	//前景スプライト
-	static const int maxForeSprite = 3;	//前景スプライト数
+	static const int maxForeSprite = 10;	//前景スプライト数
 	NSprite* foreSprite[maxForeSprite];	//前景スプライト
+
+	// --イージング用-- //
+	XMFLOAT3 easeStartPos_[10];
+	XMFLOAT3 easeEndPos_[10];
+
+	// --時間計測に執拗なデータ変数-- //
+	int nowCount_;
+	int startCount_;
+
+	// --スクロールするのにかかる時間[s]-- //
+	const float maxScrollTime_ = 0.5f;
+
+	// --スクロール開始からの経過時間-- //
+	float nowScrollTime_;
+
+	// --現在選んでいるステージ-- //
+	int selectStage_;
 
 	//カメラ
 	XMMATRIX matProjection;
