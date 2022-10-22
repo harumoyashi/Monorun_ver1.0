@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="NAudio.h" />
     <ClInclude Include="NCube.h" />
     <ClInclude Include="NGameScene.h" />
@@ -162,9 +163,11 @@
     <ClInclude Include="NWindows.h" />
     <ClInclude Include="NVector2.h" />
     <ClInclude Include="NVector3.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="NAudio.cpp" />
     <ClCompile Include="NCube.cpp" />
     <ClCompile Include="NGameScene.cpp" />
@@ -187,6 +190,7 @@
     <ClCompile Include="NWindows.cpp" />
     <ClCompile Include="NVector2.cpp" />
     <ClCompile Include="NVector3.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
