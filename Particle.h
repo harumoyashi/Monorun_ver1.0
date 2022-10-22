@@ -1,8 +1,11 @@
 #pragma once
 #include "NVector2.h"
+#include "NSprite.h"
+#include <algorithm>
+#include "NDX12.h"
 
 enum class EffectType {
-	BToT
+	CToA, // 中心から周囲に広がる
 };
 
 class Particle
@@ -12,12 +15,13 @@ public: // 関数
 	~Particle();
 
 	// 基本
+	void Init();
 	void Activate();
 	void Reset();
 
 	//setter
-	void SetRadius(float radius) { radius_ = radius; }
-	void SetPos(NVector2 pos) { pos_ = pos; }
+	void SetRadius(float radius);
+	void SetPos(NVector2 pos);
 
 	// getter
 	NVector2& GetPos() { return pos_; }
@@ -26,6 +30,13 @@ public: // 関数
 	void InOutBoxAll();
 
 private: // 変数
+
+#pragma region インスタンス保持
+
+	NDX12* ndx12_ = nullptr;
+
+#pragma endregion
+
 // 座標
 	NVector2 pos_{};
 
@@ -45,5 +56,9 @@ private: // 変数
 
 	// 再生の有無
 	bool isPlay_ = false;
+
+	// -- 画像
+	std::unique_ptr<NSprite> whiteBox_;
+	std::unique_ptr<NSprite> blackBox_;
 };
 

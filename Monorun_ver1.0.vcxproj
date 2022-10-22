@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="NAudio.h" />
     <ClInclude Include="NGameScene.h" />
     <ClInclude Include="NPreDraw.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="NAudio.cpp" />
     <ClCompile Include="NGameScene.cpp" />
     <ClCompile Include="NPreDraw.cpp" />

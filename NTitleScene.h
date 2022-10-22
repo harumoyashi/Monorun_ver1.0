@@ -12,6 +12,7 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "Particle.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -41,6 +42,9 @@ private:
 	XMFLOAT3 target = { 0, 0, 0 };	//注視点座標
 	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
 	float angle = 0.0f;				//カメラの回転角
+
+	// パーティクル
+	Particle particle_{ NVector2(300,300),32,0 };
 
 public:
 	//インスタンス取得

@@ -17,6 +17,7 @@ enum Texture
 	START,	//スタートUI
 	PLAYER,	//プレイヤーテクスチャ
 	BLOCK,	//ブロックテクスチャ
+	WHITEPNG,	// 0xffffffの64x64(px)のpng
 
 	MAXTEX
 };
@@ -29,7 +30,7 @@ private:
 	NRootParam rootParams;	//ルートパラメータ
 
 	//テクスチャ
-	static const int maxTex = 4;	//テクスチャ数
+	static const int maxTex = MAXTEX;	//テクスチャ数
 	static NTexture tex[maxTex];			//テクスチャ
 
 	//グラフィックスパイプライン

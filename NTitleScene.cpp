@@ -90,6 +90,9 @@ void NTitleScene::Initialize(NDX12* dx12)
 		foreSprite[i]->UpdateMatrix();
 		foreSprite[i]->TransferMatrix();
 	}
+
+	particle_.Init();
+	particle_.Activate();
 #pragma endregion
 #pragma region	ƒJƒƒ‰‰Šú‰»
 	//ŽË‰e“Š‰e•ÏŠ·//
@@ -109,6 +112,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 
 	angle = 0.0f;	//ƒJƒƒ‰‚Ì‰ñ“]Šp
 #pragma endregion
+
 }
 
 void NTitleScene::Update()
@@ -151,6 +155,8 @@ void NTitleScene::Draw(NDX12* dx12)
 		foreSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		foreSprite[i]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 	}
+
+	particle_.InOutBoxAll();
 	// 4.•`‰æƒRƒ}ƒ“ƒh‚±‚±‚Ü‚Å
 #pragma endregion
 }
