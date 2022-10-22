@@ -72,3 +72,36 @@ namespace Util {
 		return static_cast<int>(duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count());
 	}
 } // namespace MathUtility
+
+[[nodiscard]] inline float OutBounce(float time, float totaltime, float end = 1.0f, float start = 0.0f)
+{
+	constexpr float n1 = 7.5625f;
+	constexpr float d1 = 2.75f;
+
+	float timeRate = time / totaltime < 1.0f ? time / totaltime : 1.0f;
+
+	if (timeRate < 1 / d1) {
+		return start + (end - start) * n1 * timeRate * timeRate;
+	}
+	else if (timeRate < 2 / d1) {
+		return start + (end - start) * (n1 * (timeRate -= 1.5 / d1) * timeRate + 0.75f);
+	}
+	else if (timeRate < 2.5 / d1) {
+		return start + (end - start) * (n1 * (timeRate -= 2.25 / d1) * timeRate + 0.9375);
+	}
+	else {
+		return start + (end - start) * (n1 * (timeRate -= 2.625 / d1) * timeRate + 0.984375);
+	}
+}
+
+[[nodiscard]] static inline float InOutBack(float time, float totaltime, float end = 1.0f, float start = 0.0f)
+{
+	constexpr float c1 = 1.70158f;
+	constexpr float c2 = c1 * 1.525f;
+
+	float timeRate = time / totaltime < 1.0f ? time / totaltime : 1.0f;
+
+	return timeRate < 0.5
+		? start + (end - start) * (pow(2 * timeRate, 2) * ((c2 + 1) * 2 * timeRate - c2)) / 2
+		: start + (end - start) * (pow(2 * timeRate - 2, 2) * ((c2 + 1) * (timeRate * 2 - 2) + c2) + 2) / 2;
+}
