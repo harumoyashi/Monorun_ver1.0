@@ -12,6 +12,7 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "StageManager.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -27,6 +28,8 @@ private:
 	////背景スプライト
 	//static const int maxBackSprite = 3;	//背景スプライト数
 	//NSprite* backSprite[maxBackSprite];	//背景スプライト
+
+	StageManager* stage_;
 
 	//前景スプライト
 	static const int maxForeSprite = 10;	//前景スプライト数

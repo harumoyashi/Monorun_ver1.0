@@ -163,7 +163,10 @@
     <ClInclude Include="NWindows.h" />
     <ClInclude Include="NVector2.h" />
     <ClInclude Include="NVector3.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="StageManager.h" />
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +193,10 @@
     <ClCompile Include="NWindows.cpp" />
     <ClCompile Include="NVector2.cpp" />
     <ClCompile Include="NVector3.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>

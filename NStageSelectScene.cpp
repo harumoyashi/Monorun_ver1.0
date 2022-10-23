@@ -46,6 +46,9 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	//	backSprite[i]->TransferMatrix();
 	//}
 
+	stage_ = stage_->GetInstance();
+	stage_->Initialize();
+
 	//前景スプライト生成
 	for (size_t i = 0; i < maxForeSprite; i++) {
 		foreSprite[i] = new NSprite();
@@ -56,12 +59,12 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 		foreSprite[i]->size = { 200.0f,200.0f };
 		foreSprite[i]->TransferVertex();
 		foreSprite[i]->position.x = 300.0f;
-		foreSprite[i]->position.y = 480.0f + (i * 250.0f);
+		foreSprite[i]->position.y = 400.0f + (i * 250.0f);
 		foreSprite[i]->UpdateMatrix();
 
 		// --イージング用変数初期化-- //
-		easeStartPos_[i] = { 300.0f, 480.0f + (i * 250.0f), 0.0f};
-		easeEndPos_[i] = { 300.0f, 480.0f + (i * 250.0f), 0.0f};
+		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
+		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
 	}
 
 	// --時間計測に必要なデータ変数-- //
@@ -100,6 +103,7 @@ void NStageSelectScene::Update()
 	// --[SPACE]を押したら-- //
 	if (NInput::IsKeyTrigger(DIK_SPACE))
 	{
+		stage_->SetCSV(selectStage_);
 		NSceneManager::SetScene(GAMESCENE);
 	}
 
@@ -148,7 +152,7 @@ void NStageSelectScene::Update()
 	float len[10];
 	for (size_t i = 0; i < 10; i++) {
 		foreSprite[i]->position.y = EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
-		len[i] = abs(480.0f - foreSprite[i]->position.y);
+		len[i] = abs(400.0f - foreSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
 		foreSprite[i]->size.x = 200 * (1.0f - len[i]);
 		foreSprite[i]->size.y = 200 * (1.0f - len[i]);
