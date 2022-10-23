@@ -93,6 +93,9 @@ private:
 	float directionX_;
 	float directionY_;
 
+	// getter用
+	bool isCameraShake_ = false; 
+
 	/// --メンバ変数END-- ///
 	/// --------------- ///
 	/// --メンバ関数-- ///
@@ -142,6 +145,10 @@ public:
 
 	// --構造体で返す-- //
 	BoxObj GetBoxObj();
+
+	// cameraShake
+	bool GetCamShake() { return isCameraShake_; }
+	void SetCamShakeState(bool flag) { isCameraShake_ = flag; }
 
 private:
 

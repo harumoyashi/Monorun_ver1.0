@@ -139,6 +139,10 @@ void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye
 						// --プレイヤーの状態を変更-- //
 						player_->SetDeath();// -> 死亡状態
 					}
+					// deathブロックを破壊。
+					else {
+
+					}
 
 					//// --プレイヤーが回転状態なら-- //
 					//else if (player_->GetState() == RotateWallHit || player_->GetState() == RotateAir) {
@@ -213,6 +217,8 @@ void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye
 							target.y -= radius - len;
 						}
 					}
+
+					// 
 
 					isOutLoop = true;
 				}
