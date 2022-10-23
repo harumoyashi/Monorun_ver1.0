@@ -5,11 +5,19 @@ std::vector<Vertex> NCube::vertices;
 std::vector<unsigned short>NCube::indices;
 
 
-void NCube::Initialize(ComPtr<ID3D12Device> device)
+void NCube::Initialize(ComPtr<ID3D12Device> device, int modelNum)
 {
 	//頂点
-	SetVert();
-	SetIndex();	//ここでインデックスの設定だけ行う
+	if (modelNum == CUBE)
+	{
+		SetVertCube();
+		SetIndexCube();	//ここでインデックスの設定だけ行う
+	}
+	else if (modelNum == CRYSTAL)
+	{
+		SetVertCrystal();
+		SetIndexCrystal();	//ここでインデックスの設定だけ行う
+	}
 	SetNormal();
 	CreateVertBuff(device);
 	VertMaping();
@@ -21,7 +29,7 @@ void NCube::Initialize(ComPtr<ID3D12Device> device)
 	CreateIndexBuffView();
 }
 
-void NCube::SetVert()
+void NCube::SetVertCube()
 {
 	// 頂点データ設定
 	vertices = {
@@ -63,8 +71,40 @@ void NCube::SetVert()
 		{{ 5.0f, 5.0f, 5.0f }, {}, {1.0f, 0.0f}},    // 右上
 	};
 
-	////設定したら他でも使える変数に代入
-	//std::copy(std::begin(vert), std::end(vert), vertices);
+	//頂点バッファのサイズを代入
+	singleSizeVB = static_cast<UINT>(sizeof(vertices[0]));
+	sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
+}
+
+void NCube::SetVertCrystal()
+{
+	// 頂点データ設定
+	vertices = {
+		//	x		y		z	 法線	u	v
+			//左前
+		{ { -0.0f, +2.0f, -0.0f }, {}, { 0.0f,0.0f }},	// 上
+		{ {  0.0f, -0.0f, -1.0f }, {}, {0.0f,0.0f} },	// 右下
+		{ { -1.0f,  0.0f, -0.0f }, {}, {0.0f,0.0f} },	// 左下
+		{ { -0.0f, -2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 下
+
+		//右前
+		{ { -0.0f, +2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 上
+		{ { +1.0f,  0.0f, -0.0f }, {}, {0.0f,0.0f} },	// 右下
+		{ {  0.0f, -0.0f, -1.0f }, {}, {0.0f,0.0f} },	// 左下
+		{ { -0.0f, -2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 下
+
+		//左後
+		{ { -0.0f, +2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 上
+		{ { -1.0f,  0.0f, -0.0f }, {}, {0.0f,0.0f} },	// 右下
+		{ { -0.0f,  0.0f, +1.0f }, {}, {0.0f,0.0f} },	// 左下
+		{ { -0.0f, -2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 下
+
+		//右後
+		{ { -0.0f, +2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 上
+		{ { -0.0f,  0.0f, +1.0f }, {}, {0.0f,0.0f} },	// 右下
+		{ { +1.0f,  0.0f, -0.0f }, {}, {0.0f,0.0f} },	// 左下
+		{ { -0.0f, -2.0f, -0.0f }, {}, {0.0f,0.0f} },	// 下
+	};
 
 	//頂点バッファのサイズを代入
 	singleSizeVB = static_cast<UINT>(sizeof(vertices[0]));
@@ -116,7 +156,7 @@ void NCube::CreateVertBuffView()
 	vbView.StrideInBytes = singleSizeVB;
 }
 
-void NCube::SetIndex()
+void NCube::SetIndexCube()
 {
 	//インデックスデータ
 	indices =
@@ -141,8 +181,29 @@ void NCube::SetIndex()
 		21,22,23,	//三角形12つ目
 	};
 
-	////設定したら他でも使える変数に代入
-	//std::copy(std::begin(index), std::end(index), indices);
+	//頂点バッファのサイズを代入
+	sizeIB = static_cast<UINT>(sizeof(unsigned short) * indices.size());
+	numIB = static_cast<UINT>(sizeof(unsigned short) * indices.size() / sizeof(indices[0]));
+}
+
+void NCube::SetIndexCrystal()
+{
+	//インデックスデータ
+	indices =
+	{
+		//左前
+		0, 1, 2,	//三角形1つ目
+		2, 1, 3,	//三角形2つ目
+		//右前
+		4, 5, 6,	//三角形3つ目
+		6, 5, 7,	//三角形4つ目
+		//左後
+		8, 9, 10,	//三角形5つ目
+		10, 9, 11,	//三角形6つ目
+		//右後
+		12, 13, 14,	//三角形7つ目
+		14, 13, 15,	//三角形8つ目
+	};
 
 	//頂点バッファのサイズを代入
 	sizeIB = static_cast<UINT>(sizeof(unsigned short) * indices.size());
