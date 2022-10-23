@@ -1,5 +1,14 @@
 #pragma once
 #include <chrono>
+#include "NVector2.h"
+
+struct BoxObj {
+	// --ç¿ïW-- //
+	NVector2 pos;
+
+	// --îºåa-- //
+	float radius;
+};
 
 //struct BoxObj {
 //	// --ç¿ïW-- //

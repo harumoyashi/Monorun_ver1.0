@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "NSceneManager.h"
-#include "Util.h"
 
 // --黒-- //
 #define BLACK 0x000000
@@ -24,7 +23,8 @@ Player* Player::GetInstance()
 
 // --リセット処理-- //
 void Player::Reset() {
-
+	object_.position.x = minPosX_;
+	object_.position.y = 0.0f;
 }
 
 // --初期化処理-- //
@@ -37,6 +37,7 @@ void Player::Initialize(NDX12* dx12) {
 	object_.Initialize(dx12->GetDevice());
 	object_.texNum = PLAYER;
 	object_.scale = { 24.0f, 24.0f, 24.0f };
+	object_.position.x = minPosX_;
 
 	// --プレイヤーの状態-- //
 	state_ = NormalWallHit;
@@ -80,7 +81,7 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 
 			// --Y軸の移動方向が上だったら-- //
 			if (directionY_ == UP) {
-				speedY_ -= accelerationY_;
+				speedY_ -= accelerationY_ * 2.0f;
 			}
 
 			// --Y軸の移動方向が下だったら-- //
@@ -122,15 +123,23 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 
 			// --X軸の速度を変える-- //
 			speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
+
+			object_.rotation.z = 0.0f;
+		}
+		else {
+			object_.rotation.z += rotaSpeed * directionX_;
 		}
 
 		// --ブースト状態になってからの経過時間-- //
-		float nowTime = (Util::GetNowCount() - rotateStartTime_) / 1000.0f;
+		float nowCount = Util::GetNowCount();
+		float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
 
 		// --指定されているブースト時間が過ぎたら-- //
 		if (rotateTime_ <= nowTime) {
 			// --ブースト状態から通常状態に変更-- //
 			state_ = NormalWallHit;
+
+			object_.rotation.z = 0.0f;
 		}
 	}
 #pragma endregion
@@ -138,13 +147,18 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 #pragma region 回転状態かつ空中にいる
 	else if (state_ == RotateAir) {
 		// --ブースト状態になってからの経過時間-- //
-		float nowTime = (Util::GetNowCount() - rotateStartTime_) / 1000.0f;
+		float nowCount = Util::GetNowCount();
+		float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
 
 		// --指定されているブースト時間が過ぎたら-- //
 		if (rotateTime_ <= nowTime) {
 			// --ブースト状態から通常状態に変更-- //
 			state_ = NormalAir;
+
+			object_.rotation.z = 0.0f;
 		}
+
+		object_.rotation.z += rotaSpeed * directionX_;
 	}
 #pragma endregion
 
@@ -157,12 +171,18 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 	target.y += speedY_ * directionY_;
 
 	// --x座標が最低座標以下になったら-- //
-	if (object_.position.x < minPosX_) {
+	if (object_.position.x < minPosX_ ) {
 		// --x座標を変更-- //
 		object_.position.x = minPosX_;
 
 		// --状態を変更-- //
-		state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+		if (state_ == RotateAir) {
+			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+		}
+
+		else if (state_ == NormalAir) {
+			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+		}
 
 		// --X軸の速度を変える-- //
 		speedX_ = 0.0f;// -> 動かないように
@@ -173,8 +193,13 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 		// --X座標を変更-- //
 		object_.position.x = maxPosX_;
 
-		// --状態を変更-- //
-		state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+		if (state_ == RotateAir) {
+			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+		}
+
+		else if (state_ == NormalAir) {
+			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+		}
 
 		// --X軸の速度を変える-- //
 		speedX_ = 0.0f;// -> 動かないように
@@ -205,7 +230,7 @@ void Player::SetState(int state) { state_ = state; }
 //
 // --死亡状態に変更-- //
 void Player::SetDeath() {
-	NSceneManager::SetScene(RESULTSCENE);
+	NSceneManager::SetScene(TITLESCENE);
 }
 
 float& Player::GetSpeedX() { return speedX_; }
@@ -226,6 +251,14 @@ void Player::ChangeDireY() {
 void Player::SetRotate() {
 	speedY_ = maxSpeedY_;
 
-	state_ = RotateAir;
+	if (state_ == NormalAir) state_ = RotateAir;
+	else if (state_ == NormalWallHit) state_ = RotateWallHit;
+	else if (state_ == RotateAir) state_ = RotateAir;
+	else if (state_ == RotateWallHit) state_ = RotateWallHit;
 	rotateStartTime_ = Util::GetNowCount();
+}
+
+// --構造体で返す-- //
+BoxObj Player::GetBoxObj() {
+	return { {object_.position.x, object_.position.y}, 24.0f };
 }

@@ -15,6 +15,7 @@
 #include "NPreDraw.h"
 #include "Player.h"
 #include "StageManager.h"
+#include "Collision.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -25,6 +26,8 @@ private:
 	Player* player_;
 
 	StageManager* stage_;
+
+	Collision* col_;
 
 	// --オブジェクト-- //
 	NMaterial material_;// -> マテリアル

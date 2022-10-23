@@ -46,7 +46,7 @@ private:
 	static int scene;		// 現在のシーン
 	static bool isSceneChange;	//シーンの初期化フラグ
 	static bool isActiveEffect_;	// エフェクトの起動フラグ
-	static bool isSoundManager_;	// サウンド管理フラグ
+	static bool isPlayEffect_;		// エフェクトの再生フラグ ※getter用
 public:
 	//インスタンス取得
 	NSceneManager* GetInstance();
@@ -68,6 +68,7 @@ public:
 	static NGPipeline* GetPipeline3d() { return gPipe3d; }
 	static NGPipeline* GetPipelineSprite() { return gPipeSprite; }
 	static NTexture* GetTex() { return tex; }
+	static bool GetPlayEffect() { return isPlayEffect_; }
 #pragma endregion
 private:
 	Effect effect_{ static_cast<int>(EffectType::CToA) };

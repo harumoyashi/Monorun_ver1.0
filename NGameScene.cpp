@@ -23,6 +23,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	stage_ = StageManager::GetInstance();
 	stage_->Initialize(dx12);
 
+	col_ = Collision::GetInstance();
+
 	//ŽË‰e“Š‰e•ÏŠ·//
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0f),		//ã‰º‰æŠp45“x
@@ -42,6 +44,8 @@ void NGameScene::Update()
 {
 	// --ƒvƒŒƒCƒ„[XVˆ—-- //
 	player_->Update(matView, matProjection, eye, target, up);
+
+	col_->Update(matView, matProjection, eye, target, up);
 
 	stage_->Update(matView, matProjection, eye, target, up);
 
@@ -68,6 +72,7 @@ void NGameScene::Finalize()
 	stage_->Finalize();
 	stage_->Release();
 	player_->Finalize();
+	col_->Release();
 	/*for (size_t i = 0; i < maxForeSprite; i++)
 	{
 		delete foreSprite[i];

@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="NAudio.h" />
     <ClInclude Include="NCube.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="NAudio.cpp" />
     <ClCompile Include="NCube.cpp" />

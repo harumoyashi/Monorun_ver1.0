@@ -13,6 +13,7 @@
 #include "NSprite.h"
 #include "NCube.h"
 #include "NPreDraw.h"
+#include "Util.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -44,27 +45,30 @@ private:
 	// --実際に加算する速度変数-- //
 	float speedX_;// -> X軸
 	float speedY_;// -> Y軸
-	const float defSpeedY_ = 5.0f;// -> Y軸基本速度
+	const float defSpeedY_ = 2.5f;// -> Y軸基本速度
+
+	// --回転速度-- //
+	const float rotaSpeed = 60.0f;
 
 	// --Y軸の最高速度-- //
-	const float maxSpeedY_ = 30.0f;
+	const float maxSpeedY_ = 20.0f;
 
 	// --Y軸の最低速度-- //
-	const float minSpeedY_ = 5.0f;
+	const float minSpeedY_ = 2.5f;
 
 	// --壁キックの速度-- //
 	const float wallKickSpeedX_ = 20.0f;
 
 	// --Y軸に減速速値-- //
-	const float decelerationY_ = 0.2f;
+	const float decelerationY_ = 0.3f;
 
 	// --Y軸の加速値-- //
-	const float accelerationY_ = 5.0f;
+	const float accelerationY_ = 2.0f;
 #pragma endregion
 
 #pragma region ブースト時間変数
 	// --ブーストの時間[s]-- //
-	const float rotateTime_ = 0.5f;
+	const float rotateTime_ = 3.0f;
 
 	// --ブーストの経過時間[s]-- //
 	float rotateTimer_;
@@ -135,6 +139,9 @@ public:
 
 	// --回転状態にする-- //
 	void SetRotate();
+
+	// --構造体で返す-- //
+	BoxObj GetBoxObj();
 
 private:
 
