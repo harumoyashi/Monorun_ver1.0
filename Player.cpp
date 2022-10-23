@@ -171,7 +171,7 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 	target.y += speedY_ * directionY_;
 
 	// --x座標が最低座標以下になったら-- //
-	if (object_.position.x <= minPosX_ ) {
+	if (object_.position.x < minPosX_ ) {
 		// --x座標を変更-- //
 		object_.position.x = minPosX_;
 
@@ -189,7 +189,7 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 	}
 
 	// --x座標が最高座標以上になったら-- //
-	else if (object_.position.x >= maxPosX_) {
+	else if (object_.position.x > maxPosX_) {
 		// --X座標を変更-- //
 		object_.position.x = maxPosX_;
 
