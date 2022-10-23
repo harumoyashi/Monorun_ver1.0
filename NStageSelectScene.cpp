@@ -231,8 +231,6 @@ void NStageSelectScene::Finalize()
 		delete foreSprite[i];
 	}
 
-	stage_->Release();
-
 	//for (size_t i = 0; i < maxBackSprite; i++)
 	//{
 	//	delete backSprite[i];
