@@ -83,13 +83,13 @@ void StageManager::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& 
 		obstacles_[i].Update(matView, matProjection, eye, target, up);
 	}
 
-	/*for (size_t i = 0; i < rightWalls_.size(); i++) {
+	for (size_t i = 0; i < rightWalls_.size(); i++) {
 		leftWalls_[i].Update(matView, matProjection, eye, target, up);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
 		rightWalls_[i].Update(matView, matProjection, eye, target, up);
-	}*/
+	}
 }
 
 void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
