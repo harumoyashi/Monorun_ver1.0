@@ -30,6 +30,7 @@ void Effect::Reset()
 	elapsedTime_ = 0.0f;
 	isPlay_ = false;
 	isAllowChangeScene_ = false;
+	isObserve1frame_ = false;
 	frameCount_ = 0;
 	activeCount_ = 0;
 }
