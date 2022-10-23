@@ -54,7 +54,7 @@ private:
 
 public:
 	//インスタンス取得
-	NTitleScene* GetInstance();
+	static NTitleScene* GetInstance();
 
 	void Initialize(NDX12* dx12);
 	void Update();

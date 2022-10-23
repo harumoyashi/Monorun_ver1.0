@@ -31,6 +31,12 @@
     <Filter Include="ヘッダー ファイル\Scene">
       <UniqueIdentifier>{29e99bb6-3644-464e-a1eb-d7aff38e532f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\2D">
+      <UniqueIdentifier>{25e4207a-34a2-4f63-8245-19cb4caea995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\3D">
+      <UniqueIdentifier>{e2412f9a-7b0c-4029-bc43-a2150e869e4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NInput.h">
@@ -158,12 +164,6 @@
     <ClCompile Include="NMaterial.cpp">
       <Filter>ソース ファイル\PipeLine</Filter>
     </ClCompile>
-    <ClCompile Include="NObj3d.cpp">
-      <Filter>ソース ファイル\PipeLine</Filter>
-    </ClCompile>
-    <ClCompile Include="NSprite.cpp">
-      <Filter>ソース ファイル\PipeLine</Filter>
-    </ClCompile>
     <ClCompile Include="NAudio.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -188,9 +188,6 @@
     <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="NCube.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -199,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="NSprite.cpp">
+      <Filter>ソース ファイル\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="NObj3d.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="NCube.cpp">
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

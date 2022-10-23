@@ -64,7 +64,7 @@ private:
 
 public:
 	//インスタンス取得
-	NStageSelectScene* GetInstance();
+	static NStageSelectScene* GetInstance();
 
 	void Initialize(NDX12* dx12);
 	void Update();
