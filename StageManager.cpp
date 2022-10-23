@@ -97,22 +97,22 @@ void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 	// --áŠQ•¨‚Ì•`‰æ
 	for (int i = 0; i < obstacles_.size(); i++) {
 		if (obstacles_[i].GetBlockType() == BoundBlock) {
-			obstacles_[i].Draw(dx12, blueMaterial_);
+			obstacles_[i].Draw(dx12, blueMaterial_, cube);
 		}
 		else if (obstacles_[i].GetBlockType() == DeathBlock) {
-			obstacles_[i].Draw(dx12, redMaterial_);
+			obstacles_[i].Draw(dx12, redMaterial_, cube);
 		}
 		else if (obstacles_[i].GetBlockType() == Coin) {
-			obstacles_[i].Draw(dx12, greenMaterial_);
+			obstacles_[i].Draw(dx12, greenMaterial_, cube);
 		}
 	}
 
 	for (size_t i = 0; i < leftWalls_.size(); i++) {
-		leftWalls_[i].Draw(dx12, blackMaterial_);
+		leftWalls_[i].Draw(dx12, blackMaterial_, cube);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		rightWalls_[i].Draw(dx12, blackMaterial_);
+		rightWalls_[i].Draw(dx12, blackMaterial_, cube);
 	}
 }
 
