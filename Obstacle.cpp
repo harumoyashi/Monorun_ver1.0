@@ -2,7 +2,6 @@
 #include "StageManager.h"
 #include "NSceneManager.h"
 
-
 enum struct ShapeType {
 	None,		// –³Œø
 	Default,	// ‰¡Œü‚«’·•ûŒ`

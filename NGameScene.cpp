@@ -58,6 +58,7 @@ void NGameScene::Reset(NDX12* dx12) {
 void NGameScene::Finalize()
 {
 	stage_->Finalize();
+	stage_->Release();
 	player_->Finalize();
 	/*for (size_t i = 0; i < maxForeSprite; i++)
 	{
