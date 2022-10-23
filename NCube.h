@@ -13,6 +13,12 @@ struct Vertex
 	XMFLOAT2 uv;		//uv座標
 };
 
+enum ModelNum
+{
+	CUBE,		//立方体
+	CRYSTAL,	//八面体
+};
+
 class NCube
 {
 private:
@@ -38,12 +44,14 @@ public:
 
 public:
 	//3Dオブジェクト
-	void Initialize(ComPtr<ID3D12Device> device);
+	void Initialize(ComPtr<ID3D12Device> device, int modelNum = CUBE);
 
 private:
 #pragma region 頂点まわり
 	//頂点データ設定
-	void SetVert();
+	void SetVertCube();
+	//頂点データ設定
+	void SetVertCrystal();
 	//法線の計算
 	void SetNormal();
 	//バッファ作成
@@ -55,7 +63,9 @@ private:
 #pragma endregion
 #pragma region 頂点インデックスまわり
 	//頂点インデックス設定
-	void SetIndex();
+	void SetIndexCube();
+	//頂点インデックス設定
+	void SetIndexCrystal();
 	//バッファ作成
 	void CreateIndexBuff(ComPtr<ID3D12Device> device);
 	//マッピング
@@ -64,3 +74,4 @@ private:
 	void CreateIndexBuffView();
 #pragma endregion
 };
+
