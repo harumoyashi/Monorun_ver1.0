@@ -47,7 +47,7 @@ public:
 
 public:
 	//インスタンス取得
-	NGameScene* GetInstance();
+	static NGameScene* GetInstance();
 
 	//初期化
 	void Initialize(NDX12* dx12);

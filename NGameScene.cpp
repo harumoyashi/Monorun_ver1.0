@@ -17,10 +17,10 @@ void NGameScene::Initialize(NDX12* dx12)
 	cube->Initialize(dx12->GetDevice());
 
 	// --ƒvƒŒƒCƒ„[‰Šú‰»-- //
-	player_ = player_->GetInstance();
+	player_ = Player::GetInstance();
 	player_->Initialize(dx12);
 
-	stage_ = stage_->GetInstance();
+	stage_ = StageManager::GetInstance();
 	stage_->Initialize(dx12);
 
 	//ŽË‰e“Š‰e•ÏŠ·//

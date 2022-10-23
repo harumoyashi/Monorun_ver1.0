@@ -163,7 +163,7 @@ void NSceneManager::SetScene(int selectScene)
 
 NSceneManager::NSceneManager()
 {
-	titleScene = titleScene->GetInstance();
-	stageSelectScene = stageSelectScene->GetInstance();
-	gameScene = gameScene->GetInstance();
+	titleScene = NTitleScene::GetInstance();
+	stageSelectScene = NStageSelectScene::GetInstance();
+	gameScene = NGameScene::GetInstance();
 }
