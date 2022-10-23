@@ -102,7 +102,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// 拡大
-		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.3f) {
+		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.1f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
@@ -116,7 +116,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// 縮小まで待機
-		if (1.3f <= elapsedTime_ && elapsedTime_ <= 1.8f) {
+		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.3f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
@@ -124,7 +124,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// 縮小
-		if (1.8f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
+		if (1.3f <= elapsedTime_ && elapsedTime_ <= 1.7f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
@@ -140,7 +140,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// 終了まで待機
-		if (2.5f <= elapsedTime_ && elapsedTime_ <= 4.2f) {
+		if (1.7f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
@@ -148,7 +148,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// --指定されている時間が過ぎたら-- //
-		if (4.2f <= elapsedTime_) {
+		if (2.5f <= elapsedTime_) {
 			Reset();
 		}
 	}

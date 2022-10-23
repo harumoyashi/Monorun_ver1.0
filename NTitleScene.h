@@ -48,13 +48,6 @@ private:
 	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
 	float angle = 0.0f;				//カメラの回転角
 
-	// effect
-	Effect effect_{ static_cast<int>(EffectType::CToA) };
-
-	NAudio* audio = nullptr;
-	static const int maxSoundData = 3;
-	uint32_t soundData[maxSoundData] = {};
-
 public:
 	//インスタンス取得
 	NTitleScene* GetInstance();

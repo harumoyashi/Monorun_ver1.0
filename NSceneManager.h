@@ -42,12 +42,10 @@ private:
 	NStageSelectScene* stageSelectScene;
 	NGameScene* gameScene;	//ゲームシーン
 
-	static int scene;		//現在のシーン
+	static int nextScene_;	// 次のシーン
+	static int scene;		// 現在のシーン
 	static bool isSceneChange;	//シーンの初期化フラグ
-
-public:
-	
-
+	static bool isActiveEffect_;	// エフェクトの起動フラグ
 public:
 	//インスタンス取得
 	NSceneManager* GetInstance();
@@ -71,6 +69,5 @@ public:
 	static NTexture* GetTex() { return tex; }
 #pragma endregion
 private:
-
-
+	Effect effect_{ static_cast<int>(EffectType::CToA) };
 };
