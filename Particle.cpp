@@ -86,12 +86,51 @@ void Particle::SetPos(NVector2 pos)
 	}
 }
 
-void Particle::InOutBoxAll()
+void Particle::InOutBoxAllUpdate()
 {
 	using namespace Util;
 	if (isPlay_ && effectType_ == static_cast<int>(EffectType::CToA)) {
 		// --エフェクト開始->経過時間-- //
 		elapsedTime_ = (GetNowCount() - startTime_) / 1000.0f;
+
+		// 拡大まで待機
+		if (elapsedTime_ <= 0.71f) {
+
+		}
+
+		// 拡大
+		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.1f) {
+
+			radius_ += static_cast<int>(radius_++ / 2);
+		}
+
+		// 縮小まで待機
+		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.3f) {
+
+		}
+
+		// 縮小
+		if (1.3f <= elapsedTime_ && elapsedTime_ <= 1.7f) {
+
+			if (radius_ >= startRadius_)
+				radius_ -= static_cast<int>(radius_-- / 2);
+		}
+
+		// 終了まで待機
+		if (1.7f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
+
+		}
+
+		// --指定されている時間が過ぎたら-- //
+		if (2.5f <= elapsedTime_) {
+			Reset();
+		}
+	}
+}
+
+void Particle::InOutBoxAllDraw()
+{
+	if (isPlay_ && effectType_ == static_cast<int>(EffectType::CToA)) {
 
 		// 拡大まで待機
 		if (elapsedTime_ <= 0.71f) {
@@ -108,7 +147,6 @@ void Particle::InOutBoxAll()
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			blackBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 
-			radius_ += static_cast<int>(radius_++ / 2);
 			whiteBox_->size = { radius_ * 2, radius_ * 2 };
 			whiteBox_->TransferVertex();
 			blackBox_->size = { radius_ * 2 - DIFF_INOUT_BToT, radius_ * 2 - DIFF_INOUT_BToT };
@@ -130,9 +168,6 @@ void Particle::InOutBoxAll()
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			blackBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 
-			if (radius_ >= startRadius_)
-				radius_ -= static_cast<int>(radius_-- / 2);
-
 			whiteBox_->size = { radius_ * 2, radius_ * 2 };
 			whiteBox_->TransferVertex();
 			blackBox_->size = { radius_ * 2 - DIFF_INOUT_BToT, radius_ * 2 - DIFF_INOUT_BToT };
@@ -149,7 +184,7 @@ void Particle::InOutBoxAll()
 
 		// --指定されている時間が過ぎたら-- //
 		if (2.5f <= elapsedTime_) {
-			Reset();
+			//Reset();
 		}
 	}
 }

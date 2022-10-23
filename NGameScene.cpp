@@ -17,11 +17,11 @@ void NGameScene::Initialize(NDX12* dx12)
 	cube->Initialize(dx12->GetDevice());
 
 	// --ƒvƒŒƒCƒ„[‰Šú‰»-- //
-	player_ = player_->GetInstance();
+	player_ = Player::GetInstance();
 	player_->Initialize(dx12);
 
-	stage_ = stage_->GetInstance();
-	stage_->Initialize();
+	stage_ = StageManager::GetInstance();
+	stage_->Initialize(dx12);
 
 	//ŽË‰e“Š‰e•ÏŠ·//
 	matProjection = XMMatrixPerspectiveFovLH(
@@ -44,6 +44,10 @@ void NGameScene::Update()
 	player_->Update(matView, matProjection, eye, target, up);
 
 	stage_->Update(matView, matProjection, eye, target, up);
+
+	if (NInput::IsKeyTrigger(DIK_Q)) {
+		NSceneManager::SetScene(TITLESCENE);
+	}
 }
 
 void NGameScene::Draw(NDX12* dx12)
@@ -61,4 +65,16 @@ void NGameScene::Reset(NDX12* dx12) {
 
 void NGameScene::Finalize()
 {
+	stage_->Finalize();
+	stage_->Release();
+	player_->Finalize();
+	/*for (size_t i = 0; i < maxForeSprite; i++)
+	{
+		delete foreSprite[i];
+	}
+
+	for (size_t i = 0; i < maxBackSprite; i++)
+	{
+		delete backSprite[i];
+	}*/
 }

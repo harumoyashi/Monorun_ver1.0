@@ -17,6 +17,28 @@ NStageSelectScene* NStageSelectScene::GetInstance()
 	return &instance;
 }
 
+void NStageSelectScene::Reset() {
+	// --時間計測に必要なデータ変数-- //
+	nowCount_ = 0;
+	startCount_ = 0;
+
+	// --スクロールしてからの経過時間-- //
+	nowScrollTime_ = 0.0f;
+
+	// --現在選んでいるステージ-- //
+	selectStage_ = 1;
+
+	for (size_t i = 0; i < maxForeSprite; i++) {
+		foreSprite[i]->position.x = 300.0f;
+		foreSprite[i]->position.y = 400.0f + (i * 250.0f);
+		foreSprite[i]->UpdateMatrix();
+
+		// --イージング用変数初期化-- //
+		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
+		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
+	}
+}
+
 void NStageSelectScene::Initialize(NDX12* dx12)
 {
 #pragma region 描画初期化処理
@@ -47,7 +69,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	//}
 
 	stage_ = stage_->GetInstance();
-	stage_->Initialize();
+	stage_->Initialize(dx12);
 
 	//前景スプライト生成
 	for (size_t i = 0; i < maxForeSprite; i++) {
@@ -208,6 +230,8 @@ void NStageSelectScene::Finalize()
 	{
 		delete foreSprite[i];
 	}
+
+	stage_->Release();
 
 	//for (size_t i = 0; i < maxBackSprite; i++)
 	//{

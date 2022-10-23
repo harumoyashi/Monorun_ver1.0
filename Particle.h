@@ -27,7 +27,8 @@ public: // 関数
 	NVector2& GetPos() { return pos_; }
 
 	// 種類
-	void InOutBoxAll();
+	void InOutBoxAllUpdate();
+	void InOutBoxAllDraw();
 
 private: // 変数
 
@@ -46,7 +47,7 @@ private: // 変数
 	// 半径
 	float radius_{ 0.0f };
 
-	const int startRadius_{};
+	const float startRadius_{};
 
 	// effect開始時点でのpc内部の時間を記録
 	int startTime_{ 0 };

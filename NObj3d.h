@@ -51,6 +51,7 @@ public:
 	void MoveKey();
 	//ワールド行列の合成
 	void UpdateMatrix(XMMATRIX matView, XMMATRIX matProjection);
+	void UpdateMatrix();
 	//定数バッファへ送信
 	void TransferMatrix(XMMATRIX matView, XMMATRIX matProjection);
 #pragma endregion

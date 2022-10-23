@@ -15,7 +15,8 @@ public: // ä÷êî
 	void Activate();
 	void Reset();
 
-	void ExpandSquare();
+	void ExpandSquareUpdate();
+	void ExpandSquareDraw();
 
 	// getter
 	bool GetEffectPlay() { return isPlay_; }

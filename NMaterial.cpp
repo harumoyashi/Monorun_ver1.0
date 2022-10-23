@@ -63,6 +63,7 @@ void NMaterial::TransferColor()
 
 void NMaterial::SetColor(XMFLOAT4 color)
 {
+	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
 	constMapMaterial->color = color;
 }
 
