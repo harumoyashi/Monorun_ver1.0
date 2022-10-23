@@ -141,6 +141,7 @@ void NAudio::Unload(SoundData* soundData) {
 
 uint32_t NAudio::PlayWave(uint32_t soundDataHandle, bool loopFlag, float volume) {
 	HRESULT result;
+	IXAudio2SourceVoice* pSourceVoice = nullptr;	//オーディオデータを扱う便利なインターフェース
 
 	assert(soundDataHandle <= soundDatas_.size());
 

@@ -126,7 +126,9 @@ void NStageSelectScene::Update()
 	if (NInput::IsKeyTrigger(DIK_SPACE))
 	{
 		stage_->SetCSV(selectStage_);
-		NSceneManager::SetScene(GAMESCENE);
+		if (!NSceneManager::GetPlayEffect()) {
+			NSceneManager::SetScene(GAMESCENE);
+		}
 	}
 
 	// --[ª]‚ğ‰Ÿ‚µ‚½‚ç-- //

@@ -1,5 +1,6 @@
 #include "NWindows.h"
 #include "NDX12.h"
+#include "NAudio.h"
 #include "NSceneManager.h"
 
 //Windowsアプリでのエントリーポイント(main関数)
@@ -17,6 +18,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	dx12->Init(win);
 	//input初期化
 	NInput::KeyInit(win->GetHInstance(), win->GetHwnd());
+#pragma endregion
+#pragma region オーディオ初期化
+	NAudio* audio = nullptr;
+	audio = NAudio::GetInstance();
+	audio->Initialize();
 #pragma endregion
 #pragma region ゲームシーン初期化
 	NSceneManager* sceneMane;
@@ -37,6 +43,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 #pragma endregion
 #pragma region WindowsAPI後始末
+	audio->Finalize();
 	win->Finalize();
 	sceneMane->Finalize();
 	delete sceneMane;

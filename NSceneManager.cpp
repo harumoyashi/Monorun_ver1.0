@@ -9,6 +9,7 @@ int NSceneManager::scene = TITLESCENE;
 //シーン変更フラグの初期化
 bool NSceneManager::isSceneChange = false;
 bool NSceneManager::isActiveEffect_ = false;
+bool NSceneManager::isPlayEffect_ = false;
 #pragma region
 NSceneManager* NSceneManager::GetInstance()
 {
@@ -106,7 +107,11 @@ void NSceneManager::Update(NDX12* dx12)
 		isSceneChange = false;
 
 	}
+
+	// エフェクトUpdate
 	effect_.ExpandSquareUpdate();
+
+	isPlayEffect_ = effect_.GetEffectPlay();
 }
 
 void NSceneManager::Draw(NDX12* dx12)
