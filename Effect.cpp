@@ -29,6 +29,7 @@ void Effect::Reset()
 	startTime_ = 0;
 	elapsedTime_ = 0.0f;
 	isPlay_ = false;
+	isAllowChangeScene_ = false;
 	frameCount_ = 0;
 	activeCount_ = 0;
 }
@@ -51,27 +52,32 @@ void Effect::ExpandSquare()
 			frameCount_++;
 		}
 
-		// particleの再生終了まで待機
-		if (0.71f <= elapsedTime_ && elapsedTime_ <= 2.0f) {
+		// エフェクトの座標自体は0.71 ~ 1.5まで待機
+		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.1f) {
 
 		}
 
+		// particleの途中でシーン切替許可を出す
+		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.4f) {
+			isAllowChangeScene_ = true;
+		}
+
 		// frameCountリセット
-		if (2.0f <= elapsedTime_ && elapsedTime_ <= 2.1f) {
+		if (1.5f <= elapsedTime_ && elapsedTime_ <= 1.6f) {
 			frameCount_ = 0;
 		}
 
 		// 再生終了後画面外に移動
-		if (2.1f <= elapsedTime_ && elapsedTime_ <= 4.2f) {
+		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
 			particles_.front().get()->SetPos(NVector2{
 				particles_.front().get()->GetPos().x,
-				InOutBack(frameCount_, 30, NWindows::win_height + 20, 446.69) }
+				InOutBack(frameCount_, 30, NWindows::win_height + 20, NWindows::win_height / 2) }
 			);
 			frameCount_++;
 		}
 
 		// --指定されている時間が過ぎたら-- //
-		if (4.2f <= elapsedTime_) {
+		if (2.5f <= elapsedTime_) {
 			Reset();
 		}
 	}

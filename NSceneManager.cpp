@@ -4,9 +4,11 @@ NTexture NSceneManager::tex[];
 NGPipeline* NSceneManager::gPipe3d = nullptr;
 NGPipeline* NSceneManager::gPipeSprite = nullptr;
 //シーンの初期化
+int NSceneManager::nextScene_ = 0;
 int NSceneManager::scene = TITLESCENE;
 //シーン変更フラグの初期化
 bool NSceneManager::isSceneChange = false;
+bool NSceneManager::isActiveEffect_ = false;
 #pragma region
 NSceneManager* NSceneManager::GetInstance()
 {
@@ -77,6 +79,15 @@ void NSceneManager::Update(NDX12* dx12)
 
 	// --シーン変更がされたら-- //
 	if (isSceneChange == true) {
+		if (isActiveEffect_) {
+			effect_.Activate();
+			isActiveEffect_ = false;
+		}
+
+		if (effect_.GetAllowChangeScene()) {
+			scene = nextScene_;
+		}
+
 		// --タイトルシーンだったら-- //
 		if (scene == TITLESCENE) {
 			//リセット
@@ -94,7 +105,11 @@ void NSceneManager::Update(NDX12* dx12)
 		}
 
 		// --シーン変更フラグOFFにする-- //
-		isSceneChange = false;
+		//isSceneChange = false;
+
+		if (!effect_.GetEffectPlay()) {
+			isSceneChange = false;
+		}
 	}
 }
 
@@ -125,6 +140,7 @@ void NSceneManager::Draw(NDX12* dx12)
 	else if (scene == GAMESCENE) {
 		gameScene->Draw(dx12);
 	}
+	effect_.ExpandSquare();
 	dx12->PostDraw(preDraw->barrierDesc);
 }
 
@@ -141,10 +157,12 @@ void NSceneManager::Finalize()
 void NSceneManager::SetScene(int selectScene)
 {
 	// --シーンを変更-- //
-	scene = selectScene;
+	nextScene_ = selectScene;
 
 	// --シーン変更フラグをONに-- //
 	isSceneChange = true;
+
+	isActiveEffect_ = true;
 }
 
 NSceneManager::NSceneManager()
