@@ -24,6 +24,10 @@ Player* Player::GetInstance()
 
 // --初期化処理-- //
 void Player::Initialize(NDX12* dx12) {
+	//マテリアル(定数バッファ)
+	material.Initialize(dx12->GetDevice());
+	material.SetColor({ 1,1,1,1 });
+
 	// --プレイヤーオブジェクト(定数バッファ)-- //
 	object_.Initialize(dx12->GetDevice());
 	object_.texNum = PLAYER;
@@ -177,10 +181,10 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 }
 
 // --描画処理-- //
-void Player::Draw(NDX12* dx12, NMaterial material) {
+void Player::Draw(NDX12* dx12,NCube* cube) {
 	// --オブジェクト描画-- //
 	object_.CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), NSceneManager::GetPipeline3d()->vbView, NSceneManager::GetPipeline3d()->ibView, NSceneManager::GetPipeline3d()->numIB, NSceneManager::GetTex()[0].incrementSize);
+	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
 }
 
 // --終了処理-- //

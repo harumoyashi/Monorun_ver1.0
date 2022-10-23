@@ -77,19 +77,19 @@ void StageManager::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& 
 	}
 }
 
-void StageManager::Draw(NDX12* dx12, NMaterial material)
+void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 {
 	// --è·äQï®ÇÃï`âÊ
 	for (int i = 0; i < obstacles_.size(); i++) {
-		obstacles_[i].Draw(dx12, material);
+		obstacles_[i].Draw(dx12, material,cube);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		leftWalls_[i].Draw(dx12, material);
+		leftWalls_[i].Draw(dx12, material,cube);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		rightWalls_[i].Draw(dx12, material);
+		rightWalls_[i].Draw(dx12, material,cube);
 	}
 }
 

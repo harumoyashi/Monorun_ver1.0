@@ -42,7 +42,6 @@ void NSceneManager::Initialize(NDX12* dx12)
 	}
 #pragma region グラフィックスパイプライン
 	gPipe3d = new NGPipeline();
-	gPipe3d->Initialize3d(dx12->GetDevice());
 	gPipe3d->pipelineSet = gPipe3d->CreatePipeline3d(dx12->GetDevice(), rootParams.entity);
 
 	gPipeSprite = new NGPipeline();

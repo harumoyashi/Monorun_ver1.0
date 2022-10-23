@@ -6,6 +6,7 @@
 
 #include "NRootParam.h"
 #include "NMaterial.h"
+#include "NCube.h"
 #include "NGPipeline.h"
 #include "NRootSignature.h"
 #include "NObj3d.h"
@@ -27,6 +28,7 @@ private:
 
 	// --オブジェクト-- //
 	NMaterial material_;// -> マテリアル
+	std::unique_ptr<NCube> cube;	//立方体情報(頂点、インデックス)
 
 #pragma region カメラ関係
 	//カメラ

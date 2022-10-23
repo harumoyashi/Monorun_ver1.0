@@ -12,6 +12,10 @@ void NGameScene::Initialize(NDX12* dx12)
 	//マテリアル(定数バッファ)
 	material_.Initialize(dx12->GetDevice());
 
+	//立方体情報
+	cube = std::make_unique<NCube>();
+	cube->Initialize(dx12->GetDevice());
+
 	// --プレイヤー初期化-- //
 	player_ = player_->GetInstance();
 	player_->Initialize(dx12);
@@ -45,9 +49,9 @@ void NGameScene::Update()
 void NGameScene::Draw(NDX12* dx12)
 {
 	// --プレイヤー描画処理-- //
-	player_->Draw(dx12, material_);
+	player_->Draw(dx12,cube.get());
 
-	stage_->Draw(dx12, material_);
+	stage_->Draw(dx12, material_,cube.get());
 }
 
 // --リセット処理-- //
@@ -57,13 +61,4 @@ void NGameScene::Reset(NDX12* dx12) {
 
 void NGameScene::Finalize()
 {
-	/*for (size_t i = 0; i < maxForeSprite; i++)
-	{
-		delete foreSprite[i];
-	}
-
-	for (size_t i = 0; i < maxBackSprite; i++)
-	{
-		delete backSprite[i];
-	}*/
 }

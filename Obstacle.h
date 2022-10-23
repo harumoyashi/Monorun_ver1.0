@@ -7,6 +7,7 @@
 
 #include "NRootParam.h"
 #include "NMaterial.h"
+#include "NCube.h"
 #include "NGPipeline.h"
 #include "NRootSignature.h"
 #include "NObj3d.h"
@@ -45,7 +46,7 @@ public:
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up);
 
 	// --描画処理-- //
-	void Draw(NDX12* dx12, NMaterial material);
+	void Draw(NDX12* dx12, NMaterial material,NCube*cube);
 
 	// --オブジェクトを参照-- //
 	//BoxObj GetBoxObj();
