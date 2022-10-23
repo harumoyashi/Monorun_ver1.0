@@ -12,11 +12,11 @@ void NTitleScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
 	audio = NAudio::GetInstance();
-	//soundData[0] = audio->LoadWave("preparation.wav");
-	//soundData[1] = audio->LoadWave("mokugyo.wav");
-	//soundData[2] = audio->LoadWave("fanfare.wav");
-	////BGM鳴らす
-	//audio->PlayWave(soundData[0], true);
+	soundData[0] = audio->LoadWave("preparation.wav");
+	soundData[1] = audio->LoadWave("mokugyo.wav");
+	soundData[2] = audio->LoadWave("fanfare.wav");
+	//BGM鳴らす
+	audio->PlayWave(soundData[0], true);
 #pragma endregion
 #pragma region	カメラ初期化
 	//射影投影変換//

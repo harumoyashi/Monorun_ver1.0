@@ -69,8 +69,6 @@ private:
 	char* pBuffer;
 	SoundData soundData = {};	//音声データ
 
-	IXAudio2SourceVoice* pSourceVoice = nullptr;	//オーディオデータを扱う便利なインターフェース
-
 	//オーディオコールバック
 	class XAudio2VoiceCallback : public IXAudio2VoiceCallback {
 	public:
