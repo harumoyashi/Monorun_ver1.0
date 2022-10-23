@@ -37,7 +37,7 @@ public:
 	void MappingCB();
 	//色情報転送
 	void TransferColor();
-	//色情報の変更
+	//色情報変更
 	void SetColor(XMFLOAT4 color);
 #pragma endregion
 #pragma region 描画まわり

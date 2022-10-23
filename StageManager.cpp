@@ -92,7 +92,7 @@ void StageManager::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& 
 	}
 }
 
-void StageManager::Draw(NDX12* dx12)
+void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 {
 	// --è·äQï®ÇÃï`âÊ
 	for (int i = 0; i < obstacles_.size(); i++) {

@@ -12,8 +12,10 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "NCube.h"
 #include "Particle.h"
 #include "Effect.h"
+#include "NAudio.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -23,8 +25,9 @@ class NTitleScene
 private:
 	//オブジェクト
 	NMaterial material;				//マテリアル
-	static const int maxObj = 1;	//オブジェクト数
-	NObj3d obj3d[maxObj];			//オブジェクト(定数バッファ)
+	std::unique_ptr<NObj3d> player;			//オブジェクト(定数バッファ)
+
+	std::unique_ptr<NCube> cube;	//立方体情報(頂点、インデックス)
 
 	////背景スプライト
 	//static const int maxBackSprite = 3;	//背景スプライト数
@@ -32,8 +35,8 @@ private:
 
 	//前景スプライト
 	//static const int maxForeSprite = 2;	//前景スプライト数
-	NSprite* titleSprite;	//タイトルロゴ
-	NSprite* startSprite;	//スタートUI
+	std::unique_ptr<NSprite> titleSprite;	//タイトルロゴ
+	std::unique_ptr<NSprite> startSprite;	//スタートUI
 
 	//カメラ
 	XMMATRIX matProjection;
@@ -45,8 +48,9 @@ private:
 	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
 	float angle = 0.0f;				//カメラの回転角
 
-	// effect
-	Effect effect_{ static_cast<int>(EffectType::CToA) };
+	NAudio* audio = nullptr;
+	static const int maxSoundData = 3;
+	uint32_t soundData[maxSoundData] = {};
 
 public:
 	//インスタンス取得

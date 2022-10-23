@@ -10,14 +10,6 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
-//頂点データ構造体
-struct Vertex
-{
-	XMFLOAT3 pos;		//xyz座標
-	XMFLOAT3 normal;	//法線ベクトル
-	XMFLOAT2 uv;		//uv座標
-};
-
 class NGPipeline
 {
 private:
@@ -28,21 +20,6 @@ private:
 		ComPtr<ID3D12PipelineState> pipelineState;
 		NRootSignature rootSig;
 	};
-
-	//頂点まわり//
-	UINT singleSizeVB;					//頂点バッファ1個当たりのサイズ
-	UINT sizeVB;						//頂点バッファ全体のサイズ
-	Vertex vertices[1000]{};			//頂点代入用
-	D3D12_HEAP_PROPERTIES heapProp{};	//ヒープ
-	D3D12_RESOURCE_DESC resDesc{};		//リソース
-	ComPtr<ID3D12Resource> vertBuff;	//頂点バッファ
-	Vertex* vertMap = nullptr;			//マップ用
-
-	//頂点インデックス//
-	unsigned short indices[1000]{};		//インデックス代入用
-
-	ComPtr<ID3D12Resource> indexBuff;	//インデックスバッファ
-	uint16_t* indexMap = nullptr;		//マップ用
 
 	//シェーダーリソースビュー//
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
@@ -74,36 +51,6 @@ public:
 
 public:
 	//パイプラインの初期化(生成)
-	//3Dオブジェクト
-	void Initialize3d(ComPtr<ID3D12Device> device);
-#pragma region 頂点まわり
-	//頂点データ設定
-	void SetVert();
-	//ヒープ設定
-	void SetVertHeap();
-	//リソース設定
-	void SetVertResource();
-	//法線の計算
-	void SetNormal();
-	//バッファ作成
-	void CreateVertBuff(ComPtr<ID3D12Device> device);
-	//マッピング
-	void VertMaping();
-	//頂点バッファビュー作成
-	void CreateVertBuffView();
-#pragma endregion
-#pragma region 頂点インデックスまわり
-	//頂点インデックス設定
-	void SetIndex();
-	//リソース設定
-	void SetIndexResource();
-	//バッファ作成
-	void CreateIndexBuff(ComPtr<ID3D12Device> device);
-	//マッピング
-	void IndexMaping();
-	//インデックスバッファビュー作成
-	void CreateIndexBuffView();
-#pragma endregion
 #pragma region シェーダーまわり
 	//3Dオブジェクト用頂点シェーダーの読み込みとコンパイル
 	void LoadVertShader3d();

@@ -65,7 +65,7 @@ public:
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up);
 
 	// --•`‰æˆ—-- //
-	void Draw(NDX12* dx12);
+	void Draw(NDX12* dx12, NMaterial material,NCube* cube);
 
 	// --CSV‚ğ“Ç‚İ‚Ş-- //
 	void LoadCSV(NDX12* dx12);

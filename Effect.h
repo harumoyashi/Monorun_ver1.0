@@ -15,7 +15,12 @@ public: // 関数
 	void Activate();
 	void Reset();
 
-	void ExpandSquare();
+	void ExpandSquareUpdate();
+	void ExpandSquareDraw();
+
+	// getter
+	bool GetEffectPlay() { return isPlay_; }
+	bool GetAllowChangeScene() { return isAllowChangeScene_; }
 
 private: // 変数
 #pragma region インスタンス保持
@@ -36,6 +41,9 @@ private: // 変数
 
 	// 再生の有無
 	bool isPlay_ = false;
+
+	// シーン切替してよいか
+	bool isAllowChangeScene_ = false;
 
 	// フレームカウンタ
 	int frameCount_{ 0 };

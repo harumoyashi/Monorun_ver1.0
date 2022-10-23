@@ -11,6 +11,7 @@
 #include "NObj3d.h"
 #include "NTexture.h"
 #include "NSprite.h"
+#include "NCube.h"
 #include "NPreDraw.h"
 
 #pragma comment(lib,"d3d12.lib")
@@ -33,7 +34,7 @@ public:
 private:
 
 #pragma region クラス宣言
-	
+	NMaterial material;				//マテリアル
 #pragma endregion
 
 	// --プレイヤーの状態-- //
@@ -105,7 +106,7 @@ public:
 	void Update(XMMATRIX &matView, XMMATRIX &matProjection, XMFLOAT3 &eye, XMFLOAT3 &target, XMFLOAT3 &up);
 
 	// --描画処理-- //
-	void Draw(NDX12* dx12, NMaterial material);
+	void Draw(NDX12* dx12,NCube* cube);
 
 	// --終了処理-- //
 	void Finalize();

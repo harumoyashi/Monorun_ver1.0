@@ -39,10 +39,10 @@ void Obstacle::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye,
 }
 
 // --描画処理
-void Obstacle::Draw(NDX12* dx12, NMaterial material) {
+void Obstacle::Draw(NDX12* dx12, NMaterial material,NCube*cube) {
 	// --オブジェクト描画-- //
 	object_.CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), NSceneManager::GetPipeline3d()->vbView, NSceneManager::GetPipeline3d()->ibView, NSceneManager::GetPipeline3d()->numIB, NSceneManager::GetTex()[0].incrementSize);
+	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
 }
 
 //// --オブジェクトを参照-- //
