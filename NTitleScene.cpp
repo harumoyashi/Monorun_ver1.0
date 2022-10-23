@@ -50,8 +50,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	startSprite->position = { NWindows::win_width / 2,NWindows::win_height / 2,0 };
 	startSprite->UpdateMatrix();
 
-	particle_.Init();
-	particle_.Activate();
+	effect_.Activate();
 #pragma endregion
 #pragma region	ƒJƒƒ‰‰Šú‰»
 	//ŽË‰e“Š‰e•ÏŠ·//
@@ -117,7 +116,7 @@ void NTitleScene::Draw(NDX12* dx12)
 		NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 	startSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 
-	particle_.InOutBoxAll();
+	effect_.ExpandSquare();
 	// 4.•`‰æƒRƒ}ƒ“ƒh‚±‚±‚Ü‚Å
 #pragma endregion
 }

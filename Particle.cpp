@@ -31,7 +31,6 @@ void Particle::Init()
 		whiteBox_->position.x = NWindows::win_width / 2;
 		whiteBox_->position.y = NWindows::win_height / 2;
 		whiteBox_->UpdateMatrix();
-		whiteBox_->TransferMatrix();
 		// çï
 		blackBox_ = std::make_unique<NSprite>();
 		blackBox_->texNum = WHITEPNG;
@@ -42,7 +41,6 @@ void Particle::Init()
 		blackBox_->position.x = NWindows::win_width / 2;
 		blackBox_->position.y = NWindows::win_height / 2;
 		blackBox_->UpdateMatrix();
-		blackBox_->TransferMatrix();
 	}
 }
 
@@ -80,11 +78,11 @@ void Particle::SetPos(NVector2 pos)
 	if (effectType_ == static_cast<int>(EffectType::CToA)) {
 		whiteBox_->position.x = pos.x;
 		whiteBox_->position.y = pos.y;
+		blackBox_->position.x = pos.x;
+		blackBox_->position.y = pos.y;
 
 		whiteBox_->UpdateMatrix();
-		whiteBox_->TransferMatrix();
 		blackBox_->UpdateMatrix();
-		blackBox_->TransferMatrix();
 	}
 }
 
@@ -96,7 +94,7 @@ void Particle::InOutBoxAll()
 		elapsedTime_ = (GetNowCount() - startTime_) / 1000.0f;
 
 		// ägëÂÇ‹Ç≈ë“ã@
-		if (elapsedTime_ <= 0.86f) {
+		if (elapsedTime_ <= 0.71f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
@@ -104,7 +102,7 @@ void Particle::InOutBoxAll()
 		}
 
 		// ägëÂ
-		if (0.86f <= elapsedTime_ && elapsedTime_ <= 1.3f) {
+		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.3f) {
 			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
 			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
