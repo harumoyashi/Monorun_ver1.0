@@ -12,6 +12,8 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "Player.h"
+#include "StageManager.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -19,32 +21,24 @@
 class NGameScene
 {
 private:
-	//オブジェクト
-	NMaterial material;				//マテリアル
-	static const int maxBlock = 3;	//オブジェクト数
-	NObj3d block[maxBlock];			//オブジェクト(定数バッファ)
+	Player* player_;
 
-	NObj3d player;					//オブジェクト(定数バッファ)
+	StageManager* stage_;
 
-	////背景スプライト
-	//static const int maxBackSprite = 3;	//背景スプライト数
-	//NSprite* backSprite[maxBackSprite];	//背景スプライト
+	// --オブジェクト-- //
+	NMaterial material_;// -> マテリアル
 
-	////前景スプライト
-	//static const int maxForeSprite = 3;	//前景スプライト数
-	//NSprite* foreSprite[maxForeSprite];	//前景スプライト
-
-	float increment = 0.0f;	//テスト用
-
+#pragma region カメラ関係
 	//カメラ
 	XMMATRIX matProjection;
 	XMMATRIX matView;
 
 	//カメラ
-	XMFLOAT3 eye = { 0, 0, -100 };	//視点座標
-	XMFLOAT3 target = { 0, 0, 0 };	//注視点座標
-	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
+	XMFLOAT3 eye;	//視点座標
+	XMFLOAT3 target;	//注視点座標
+	XMFLOAT3 up;		//上方向ベクトル
 	float angle = 0.0f;				//カメラの回転角
+#pragma endregion
 
 public:
 
@@ -59,6 +53,8 @@ public:
 	void Update();
 	//描画
 	void Draw(NDX12* dx12);
+	// --リセット処理-- //
+	void Reset(NDX12* dx12);
 	//終了処理
 	void Finalize();
 

@@ -46,6 +46,9 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	//	backSprite[i]->TransferMatrix();
 	//}
 
+	stage_ = stage_->GetInstance();
+	stage_->Initialize();
+
 	//前景スプライト生成
 	for (size_t i = 0; i < maxForeSprite; i++) {
 		foreSprite[i] = new NSprite();
@@ -100,6 +103,7 @@ void NStageSelectScene::Update()
 	// --[SPACE]を押したら-- //
 	if (NInput::IsKeyTrigger(DIK_SPACE))
 	{
+		stage_->SetCSV(selectStage_);
 		NSceneManager::SetScene(GAMESCENE);
 	}
 

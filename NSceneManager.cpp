@@ -90,6 +90,7 @@ void NSceneManager::Update(NDX12* dx12)
 		// --ゲームシーンなら-- //
 		else if (scene == GAMESCENE) {
 			//リセット
+			gameScene->Reset(dx12);
 		}
 
 		// --シーン変更フラグOFFにする-- //
