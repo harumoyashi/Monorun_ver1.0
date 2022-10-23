@@ -39,10 +39,10 @@ private:
 	XMMATRIX matView;
 
 	//カメラ
-	XMFLOAT3 eye;	//視点座標
+	XMFLOAT3 eye;		//視点座標
 	XMFLOAT3 target;	//注視点座標
 	XMFLOAT3 up;		//上方向ベクトル
-	float angle = 0.0f;				//カメラの回転角
+	float angle = 0.0f;	//カメラの回転角
 #pragma endregion
 
 public:
@@ -58,7 +58,7 @@ public:
 	void Update();
 	//描画
 	void Draw(NDX12* dx12);
-	// --リセット処理-- //
+	//リセット処理
 	void Reset(NDX12* dx12);
 	//終了処理
 	void Finalize();

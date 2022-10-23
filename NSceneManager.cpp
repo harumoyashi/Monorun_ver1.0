@@ -87,6 +87,7 @@ void NSceneManager::Update(NDX12* dx12)
 		// --タイトルシーンだったら-- //
 		if (scene == TITLESCENE) {
 			//リセット
+			titleScene->Reset();
 		}
 
 		// --ステージセレクトシーンなら-- //

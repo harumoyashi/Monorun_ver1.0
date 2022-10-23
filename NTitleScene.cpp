@@ -86,6 +86,10 @@ void NTitleScene::Update()
 {
 	if (NInput::IsKeyTrigger(DIK_SPACE))
 	{
+		if (audio->IsPlaying(soundData[0]))
+		{
+			audio->StopWave(soundData[0]);
+		}
 		NSceneManager::SetScene(STAGESELECTSCENE);
 	}
 #pragma region 行列の計算
@@ -121,6 +125,11 @@ void NTitleScene::Draw(NDX12* dx12)
 
 	// 4.描画コマンドここまで
 #pragma endregion
+}
+
+void NTitleScene::Reset()
+{
+	audio->StartWave(soundData[0]);
 }
 
 void NTitleScene::Finalize()

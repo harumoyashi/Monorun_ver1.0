@@ -191,9 +191,20 @@ void NAudio::StopWave(uint32_t voiceHandle) {
 		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->handle == voiceHandle; });
 	// ”­Œ©
 	if (it != voices_.end()) {
-		(*it)->sourceVoice->DestroyVoice();
+		(*it)->sourceVoice->Stop();
+	}
+}
 
-		voices_.erase(it);
+void NAudio::StartWave(uint32_t voiceHandle)
+{
+	// Ä¶’†ƒŠƒXƒg‚©‚çŒŸõ
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->handle == voiceHandle; });
+	// ”­Œ©
+	if (it != voices_.end()) {
+
+		// Ä¶ÄŠJ
+		(*it)->sourceVoice->Start();
 	}
 }
 

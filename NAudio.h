@@ -62,7 +62,6 @@ private:
 	ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;
 
-
 	std::ifstream file;			//ファイル入力ストリームのインスタンス
 	FormatChunk format = {};	//フォーマットチャンク
 	ChunkHeader data;			//データチャンク
@@ -92,7 +91,8 @@ public:
 	static NAudio* GetInstance();
 
 	//初期化
-	void Initialize(const std::string& directoryPath = "Resources/");
+	//ディレクトリパスを指定しないと"Resources/sound/"になる
+	void Initialize(const std::string& directoryPath = "Resources/sound/");
 
 	//終了処理
 	void Finalize();
@@ -113,14 +113,17 @@ public:
 	//return 再生ハンドル
 	uint32_t PlayWave(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
 
-	//音声停止
+	//音声一時停止
 	//"voiceHandle" 再生ハンドル
 	void StopWave(uint32_t voiceHandle);
+
+	//一時停止した音声を再生
+	//"voiceHandle" 再生ハンドル
+	void StartWave(uint32_t voiceHandle);
 
 	//音声再生中かどうか
 	//"voiceHandle" 再生ハンドル
 	bool IsPlaying(uint32_t voiceHandle);
-
 
 	//音量設定
 	//"voiceHandle" 再生ハンドル
