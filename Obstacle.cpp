@@ -45,10 +45,10 @@ void Obstacle::Draw(NDX12* dx12, NMaterial material,NCube*cube) {
 	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
 }
 
-//// --オブジェクトを参照-- //
-//BoxObj Obstacle::GetBoxObj() {
-//	return object_;
-//}
+// --オブジェクトを参照-- //
+BoxObj Obstacle::GetBoxObj() {
+	return { {object_.position.x, object_.position.y}, 32.0f };
+}
 
 // --ブロックの種類を参照
 int Obstacle::GetBlockType() {

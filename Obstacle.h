@@ -49,7 +49,7 @@ public:
 	void Draw(NDX12* dx12, NMaterial material,NCube*cube);
 
 	// --オブジェクトを参照-- //
-	//BoxObj GetBoxObj();
+	BoxObj GetBoxObj();
 
 	// --ブロックの種類を参照
 	int GetBlockType();
