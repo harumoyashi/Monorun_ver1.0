@@ -46,6 +46,7 @@ private:
 	static int scene;		// 現在のシーン
 	static bool isSceneChange;	//シーンの初期化フラグ
 	static bool isActiveEffect_;	// エフェクトの起動フラグ
+	static bool isSoundManager_;	// サウンド管理フラグ
 public:
 	//インスタンス取得
 	NSceneManager* GetInstance();

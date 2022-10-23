@@ -56,8 +56,14 @@ public:
 	//インスタンス取得
 	static NTitleScene* GetInstance();
 
+	//初期化
 	void Initialize(NDX12* dx12);
+	//更新
 	void Update();
+	//描画
 	void Draw(NDX12* dx12);
+	//リセット処理
+	void Reset();
+	//終了処理
 	void Finalize();
 };
