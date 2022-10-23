@@ -125,6 +125,10 @@ void StageManager::Finalize() {
 
 void StageManager::LoadCSV(NDX12* dx12)
 {
+	obstacles_.clear();
+	leftWalls_.clear();
+	rightWalls_.clear();
+
 	lineCounter_ = 0;
 
 	// --読み込むCSVファイルを開く-- //

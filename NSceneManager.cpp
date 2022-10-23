@@ -72,16 +72,17 @@ void NSceneManager::Update(NDX12* dx12)
 	}
 
 	// --シーン変更がされたら-- //
-	if (isSceneChange == true) {
-		if (isActiveEffect_) {
-			effect_.Activate();
-			isActiveEffect_ = false;
-		}
+	if (isActiveEffect_) {
+		effect_.Activate();
+		isActiveEffect_ = false;
+	}
 
-		if (effect_.GetAllowChangeScene()) {
-			scene = nextScene_;
-		}
+	if (effect_.GetAllowChangeScene()) {
+		scene = nextScene_;
+		isSceneChange = true;
+	}
 
+	if (isSceneChange) {
 		// --タイトルシーンだったら-- //
 		if (scene == TITLESCENE) {
 			//リセット
@@ -102,9 +103,8 @@ void NSceneManager::Update(NDX12* dx12)
 		// --シーン変更フラグOFFにする-- //
 		//isSceneChange = false;
 
-		if (!effect_.GetEffectPlay()) {
-			isSceneChange = false;
-		}
+		isSceneChange = false;
+
 	}
 	effect_.ExpandSquareUpdate();
 }
@@ -156,7 +156,7 @@ void NSceneManager::SetScene(int selectScene)
 	nextScene_ = selectScene;
 
 	// --シーン変更フラグをONに-- //
-	isSceneChange = true;
+	//isSceneChange = true;
 
 	isActiveEffect_ = true;
 }

@@ -20,7 +20,11 @@ public: // 関数
 
 	// getter
 	bool GetEffectPlay() { return isPlay_; }
-	bool GetAllowChangeScene() { return isAllowChangeScene_; }
+	bool GetAllowChangeScene() { 
+		bool tmp{ isAllowChangeScene_ && isObserve1frame_ };
+		isObserve1frame_ = false;
+		return tmp; 
+	}
 
 private: // 変数
 #pragma region インスタンス保持
@@ -44,6 +48,8 @@ private: // 変数
 
 	// シーン切替してよいか
 	bool isAllowChangeScene_ = false;
+
+	bool isObserve1frame_ = false;
 
 	// フレームカウンタ
 	int frameCount_{ 0 };

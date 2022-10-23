@@ -52,13 +52,14 @@ void Effect::ExpandSquareUpdate()
 			frameCount_++;
 		}
 
-		// エフェクトの座標自体は0.71 ~ 1.5まで待機
+		// エフェクトの座標自体は0.71 ~ 1.1まで待機
 		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.1f) {
 
 		}
 
 		// particleの途中でシーン切替許可を出す
-		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.4f) {
+		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.2f && !isObserve1frame_ && !isAllowChangeScene_) {
+			isObserve1frame_ = true;
 			isAllowChangeScene_ = true;
 		}
 
