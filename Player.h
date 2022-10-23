@@ -95,6 +95,9 @@ public:
 	// --インスタンス取得-- //
 	Player* GetInstance();
 
+	// --リセット処理-- //
+	void Reset();
+
 	// --初期化処理-- //
 	void Initialize(NDX12* dx12);
 

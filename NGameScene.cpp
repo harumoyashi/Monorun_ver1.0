@@ -17,7 +17,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	player_->Initialize(dx12);
 
 	stage_ = stage_->GetInstance();
-	stage_->Initialize();
+	stage_->Initialize(dx12);
 
 	//ŽË‰e“Š‰e•ÏŠ·//
 	matProjection = XMMatrixPerspectiveFovLH(
@@ -47,7 +47,7 @@ void NGameScene::Draw(NDX12* dx12)
 	// --ƒvƒŒƒCƒ„[•`‰æˆ—-- //
 	player_->Draw(dx12, material_);
 
-	stage_->Draw(dx12, material_);
+	stage_->Draw(dx12);
 }
 
 // --ƒŠƒZƒbƒgˆ—-- //
@@ -57,6 +57,8 @@ void NGameScene::Reset(NDX12* dx12) {
 
 void NGameScene::Finalize()
 {
+	stage_->Finalize();
+	player_->Finalize();
 	/*for (size_t i = 0; i < maxForeSprite; i++)
 	{
 		delete foreSprite[i];

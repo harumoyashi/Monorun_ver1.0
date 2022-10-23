@@ -61,6 +61,12 @@ void NMaterial::TransferColor()
 	constMapMaterial->color = XMFLOAT4(1, 1, 1, 1);
 }
 
+void NMaterial::SetColor(XMFLOAT4 color)
+{
+	//’l‚ð‘‚«ž‚Þ‚ÆŽ©“®“I‚É“]‘—‚³‚ê‚é
+	constMapMaterial->color = color;
+}
+
 void NMaterial::SetCBV(ComPtr<ID3D12GraphicsCommandList> commandList)
 {
 	commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());

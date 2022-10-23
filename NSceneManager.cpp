@@ -70,11 +70,6 @@ void NSceneManager::Update(NDX12* dx12)
 		gameScene->Update();
 	}
 
-	// --リザルトシーンの更新処理-- //
-	else if (scene == RESULTSCENE) {
-		//resultScene->Update();
-	}
-
 	// --シーン変更がされたら-- //
 	if (isSceneChange == true) {
 		// --タイトルシーンだったら-- //
@@ -85,6 +80,7 @@ void NSceneManager::Update(NDX12* dx12)
 		// --ステージセレクトシーンなら-- //
 		else if (scene == STAGESELECTSCENE) {
 			//リセット
+			stageSelectScene->Reset();
 		}
 
 		// --ゲームシーンなら-- //

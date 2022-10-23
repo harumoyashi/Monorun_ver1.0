@@ -16,8 +16,11 @@ enum BlockId
 class StageManager {
 	/// --メンバ変数-- ///
 public:
-	// --マップ-- //
-	std::vector<int[10]> map_;
+	NMaterial whiteMaterial_;
+	NMaterial blackMaterial_;
+	NMaterial redMaterial_;
+	NMaterial greenMaterial_;
+	NMaterial blueMaterial_;
 
 	// --オブジェクト-- //
 	std::vector<Obstacle> obstacles_;
@@ -56,16 +59,19 @@ public:
 	static void Release();
 
 	// --初期化処理-- //
-	void Initialize();
+	void Initialize(NDX12 * dx12);
 
 	// --更新処理-- //
 	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up);
 
 	// --描画処理-- //
-	void Draw(NDX12* dx12, NMaterial material);
+	void Draw(NDX12* dx12);
 
 	// --CSVを読み込む-- //
 	void LoadCSV(NDX12* dx12);
+
+	// --終了処理-- //
+	void Finalize();
 
 	// --読み込んだCSVの行数を参照-- //
 	int GetLineCount();

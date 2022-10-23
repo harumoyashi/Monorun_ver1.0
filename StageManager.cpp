@@ -46,8 +46,23 @@ StageManager::~StageManager()
 
 }
 
-void StageManager::Initialize()
+void StageManager::Initialize(NDX12* dx12)
 {
+	whiteMaterial_.Initialize(dx12->GetDevice());
+	whiteMaterial_.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
+
+	blackMaterial_.Initialize(dx12->GetDevice());
+	blackMaterial_.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+
+	redMaterial_.Initialize(dx12->GetDevice());
+	redMaterial_.SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+
+	greenMaterial_.Initialize(dx12->GetDevice());
+	greenMaterial_.SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+
+	blueMaterial_.Initialize(dx12->GetDevice());
+	blueMaterial_.SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
+
 	// --áŠQ•¨‚ğíœ-- //
 	obstacles_.clear();
 
@@ -77,20 +92,35 @@ void StageManager::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& 
 	}
 }
 
-void StageManager::Draw(NDX12* dx12, NMaterial material)
+void StageManager::Draw(NDX12* dx12)
 {
 	// --áŠQ•¨‚Ì•`‰æ
 	for (int i = 0; i < obstacles_.size(); i++) {
-		obstacles_[i].Draw(dx12, material);
+		if (obstacles_[i].GetBlockType() == BoundBlock) {
+			obstacles_[i].Draw(dx12, blueMaterial_);
+		}
+		else if (obstacles_[i].GetBlockType() == DeathBlock) {
+			obstacles_[i].Draw(dx12, redMaterial_);
+		}
+		else if (obstacles_[i].GetBlockType() == Coin) {
+			obstacles_[i].Draw(dx12, greenMaterial_);
+		}
+	}
+
+	for (size_t i = 0; i < leftWalls_.size(); i++) {
+		leftWalls_[i].Draw(dx12, blackMaterial_);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		leftWalls_[i].Draw(dx12, material);
+		rightWalls_[i].Draw(dx12, blackMaterial_);
 	}
+}
 
-	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		rightWalls_[i].Draw(dx12, material);
-	}
+// --I—¹ˆ—-- //
+void StageManager::Finalize() {
+	obstacles_.clear();
+	leftWalls_.clear();
+	rightWalls_.clear();
 }
 
 void StageManager::LoadCSV(NDX12* dx12)
@@ -146,9 +176,11 @@ void StageManager::LoadCSV(NDX12* dx12)
 	for (size_t i = 0; i < loopCount; i++) {
 		Obstacle lObj(dx12, {-352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f}, BLOCK);
 		leftWalls_.push_back(lObj);
+		leftWalls_[i].Initialize();
 
 		Obstacle rObj(dx12, { 352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f }, BLOCK);
 		rightWalls_.push_back(rObj);
+		rightWalls_[i].Initialize();
 	}
 
 	// --áŠQ•¨‚Ì‰Šú‰»

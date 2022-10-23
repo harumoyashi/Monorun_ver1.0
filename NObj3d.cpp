@@ -90,6 +90,32 @@ void NObj3d::UpdateMatrix(XMMATRIX matView, XMMATRIX matProjection)
 	TransferMatrix(matView, matProjection);
 }
 
+void NObj3d::UpdateMatrix() {
+	//ワールド行列
+	XMMATRIX matScale;	//スケーリング行列
+	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+	XMMATRIX matRot = XMMatrixIdentity();		//回転行列
+	matRot *= XMMatrixRotationZ(rotation.z);	//Z軸周りに0度回転してから
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));	//X軸周りに15度回転してから
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));	//Y軸周りに30度回転
+
+	XMMATRIX matTrans;	//平行移動行列
+	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+
+	matWorld = XMMatrixIdentity();	//単位行列代入
+	matWorld *= matScale;	//ワールド座標にスケーリングを反映
+	matWorld *= matRot;	//ワールド座標に回転を反映
+	matWorld *= matTrans;	//ワールド座標に平行移動を反映
+
+	//親オブジェクトがあれば
+	if (parent != nullptr)
+	{
+		//親オブジェクトのワールド行列をかける
+		matWorld *= parent->matWorld;
+	}
+}
+
 void NObj3d::TransferMatrix(XMMATRIX matView, XMMATRIX matProjection)
 {
 	constMapTransform->mat = matWorld * matView * matProjection;

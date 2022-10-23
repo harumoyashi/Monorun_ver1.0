@@ -22,6 +22,11 @@ Player* Player::GetInstance()
 	return &instance;
 }
 
+// --リセット処理-- //
+void Player::Reset() {
+
+}
+
 // --初期化処理-- //
 void Player::Initialize(NDX12* dx12) {
 	// --プレイヤーオブジェクト(定数バッファ)-- //
