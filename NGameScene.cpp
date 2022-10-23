@@ -44,6 +44,10 @@ void NGameScene::Update()
 	player_->Update(matView, matProjection, eye, target, up);
 
 	stage_->Update(matView, matProjection, eye, target, up);
+
+	if (NInput::IsKeyTrigger(DIK_Q)) {
+		NSceneManager::SetScene(TITLESCENE);
+	}
 }
 
 void NGameScene::Draw(NDX12* dx12)

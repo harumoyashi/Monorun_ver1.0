@@ -80,17 +80,17 @@ namespace Util {
 
 	float timeRate = time / totaltime < 1.0f ? time / totaltime : 1.0f;
 
-	if (timeRate < 1 / d1) {
+	if (timeRate < 1.0f / d1) {
 		return start + (end - start) * n1 * timeRate * timeRate;
 	}
-	else if (timeRate < 2 / d1) {
-		return start + (end - start) * (n1 * (timeRate -= 1.5 / d1) * timeRate + 0.75f);
+	else if (timeRate < 2.0f / d1) {
+		return start + (end - start) * (n1 * (timeRate -= 1.5f / d1) * timeRate + 0.75f);
 	}
-	else if (timeRate < 2.5 / d1) {
-		return start + (end - start) * (n1 * (timeRate -= 2.25 / d1) * timeRate + 0.9375);
+	else if (timeRate < 2.5f / d1) {
+		return start + (end - start) * (n1 * (timeRate -= 2.25f / d1) * timeRate + 0.9375f);
 	}
 	else {
-		return start + (end - start) * (n1 * (timeRate -= 2.625 / d1) * timeRate + 0.984375);
+		return start + (end - start) * (n1 * (timeRate -= 2.625f / d1) * timeRate + 0.984375f);
 	}
 }
 
@@ -101,7 +101,7 @@ namespace Util {
 
 	float timeRate = time / totaltime < 1.0f ? time / totaltime : 1.0f;
 
-	return timeRate < 0.5
-		? start + (end - start) * (pow(2 * timeRate, 2) * ((c2 + 1) * 2 * timeRate - c2)) / 2
-		: start + (end - start) * (pow(2 * timeRate - 2, 2) * ((c2 + 1) * (timeRate * 2 - 2) + c2) + 2) / 2;
+	return timeRate < 0.5f
+		? start + (end - start) * (static_cast<float>(pow(2.0f * timeRate, 2.0f)) * ((c2 + 1.0f) * 2.0f * timeRate - c2)) / 2.0f
+		: start + (end - start) * (static_cast<float>(pow(2.0f * timeRate - 2.0f, 2.0f)) * ((c2 + 1.0f) * (timeRate * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 }

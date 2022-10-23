@@ -110,6 +110,7 @@ void NSceneManager::Update(NDX12* dx12)
 			isSceneChange = false;
 		}
 	}
+	effect_.ExpandSquareUpdate();
 }
 
 void NSceneManager::Draw(NDX12* dx12)
@@ -139,7 +140,7 @@ void NSceneManager::Draw(NDX12* dx12)
 	else if (scene == GAMESCENE) {
 		gameScene->Draw(dx12);
 	}
-	effect_.ExpandSquare();
+	effect_.ExpandSquareDraw();
 	dx12->PostDraw(preDraw->barrierDesc);
 }
 

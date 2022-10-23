@@ -34,20 +34,20 @@ void Effect::Reset()
 	activeCount_ = 0;
 }
 
-void Effect::ExpandSquare()
+void Effect::ExpandSquareUpdate()
 {
 	if (isPlay_) {
 		// --エフェクト開始->経過時間-- //
 		elapsedTime_ = (Util::GetNowCount() - startTime_) / 1000.0f;
 
-		particles_.front().get()->InOutBoxAll();
+		particles_.front().get()->InOutBoxAllUpdate();
 
 		// 0.71 か 0.9で迷ってる。※particle.classも変更すること。
 
 		if (elapsedTime_ <= 0.71f) {
 			particles_.front().get()->SetPos(NVector2{
 				particles_.front().get()->GetPos().x,
-				OutBounce(frameCount_, 50, NWindows::win_height / 2, 0) }
+				OutBounce((float)frameCount_, 50, NWindows::win_height / 2, 0) }
 			);
 			frameCount_++;
 		}
@@ -71,7 +71,7 @@ void Effect::ExpandSquare()
 		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
 			particles_.front().get()->SetPos(NVector2{
 				particles_.front().get()->GetPos().x,
-				InOutBack(frameCount_, 30, NWindows::win_height + 20, NWindows::win_height / 2) }
+				InOutBack((float)frameCount_, 30, NWindows::win_height + 20, NWindows::win_height / 2) }
 			);
 			frameCount_++;
 		}
@@ -79,6 +79,45 @@ void Effect::ExpandSquare()
 		// --指定されている時間が過ぎたら-- //
 		if (2.5f <= elapsedTime_) {
 			Reset();
+		}
+	}
+}
+
+void Effect::ExpandSquareDraw()
+{
+	if (isPlay_) {
+
+		particles_.front().get()->InOutBoxAllDraw();
+
+		// 0.71 か 0.9で迷ってる。※particle.classも変更すること。
+
+		if (elapsedTime_ <= 0.71f) {
+
+		}
+
+		// エフェクトの座標自体は0.71 ~ 1.5まで待機
+		if (0.71f <= elapsedTime_ && elapsedTime_ <= 1.1f) {
+
+		}
+
+		// particleの途中でシーン切替許可を出す
+		if (1.1f <= elapsedTime_ && elapsedTime_ <= 1.4f) {
+
+		}
+
+		// frameCountリセット
+		if (1.5f <= elapsedTime_ && elapsedTime_ <= 1.6f) {
+
+		}
+
+		// 再生終了後画面外に移動
+		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
+
+		}
+
+		// --指定されている時間が過ぎたら-- //
+		if (2.5f <= elapsedTime_) {
+			//Reset();
 		}
 	}
 }
