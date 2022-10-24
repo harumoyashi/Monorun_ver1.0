@@ -100,6 +100,11 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 		NVector2 old2newVec = newObj.pos - oldObj_.pos;
 
 		bool isOutLoop = false;
+		// --áŠQ•¨‚ÌÕ“Ëƒtƒ‰ƒO‚ğOFF‚É‚·‚é-- //
+		for (size_t i = 0; i < stage_->obstacles_.size(); i++)
+		{
+			stage_->obstacles_[i].SetIsCol(false);
+		}
 
 		// --×‚©‚­”»’è‚ğ‚Æ‚é‚½‚ß‚ÉˆÚ“®—Ê‚ğ10‚ÅŠ„‚Á‚Ä“–‚½‚è”»’è‚ğ‚Æ‚é-- //
 		for (int i = 0; i < 10; i++) {

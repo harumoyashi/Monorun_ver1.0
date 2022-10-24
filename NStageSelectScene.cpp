@@ -71,7 +71,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 
 	//前景スプライト生成
 	for (size_t i = 0; i < maxNumSprite; i++) {
-		numSprite[i] = new NSprite();
+		numSprite[i] = std::make_unique<NSprite>();
 		numSprite[i]->texNum = static_cast<int>(NUMBER);
 		numSprite[i]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[numSprite[i]->texNum].texBuff, {i * 48.0f, 0.0f}, {48.0f, 69.0f});
 		numSprite[i]->SetColor(1, 1, 1, 1);
@@ -85,7 +85,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
 		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
 
-		frameSprite[i] = new NSprite();
+		frameSprite[i] = std::make_unique<NSprite>();
 		frameSprite[i]->texNum = STAGESELECTFRAME;
 		frameSprite[i]->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[frameSprite[i]->texNum].texBuff);
 		frameSprite[i]->SetColor(1, 1, 1, 1);
@@ -231,13 +231,4 @@ void NStageSelectScene::Draw(NDX12* dx12)
 
 void NStageSelectScene::Finalize()
 {
-	for (size_t i = 0; i < maxNumSprite; i++)
-	{
-		delete numSprite[i];
-	}
-
-	//for (size_t i = 0; i < maxBackSprite; i++)
-	//{
-	//	delete backSprite[i];
-	//}
 }

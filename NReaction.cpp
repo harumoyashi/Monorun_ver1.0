@@ -6,6 +6,7 @@ void NReaction::Bounce(bool isReaction)
 	if (isReaction)
 	{
 		isReaction1 = true;
+		originScale = objScale.x;
 	}
 	//リアクションフラグ立ってたら
 	if (isReaction1)
@@ -46,13 +47,13 @@ void NReaction::Bounce(bool isReaction)
 
 float NReaction::EaseInBack(float t)
 {
-    const float c1 = 1.100;
-    const float c3 = c1 + 1.0f;
+	const float c1 = 1.100;
+	const float c3 = c1 + 1.0f;
 
-    return c3 * t * t * t - c1 * t * t;
+	return c3 * t * t * t - c1 * t * t;
 }
 
 float NReaction::EaseOutQuart(float t)
 {
-    return 1 - pow(1 - t, 4);
+	return 1 - pow(1 - t, 4);
 }

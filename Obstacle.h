@@ -14,6 +14,7 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "NReaction.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -30,7 +31,10 @@ private:
 	int blockType_;
 
 	// --衝突フラグ-- //
-	bool isCollision_;
+	bool isCollision_ = false;
+
+	//リアクション//
+	NReaction* reaction;
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///
@@ -64,6 +68,6 @@ public:
 	void SetIsCol(bool isCollision) { isCollision_ = isCollision; }
 
 private:
-
+	
 	/// --メンバ関数END-- ///
 };

@@ -34,8 +34,8 @@ private:
 
 	//前景スプライト
 	static const int maxNumSprite = 10;		//ステージ数
-	NSprite* numSprite[maxNumSprite];		//ステージ番号スプライト
-	NSprite* frameSprite[maxNumSprite];		//ステージ枠スプライト
+	std::unique_ptr<NSprite> numSprite[maxNumSprite];		//ステージ番号スプライト
+	std::unique_ptr<NSprite> frameSprite[maxNumSprite];		//ステージ枠スプライト
 
 	// --イージング用-- //
 	XMFLOAT3 easeStartPos_[10];

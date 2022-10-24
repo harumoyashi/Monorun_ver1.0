@@ -53,7 +53,7 @@ Obstacle::Obstacle(NDX12* dx12, XMFLOAT3 pos, int blockType) {
 
 // --デストラクタ
 Obstacle::~Obstacle() {
-
+	delete reaction;
 }
 
 // --初期化処理
@@ -62,6 +62,12 @@ void Obstacle::Initialize() {
 		object_[0].UpdateMatrix();
 		object_[1].UpdateMatrix();
 		object_[2].UpdateMatrix();
+	}
+	else if (blockType_ == BoundBlock)
+	{
+		reaction = new NReaction();
+		//設定したスケールをリアクション時の基準にする
+		reaction->SetObjScale(object_[0].scale);
 	}
 	else {
 		object_[0].UpdateMatrix();
@@ -75,13 +81,22 @@ void Obstacle::Update(XMMATRIX matView, XMMATRIX matProjection) {
 		object_[1].TransferMatrix(matView, matProjection);
 		object_[2].TransferMatrix(matView, matProjection);
 	}
+	else if (blockType_ == BoundBlock)
+	{
+		//collisionフラグ経ったらリアクション起こし始める
+		reaction->Bounce(isCollision_);
+		//リアクションで変更されたスケールを代入
+		object_[0].scale = reaction->GetObjScale();
+		//変更されたスケールを適用
+		object_[0].UpdateMatrix(matView, matProjection);
+	}
 	else {
 		object_[0].TransferMatrix(matView, matProjection);
 	}
 }
 
 // --描画処理
-void Obstacle::Draw(NDX12* dx12, NMaterial material,NCube*cube) {
+void Obstacle::Draw(NDX12* dx12, NMaterial material, NCube* cube) {
 	// --オブジェクト描画-- //
 	if (blockType_ == DeathBlock) {
 		object_[0].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
@@ -99,7 +114,7 @@ void Obstacle::Draw(NDX12* dx12, NMaterial material,NCube*cube) {
 
 // --オブジェクトを参照-- //
 BoxObj Obstacle::GetBoxObj() {
-	return { {object_[0].position.x, object_[0].position.y}, 32.0f};
+	return { {object_[0].position.x, object_[0].position.y}, 32.0f };
 }
 
 // --ブロックの種類を参照
