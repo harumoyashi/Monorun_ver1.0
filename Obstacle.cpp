@@ -32,9 +32,7 @@ void Obstacle::Initialize() {
 }
 
 // --更新処理
-void Obstacle::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up) {
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+void Obstacle::Update(XMMATRIX matView, XMMATRIX matProjection) {
 	object_.TransferMatrix(matView, matProjection);
 }
 

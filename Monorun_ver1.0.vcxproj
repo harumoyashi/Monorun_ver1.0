@@ -144,6 +144,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="NAudio.h" />
+    <ClInclude Include="NCamera.h" />
     <ClInclude Include="NCube.h" />
     <ClInclude Include="NGameScene.h" />
     <ClInclude Include="NPreDraw.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="NAudio.cpp" />
+    <ClCompile Include="NCamera.cpp" />
     <ClCompile Include="NCube.cpp" />
     <ClCompile Include="NGameScene.cpp" />
     <ClCompile Include="NPreDraw.cpp" />

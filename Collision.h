@@ -23,6 +23,9 @@ private:
 	// --ブロックのサイズ-- //
 	float blockSize_ = 64.0f;
 
+	// --Y軸スクロールの値-- //
+	float scrollY_;
+
 	/// --メンバ変数END-- ///
 	/// --------------- ///
 	/// --メンバ関数-- ///
@@ -40,7 +43,9 @@ public:
 	void Initialize();
 
 	// --更新処理-- //
-	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up);
+	void Update(XMMATRIX matView, XMMATRIX matProjection);
+
+	float GetScrollY() { return scrollY_; }
 
 private:
 	// --コンストラクタ-- //

@@ -9,6 +9,11 @@ NGameScene* NGameScene::GetInstance()
 
 void NGameScene::Initialize(NDX12* dx12)
 {
+#pragma region	カメラ初期化
+	camera = std::make_unique<NCamera>();
+	camera->ProjectiveProjection();
+	camera->CreateMatView();
+#pragma endregion
 	//マテリアル(定数バッファ)
 	material_.Initialize(dx12->GetDevice());
 
@@ -25,32 +30,26 @@ void NGameScene::Initialize(NDX12* dx12)
 
 	col_ = Collision::GetInstance();
 
-	//射影投影変換//
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0f),		//上下画角45度
-		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-		0.1f, 2000.0f					//前端、奥端
-	);
-
-	eye = { 0, 100, -1500 };	//視点座標
-	target = { 0, 0, 0 };	//注視点座標
-	up = { 0, 1, 0 };		//上方向ベクトル
-
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 }
 
 void NGameScene::Update()
 {
 	// --プレイヤー更新処理-- //
-	player_->Update(matView, matProjection, eye, target, up);
+	player_->Update(camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(player_->GetScrollY());
 
-	col_->Update(matView, matProjection, eye, target, up);
+	col_->Update(camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(player_->GetScrollY());
 
-	stage_->Update(matView, matProjection, eye, target, up);
+	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
 
-	if (NInput::IsKeyTrigger(DIK_Q)) {
-		NSceneManager::SetScene(TITLESCENE);
+	camera->CreateMatView();
+
+	if (NSceneManager::GetPlayEffect() == false)
+	{
+		if (NInput::IsKeyTrigger(DIK_Q)) {
+			NSceneManager::SetScene(TITLESCENE);
+		}
 	}
 
 	if (player_->GetCamShake()) {

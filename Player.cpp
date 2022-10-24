@@ -64,7 +64,8 @@ void Player::Initialize(NDX12* dx12) {
 }
 
 // --更新処理-- //
-void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up) {
+void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
+	scrollY_ = 0.0f;
 
 #pragma region 通常状態かつ壁伝い中の処理
 	if (state_ == NormalWallHit) {
@@ -167,8 +168,7 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 
 	// --プレイヤーの移動分スクロール-- //
 	object_.position.y += speedY_ * directionY_;
-	eye.y += speedY_ * directionY_;
-	target.y += speedY_ * directionY_;
+	scrollY_ += speedY_ * directionY_;
 
 	// --x座標が最低座標以下になったら-- //
 	if (object_.position.x < minPosX_ ) {
@@ -187,9 +187,9 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 		// --X軸の速度を変える-- //
 		speedX_ = 0.0f;// -> 動かないように
 
-		if (!isCameraShake_) {
-			SetCamShakeState(true);
-		}
+		//if (!isCameraShake_) {
+		//	SetCamShakeState(true);
+		//}
 	}
 
 	// --x座標が最高座標以上になったら-- //
@@ -213,8 +213,6 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 		}
 	}
 
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 	object_.UpdateMatrix(matView, matProjection);
 }
 

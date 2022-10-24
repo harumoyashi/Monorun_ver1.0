@@ -41,6 +41,11 @@ void NStageSelectScene::Reset() {
 
 void NStageSelectScene::Initialize(NDX12* dx12)
 {
+#pragma region	カメラ初期化
+	camera = std::make_unique<NCamera>();
+	camera->ProjectiveProjection();
+	camera->CreateMatView();
+#pragma endregion
 #pragma region 描画初期化処理
 	////マテリアル(定数バッファ)
 	//material.Initialize(dx12->GetDevice());
@@ -100,34 +105,19 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	selectStage_ = 1;
 
 #pragma endregion
-#pragma region	カメラ初期化
-	//射影投影変換//
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0f),		//上下画角45度
-		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-		0.1f, 2000.0f					//前端、奥端
-	);
-
-	//ここでビュー変換行列計算
-	matView;
-	eye = { -100, 100, -1000 };	//視点座標
-	target = { 0, 0, 0 };	//注視点座標
-	up = { 0, 1, 0 };		//上方向ベクトル
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-	angle = 0.0f;	//カメラの回転角
-#pragma endregion
 }
 
 void NStageSelectScene::Update()
 {
 	// --[SPACE]を押したら-- //
-	if (NInput::IsKeyTrigger(DIK_SPACE))
+	if (NSceneManager::GetPlayEffect() == false)
 	{
-		stage_->SetCSV(selectStage_);
-		if (!NSceneManager::GetPlayEffect()) {
-			NSceneManager::SetScene(GAMESCENE);
+		if (NInput::IsKeyTrigger(DIK_SPACE))
+		{
+			stage_->SetCSV(selectStage_);
+			if (!NSceneManager::GetPlayEffect()) {
+				NSceneManager::SetScene(GAMESCENE);
+			}
 		}
 	}
 
@@ -187,7 +177,7 @@ void NStageSelectScene::Update()
 
 #pragma region 行列の計算
 	//ビュー変換行列再作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	camera->CreateMatView();
 
 	//obj3d[0].MoveKey();
 	//for (size_t i = 0; i < maxObj; i++)

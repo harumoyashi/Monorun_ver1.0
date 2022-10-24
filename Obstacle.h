@@ -43,7 +43,7 @@ public:
 	void Initialize();
 
 	// --XVˆ—-- //
-	void Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up);
+	void Update(XMMATRIX matView, XMMATRIX matProjection);
 
 	// --•`‰æˆ—-- //
 	void Draw(NDX12* dx12, NMaterial material,NCube*cube);

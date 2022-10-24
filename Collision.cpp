@@ -87,7 +87,9 @@ void Collision::Initialize() {
 
 }
 
-void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up) {
+void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
+	scrollY_ = 0.0f;
+
 	// --最新プレイヤー情報を格納-- //
 	BoxObj newObj = player_->GetBoxObj();
 
@@ -204,8 +206,7 @@ void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye
 							// --カメラに距離と半径を引いた数を加算-- //
 							oldObj_.pos.y += radius - len;
 							player_->object_.position.y += radius - len;
-							eye.y += radius - len;
-							target.y += radius - len;
+							scrollY_ += radius - len;
 						}
 
 						// --プレイヤーが障害物の左側にいたら-- //
@@ -213,8 +214,7 @@ void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye
 							// --カメラに距離と半径を引いた数を加算-- //
 							oldObj_.pos.y -= radius - len;
 							player_->object_.position.y -= radius - len;
-							eye.y -= radius - len;
-							target.y -= radius - len;
+							scrollY_ -= radius - len;
 						}
 					}
 
@@ -230,8 +230,6 @@ void Collision::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye
 		}
 	}
 
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 	player_->object_.UpdateMatrix(matView, matProjection);
 
 	// --古いプレイヤー情報を格納-- //
