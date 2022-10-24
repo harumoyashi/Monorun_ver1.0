@@ -24,7 +24,7 @@ public:
 
 private:
 	// --オブジェクト-- //
-	NObj3d object_;
+	NObj3d object_[3];
 
 	// --ブロックの種類
 	int blockType_;

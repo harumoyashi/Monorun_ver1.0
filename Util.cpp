@@ -48,3 +48,9 @@ XMFLOAT3 Util::CameraShake(XMFLOAT3 eyePos, int value)
 	std::uniform_real_distribution<> dist(-value, value);
 	return XMFLOAT3(eyePos.x, eyePos.y + dist(engine), eyePos.z + dist(engine));
 }
+
+float Util::EaseOutCubic(float start, float end, float t) {
+	float time = 1 - pow(1 - t, 3);
+	return start * (1.0f - time) + end * time;
+	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
+}

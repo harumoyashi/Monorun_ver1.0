@@ -10,7 +10,9 @@ enum BlockId
 	None,   // -> なにもなし
 	Coin,// -> コイン
 	BoundBlock,// -> バウンドブロック
-	DeathBlock// -> デスブロック
+	DeathBlock,// -> デスブロック
+	GoalBlock,// -> ゴールブロック
+	WallBlock
 };
 
 class StageManager {
@@ -21,6 +23,7 @@ public:
 	NMaterial redMaterial_;
 	NMaterial greenMaterial_;
 	NMaterial blueMaterial_;
+	NMaterial goalMaterial_;
 
 	// --オブジェクト-- //
 	std::vector<Obstacle> obstacles_;
@@ -28,6 +31,8 @@ public:
 	// --壁オブジェクト-- //
 	std::vector<Obstacle> leftWalls_;
 	std::vector<Obstacle> rightWalls_;
+
+	std::unique_ptr<NCube> crystalCube;	//クリスタル情報(頂点、インデックス)
 
 	// --1マスのサイズ-- //
 	const int blockSize_;

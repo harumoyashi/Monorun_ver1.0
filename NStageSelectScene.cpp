@@ -4,13 +4,6 @@
 #include "Util.h"
 #include <chrono>
 
-// --イージング-- //
-float EaseOutCubic(float start, float end, float t) {
-	float time = 1 - pow(1 - t, 3);
-	return start * (1.0f - time) + end * time;
-	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
-}
-
 NStageSelectScene* NStageSelectScene::GetInstance()
 {
 	static NStageSelectScene instance;
@@ -165,7 +158,7 @@ void NStageSelectScene::Update()
 
 	float len[10];
 	for (size_t i = 0; i < 10; i++) {
-		foreSprite[i]->position.y = EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
+		foreSprite[i]->position.y = Util::EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
 		len[i] = abs(400.0f - foreSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
 		foreSprite[i]->size.x = 200 * (1.0f - len[i]);

@@ -11,14 +11,37 @@ enum struct ShapeType {
 
 // --コンストラクタ-- //
 Obstacle::Obstacle(NDX12* dx12, XMFLOAT3 pos, int blockType) {
-	// --プレイヤーオブジェクト(定数バッファ)-- //
-	object_.Initialize(dx12->GetDevice());
-	object_.texNum = BLOCK;
-	object_.scale = { 32.0f, 32.0f, 32.0f };
-	object_.position = pos;
-
 	// --ブロックの種類
 	blockType_ = blockType;
+
+	if (blockType == DeathBlock) {
+		// --プレイヤーオブジェクト(定数バッファ)-- //
+		object_[0].Initialize(dx12->GetDevice());
+		object_[0].texNum = BLOCK;
+		object_[0].scale = { 24.0f, 24.0f, 24.0f };
+		object_[0].position = pos;
+
+		// --プレイヤーオブジェクト(定数バッファ)-- //
+		object_[1].Initialize(dx12->GetDevice());
+		object_[1].texNum = BLOCK;
+		object_[1].scale = { 24.0f, 24.0f, 24.0f };
+		object_[1].position = pos;
+		object_[1].rotation.z = 45.0f;
+
+		// --プレイヤーオブジェクト(定数バッファ)-- //
+		object_[2].Initialize(dx12->GetDevice());
+		object_[2].texNum = BLOCK;
+		object_[2].scale = { 24.0f, 24.0f, 24.0f };
+		object_[2].position = pos;
+		object_[2].rotation.z = -45.0f;
+	}
+	else {
+		// --プレイヤーオブジェクト(定数バッファ)-- //
+		object_[0].Initialize(dx12->GetDevice());
+		object_[0].texNum = BLOCK;
+		object_[0].scale = { 32.0f, 32.0f, 32.0f };
+		object_[0].position = pos;
+	}
 }
 
 // --デストラクタ
@@ -28,24 +51,48 @@ Obstacle::~Obstacle() {
 
 // --初期化処理
 void Obstacle::Initialize() {
-	object_.UpdateMatrix();
+	if (blockType_ == DeathBlock) {
+		object_[0].UpdateMatrix();
+		object_[1].UpdateMatrix();
+		object_[2].UpdateMatrix();
+	}
+	else {
+		object_[0].UpdateMatrix();
+	}
 }
 
 // --更新処理
 void Obstacle::Update(XMMATRIX matView, XMMATRIX matProjection) {
-	object_.TransferMatrix(matView, matProjection);
+	if (blockType_ == DeathBlock) {
+		object_[0].TransferMatrix(matView, matProjection);
+		object_[1].TransferMatrix(matView, matProjection);
+		object_[2].TransferMatrix(matView, matProjection);
+	}
+	else {
+		object_[0].TransferMatrix(matView, matProjection);
+	}
 }
 
 // --描画処理
 void Obstacle::Draw(NDX12* dx12, NMaterial material,NCube*cube) {
 	// --オブジェクト描画-- //
-	object_.CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+	if (blockType_ == DeathBlock) {
+		object_[0].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		object_[0].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+		object_[1].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		object_[1].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+		object_[2].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		object_[2].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+	}
+	else {
+		object_[0].CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		object_[0].Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+	}
 }
 
 // --オブジェクトを参照-- //
 BoxObj Obstacle::GetBoxObj() {
-	return { {object_.position.x, object_.position.y}, 32.0f };
+	return { {object_[0].position.x, object_[0].position.y}, 32.0f};
 }
 
 // --ブロックの種類を参照

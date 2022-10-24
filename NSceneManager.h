@@ -19,7 +19,9 @@ enum Texture
 	BLOCK,	//ブロックテクスチャ
 	STAGESELECTIMAGE,//ステージ選択画面の各ステージの画像
 	WHITEPNG,	// 0xffffffの64x64(px)のpng
-
+	STAGESELECTTEXT, // ステージセレクトテキスト
+	RESULTTEXT,// リザルトテキスト
+	RETRYTEXT,// リトライテキスト
 	MAXTEX
 };
 

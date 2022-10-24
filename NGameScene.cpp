@@ -32,6 +32,24 @@ void NGameScene::Initialize(NDX12* dx12)
 
 	col_ = Collision::GetInstance();
 
+	//前景スプライト生成
+	resultSprite = std::make_unique<NSprite>();
+	resultSprite->texNum = RESULTTEXT;
+	resultSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[resultSprite->texNum].texBuff);
+	resultSprite->position = { NWindows::win_width / 2,200.0f,0 };
+	resultSprite->UpdateMatrix();
+
+	stageSelectSprite = std::make_unique<NSprite>();
+	stageSelectSprite->texNum = STAGESELECTTEXT;
+	stageSelectSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[stageSelectSprite->texNum].texBuff);
+	stageSelectSprite->position = { NWindows::win_width / 2,500.0f,0 };
+	stageSelectSprite->UpdateMatrix();
+
+	retrySprite = std::make_unique<NSprite>();
+	retrySprite->texNum = RETRYTEXT;
+	retrySprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[retrySprite->texNum].texBuff);
+	retrySprite->position = { NWindows::win_width / 2,600.0f,0 };
+	retrySprite->UpdateMatrix();
 }
 
 void NGameScene::Update()
@@ -54,6 +72,46 @@ void NGameScene::Update()
 		}
 	}
 
+	if (player_->GetState() == Goal) {
+		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			if (selectText == StageSelectText) {
+				selectText = RetryText;
+			}
+
+			else if (selectText == RetryText) {
+				selectText = StageSelectText;
+			}
+
+			else {
+				selectText = StageSelectText;
+			}
+		}
+
+		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			if (selectText == StageSelectText) {
+				selectText = RetryText;
+			}
+
+			else if (selectText == RetryText) {
+				selectText = StageSelectText;
+			}
+
+			else {
+				selectText = StageSelectText;
+			}
+		}
+
+		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			if (selectText == StageSelectText) {
+				NSceneManager::SetScene(STAGESELECTSCENE);
+			}
+
+			else if (selectText == RetryText) {
+				NSceneManager::SetScene(GAMESCENE);
+			}
+		}
+	}
+
 	//if (player_->GetCamShake()) {
 	//	eye = Util::CameraShake(eye, shakeCount);
 	//	if (0 < shakeCount) {
@@ -71,6 +129,20 @@ void NGameScene::Draw(NDX12* dx12)
 	player_->Draw(dx12,cube.get());
 
 	stage_->Draw(dx12, material_,cube.get());
+
+	if (player_->GetState() == Goal) {
+		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		stageSelectSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		stageSelectSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		retrySprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		retrySprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+	}
 }
 
 // --リセット処理-- //

@@ -23,7 +23,8 @@ enum State {
 	NormalAir,// -> 通常状態で空中にいる
 	RotateWallHit,// -> 回転状態で壁伝い中
 	RotateAir,// -> 回転状態で空中にいる
-	Death// --死亡状態
+	Death,// --死亡状態
+	Goal
 };
 
 class Player {
@@ -97,7 +98,24 @@ private:
 	float scrollY_;
 
 	// getter用
-	bool isCameraShake_ = false; 
+	bool isCameraShake_ = false;
+
+	// --プレイヤーの衝突判定を行うか-- //
+	bool isColActive_;
+
+#pragma region ゴールした時の演出用
+	// --イージング開始時のX軸座標-- //
+	float easeStartPosX_;
+
+	// --イージング終了時のX軸座標-- //
+	const float easeEndPosX_ = 0.0f;
+
+	// --イージング開始時のカウント-- //
+	int easeStartCount_;
+
+	// --イージング時間-- //
+	const float goalEaseTime_ = 2.5f;
+#pragma endregion
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///
@@ -124,6 +142,8 @@ public:
 	// --プレイヤーの状態を参照-- //
 	int GetState();
 
+	bool GetIsColActive() { return isColActive_; }
+
 	// --プレイヤーの状態を変更-- //
 	void SetState(int state);
 
@@ -145,6 +165,9 @@ public:
 
 	// --回転状態にする-- //
 	void SetRotate();
+
+	// --ゴール状態にする-- //
+	void SetGoal();
 
 	// --構造体で返す-- //
 	BoxObj GetBoxObj();
