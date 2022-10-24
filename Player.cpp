@@ -207,6 +207,10 @@ void Player::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, X
 
 		// --X軸の速度を変える-- //
 		speedX_ = 0.0f;// -> 動かないように
+
+		if (!isCameraShake_) {
+			SetCamShakeState(true);
+		}
 	}
 
 	//ビュー変換行列作成

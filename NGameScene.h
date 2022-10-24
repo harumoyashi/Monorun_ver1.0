@@ -43,6 +43,8 @@ private:
 	XMFLOAT3 target;	//注視点座標
 	XMFLOAT3 up;		//上方向ベクトル
 	float angle = 0.0f;	//カメラの回転角
+
+	int shakeCount{ 0 };
 #pragma endregion
 
 public:

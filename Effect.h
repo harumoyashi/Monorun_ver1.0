@@ -15,8 +15,12 @@ public: // ŠÖ”
 	void Activate();
 	void Reset();
 
+#pragma region Effectˆê——
 	void ExpandSquareUpdate();
 	void ExpandSquareDraw();
+
+	
+#pragma endregion
 
 	// getter
 	bool GetEffectPlay() { return isPlay_; }

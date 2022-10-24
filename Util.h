@@ -1,6 +1,10 @@
 #pragma once
 #include <chrono>
 #include "NVector2.h"
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
 
 struct BoxObj {
 	// --ç¿ïW-- //
@@ -80,6 +84,8 @@ namespace Util {
 	inline int GetNowCount(void) {
 		return static_cast<int>(duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count());
 	}
+
+	XMFLOAT3 CameraShake(XMFLOAT3 eyePos, int value);
 } // namespace MathUtility
 
 [[nodiscard]] inline float OutBounce(float time, float totaltime, float end = 1.0f, float start = 0.0f)
@@ -114,3 +120,4 @@ namespace Util {
 		? start + (end - start) * (static_cast<float>(pow(2.0f * timeRate, 2.0f)) * ((c2 + 1.0f) * 2.0f * timeRate - c2)) / 2.0f
 		: start + (end - start) * (static_cast<float>(pow(2.0f * timeRate - 2.0f, 2.0f)) * ((c2 + 1.0f) * (timeRate * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 }
+

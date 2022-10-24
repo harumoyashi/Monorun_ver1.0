@@ -1,4 +1,8 @@
 #include "Util.h"
+#include <random>
+
+std::random_device seed_gen;
+std::mt19937 engine(seed_gen());
 
 double Sign(double a)
 {
@@ -37,4 +41,10 @@ float Util::Radian2Degree(float radian)
 float Util::Degree2Radian(float degree)
 {
 	return degree * PI / 180.0f;
+}
+
+XMFLOAT3 Util::CameraShake(XMFLOAT3 eyePos, int value)
+{
+	std::uniform_real_distribution<> dist(-value, value);
+	return XMFLOAT3(eyePos.x, eyePos.y + dist(engine), eyePos.z + dist(engine));
 }

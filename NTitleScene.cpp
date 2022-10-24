@@ -90,7 +90,9 @@ void NTitleScene::Update()
 		{
 			audio->StopWave(soundData[0]);
 		}
-		NSceneManager::SetScene(STAGESELECTSCENE);
+		if (!NSceneManager::GetPlayEffect()) {
+			NSceneManager::SetScene(STAGESELECTSCENE);
+		}
 	}
 #pragma region s—ñ‚ÌŒvŽZ
 	player->rotation.z += 0.3f;
