@@ -33,8 +33,9 @@ private:
 	StageManager* stage_;
 
 	//前景スプライト
-	static const int maxForeSprite = 10;	//前景スプライト数
-	NSprite* foreSprite[maxForeSprite];	//前景スプライト
+	static const int maxNumSprite = 10;		//ステージ数
+	NSprite* numSprite[maxNumSprite];		//ステージ番号スプライト
+	NSprite* frameSprite[maxNumSprite];		//ステージ枠スプライト
 
 	// --イージング用-- //
 	XMFLOAT3 easeStartPos_[10];
