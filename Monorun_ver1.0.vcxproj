@@ -159,7 +159,6 @@
     <ClInclude Include="NRootSignature.h" />
     <ClInclude Include="NSceneManager.h" />
     <ClInclude Include="NSprite.h" />
-    <ClInclude Include="NSpriteManager.h" />
     <ClInclude Include="NStageSelectScene.h" />
     <ClInclude Include="NTexture.h" />
     <ClInclude Include="NTitleScene.h" />
@@ -192,7 +191,6 @@
     <ClCompile Include="NRootSignature.cpp" />
     <ClCompile Include="NSceneManager.cpp" />
     <ClCompile Include="NSprite.cpp" />
-    <ClCompile Include="NSpriteManager.cpp" />
     <ClCompile Include="NStageSelectScene.cpp" />
     <ClCompile Include="NTexture.cpp" />
     <ClCompile Include="NTitleScene.cpp" />

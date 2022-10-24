@@ -37,17 +37,23 @@
     <Filter Include="ソース ファイル\3D">
       <UniqueIdentifier>{e2412f9a-7b0c-4029-bc43-a2150e869e4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\main">
+      <UniqueIdentifier>{510be666-f5a6-4956-8062-bb37d0b4cd19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Basic">
+      <UniqueIdentifier>{3142dfcb-d637-46fd-a659-8dc105946188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Basic">
+      <UniqueIdentifier>{ea43f5ef-3cbc-40e7-b4d1-a2b0a8ec0d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\2D">
+      <UniqueIdentifier>{d44901f9-ca0e-46e3-bddf-c88fe9de1551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\3D">
+      <UniqueIdentifier>{5cf2fb90-6a3a-4aa4-8a9b-c1a446347b1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NInput.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NWindows.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NDX12.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="NMatrix4.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
@@ -67,24 +73,6 @@
       <Filter>ヘッダー ファイル\Pipeline</Filter>
     </ClInclude>
     <ClInclude Include="NTexture.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NPreDraw.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NMaterial.h">
-      <Filter>ヘッダー ファイル\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="NObj3d.h">
-      <Filter>ヘッダー ファイル\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="NSprite.h">
-      <Filter>ヘッダー ファイル\Pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="NSpriteManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NAudio.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="NSceneManager.h">
@@ -108,9 +96,6 @@
     <ClInclude Include="Effect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="NCube.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -123,26 +108,41 @@
     <ClInclude Include="Collision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="NCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="NReaction.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="NAudio.h">
+      <Filter>ヘッダー ファイル\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NDX12.h">
+      <Filter>ヘッダー ファイル\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NInput.h">
+      <Filter>ヘッダー ファイル\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NWindows.h">
+      <Filter>ヘッダー ファイル\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NPreDraw.h">
+      <Filter>ヘッダー ファイル\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="NCube.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="NCamera.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="NObj3d.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="NMaterial.h">
+      <Filter>ヘッダー ファイル\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="NSprite.h">
+      <Filter>ヘッダー ファイル\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NInput.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NWindows.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NDX12.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="NMatrix4.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -164,17 +164,8 @@
     <ClCompile Include="NTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="NPreDraw.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NSpriteManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="NMaterial.cpp">
       <Filter>ソース ファイル\PipeLine</Filter>
-    </ClCompile>
-    <ClCompile Include="NAudio.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="NSceneManager.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -218,11 +209,29 @@
     <ClCompile Include="Collision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="NCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="NReaction.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\main</Filter>
+    </ClCompile>
+    <ClCompile Include="NAudio.cpp">
+      <Filter>ソース ファイル\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NCamera.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="NDX12.cpp">
+      <Filter>ソース ファイル\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NInput.cpp">
+      <Filter>ソース ファイル\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NPreDraw.cpp">
+      <Filter>ソース ファイル\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="NWindows.cpp">
+      <Filter>ソース ファイル\Basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
