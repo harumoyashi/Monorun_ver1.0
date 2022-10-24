@@ -160,6 +160,9 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 
 				else if (stage_->obstacles_[closestObsIndex].GetBlockType() == BoundBlock) {
 
+					// --障害物の衝突フラグをONにする-- //
+					stage_->obstacles_[closestObsIndex].SetIsCol(true);
+
 					if (colObsXY >= 3) {
 						// --プレイヤーの状態を変える-- //
 						player_->SetRotate();// --回転状態に-- //

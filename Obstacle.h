@@ -29,6 +29,9 @@ private:
 	// --ブロックの種類
 	int blockType_;
 
+	// --衝突フラグ-- //
+	bool isCollision_;
+
 	/// --メンバ変数END-- ///
 	/// --------------- ///
 	/// --メンバ関数-- ///
@@ -53,6 +56,12 @@ public:
 
 	// --ブロックの種類を参照
 	int GetBlockType();
+
+	// --衝突フラグの取得-- //
+	bool GetIsCol() { return isCollision_; }
+
+	// --衝突フラグの設定-- //
+	void SetIsCol(bool isCollision) { isCollision_ = isCollision; }
 
 private:
 
