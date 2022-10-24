@@ -285,12 +285,12 @@ void NDX12::InitializeFixFPS()
 	reference = std::chrono::steady_clock::now();
 }
 
-void NDX12::UpdateFixFPX()
+void NDX12::UpdateFixFPX(float divideFrameRate)
 {
 	//1/60•b(1ƒtƒŒ[ƒ€)‚Ò‚Á‚½‚è‚ÌŠÔ
-	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / (60.0f / divideFrameRate)));
 	//1/60•b‚æ‚è‚¿‚å‚Á‚Æ‚¾‚¯’Z‚¢ŠÔ
-	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / (65.0f / divideFrameRate)));
 
 	//Œ»İ‚ÌŠÔ‚ğæ“¾‚·‚é
 	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();

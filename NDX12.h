@@ -78,6 +78,10 @@ public:
 	//描画後処理
 	void PostDraw(D3D12_RESOURCE_BARRIER barrierDesc);
 
+	//FPS固定更新
+	//divideFrameRate:フレームレートを何分の1にするか
+	void UpdateFixFPX(float divideFrameRate = 1.0f);
+
 	//ゲッター//
 	//デバイス取得
 	ID3D12Device* GetDevice()const { return device.Get(); }
@@ -128,8 +132,6 @@ private:
 
 	//FPS固定初期化
 	void InitializeFixFPS();
-	//FPS固定更新
-	void UpdateFixFPX();
 
 	//バリア解除
 	void BarrierReset(D3D12_RESOURCE_BARRIER barrierDesc);
