@@ -16,6 +16,7 @@
 #include "Player.h"
 #include "StageManager.h"
 #include "Collision.h"
+#include "NCamera.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")

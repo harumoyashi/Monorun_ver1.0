@@ -76,19 +76,19 @@ void StageManager::Initialize(NDX12* dx12)
 	lineCounter_ = 0;
 }
 
-void StageManager::Update(XMMATRIX& matView, XMMATRIX& matProjection, XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up)
+void StageManager::Update(XMMATRIX matView, XMMATRIX matProjection)
 {
 	// --è·äQï®ÇÃï`âÊ
 	for (int i = 0; i < obstacles_.size(); i++) {
-		obstacles_[i].Update(matView, matProjection, eye, target, up);
+		obstacles_[i].Update(matView, matProjection);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		leftWalls_[i].Update(matView, matProjection, eye, target, up);
+		leftWalls_[i].Update(matView, matProjection);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		rightWalls_[i].Update(matView, matProjection, eye, target, up);
+		rightWalls_[i].Update(matView, matProjection);
 	}
 }
 

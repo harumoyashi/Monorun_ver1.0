@@ -93,6 +93,9 @@ private:
 	float directionX_;
 	float directionY_;
 
+	// --Y軸スクロールの速度-- //
+	float scrollY_;
+
 	// getter用
 	bool isCameraShake_ = false; 
 
@@ -110,7 +113,7 @@ public:
 	void Initialize(NDX12* dx12);
 
 	// --更新処理-- //
-	void Update(XMMATRIX &matView, XMMATRIX &matProjection, XMFLOAT3 &eye, XMFLOAT3 &target, XMFLOAT3 &up);
+	void Update(XMMATRIX matView, XMMATRIX matProjection);
 
 	// --描画処理-- //
 	void Draw(NDX12* dx12,NCube* cube);
@@ -145,6 +148,9 @@ public:
 
 	// --構造体で返す-- //
 	BoxObj GetBoxObj();
+
+	// --Y軸スクロールの値を参照-- //
+	float GetScrollY() { return scrollY_; }
 
 	// cameraShake
 	bool GetCamShake() { return isCameraShake_; }

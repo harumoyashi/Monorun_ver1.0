@@ -14,3 +14,8 @@ void NCamera::ProjectiveProjection()
 		0.1f, 1000.0f					//前端、奥端
 	);
 }
+
+void NCamera::SetScrollY(float scrollY) {
+	eye.y += scrollY;
+	target.y += scrollY;
+}

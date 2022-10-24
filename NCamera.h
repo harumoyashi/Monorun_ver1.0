@@ -21,6 +21,9 @@ public:
 	void CreateMatView();
 	//射影投影変換//
 	void ProjectiveProjection();
+	// --縦スクロールのスピード取得-- //
+	void SetScrollY(float scrollY);
+
 
 	//セッター
 	void SetEye(XMFLOAT3 eye) { this->eye = eye; }

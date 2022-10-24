@@ -13,6 +13,7 @@
 #include "NSprite.h"
 #include "NPreDraw.h"
 #include "StageManager.h"
+#include "NCamera.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")

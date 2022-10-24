@@ -35,11 +35,15 @@ void NGameScene::Initialize(NDX12* dx12)
 void NGameScene::Update()
 {
 	// --プレイヤー更新処理-- //
-	player_->Update(matView, matProjection, eye, target, up);
+	player_->Update(camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(player_->GetScrollY());
 
-	col_->Update(matView, matProjection, eye, target, up);
+	col_->Update(camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(player_->GetScrollY());
 
-	stage_->Update(matView, matProjection, eye, target, up);
+	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
+
+	camera->CreateMatView();
 
 	if (NSceneManager::GetPlayEffect() == false)
 	{
