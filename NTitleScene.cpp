@@ -21,6 +21,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 #pragma region	ƒJƒƒ‰‰Šú‰»
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
+	camera->SetEye({0,100.0f,-800.0f});
 	camera->CreateMatView();
 #pragma endregion
 #pragma region •`‰æ‰Šú‰»ˆ—
@@ -83,8 +84,10 @@ void NTitleScene::Update()
 		}
 	}
 #pragma region s—ñ‚ÌŒvZ
-	player->rotation.z += 0.3f;
+	player->rotation.z += 18.0f;
 	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());
+
+	camera->CreateMatView();
 #pragma endregion
 }
 

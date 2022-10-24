@@ -68,7 +68,7 @@ void NObj3d::UpdateMatrix(XMMATRIX matView, XMMATRIX matProjection)
 	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 	XMMATRIX matRot = XMMatrixIdentity();		//回転行列
-	matRot *= XMMatrixRotationZ(rotation.z);	//Z軸周りに0度回転してから
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));	//Z軸周りに0度回転してから
 	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));	//X軸周りに15度回転してから
 	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));	//Y軸周りに30度回転
 
@@ -96,9 +96,9 @@ void NObj3d::UpdateMatrix() {
 	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 	XMMATRIX matRot = XMMatrixIdentity();		//回転行列
-	matRot *= XMMatrixRotationZ(rotation.z);	//Z軸周りに0度回転してから
-	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));	//X軸周りに15度回転してから
-	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));	//Y軸周りに30度回転
+	matRot *= XMMatrixRotationZ(XMConvertToRadians(rotation.z));	//Z軸回り
+	matRot *= XMMatrixRotationX(XMConvertToRadians(rotation.x));	//X軸回り
+	matRot *= XMMatrixRotationY(XMConvertToRadians(rotation.y));	//Y軸回り
 
 	XMMATRIX matTrans;	//平行移動行列
 	matTrans = XMMatrixTranslation(position.x, position.y, position.z);
