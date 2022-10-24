@@ -154,6 +154,7 @@
     <ClInclude Include="NMatrix4.h" />
     <ClInclude Include="NDX12.h" />
     <ClInclude Include="NInput.h" />
+    <ClInclude Include="NReaction.h" />
     <ClInclude Include="NRootParam.h" />
     <ClInclude Include="NRootSignature.h" />
     <ClInclude Include="NSceneManager.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="NDX12.cpp" />
     <ClCompile Include="NInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NReaction.cpp" />
     <ClCompile Include="NRootParam.cpp" />
     <ClCompile Include="NRootSignature.cpp" />
     <ClCompile Include="NSceneManager.cpp" />
