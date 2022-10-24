@@ -52,15 +52,7 @@ private:
 	// --現在選んでいるステージ-- //
 	int selectStage_;
 
-	//カメラ
-	XMMATRIX matProjection;
-	XMMATRIX matView;
-
-	//カメラ
-	XMFLOAT3 eye = { 0, 0, -100 };	//視点座標
-	XMFLOAT3 target = { 0, 0, 0 };	//注視点座標
-	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
-	float angle = 0.0f;				//カメラの回転角
+	std::unique_ptr<NCamera> camera;	//カメラ
 
 public:
 	//インスタンス取得

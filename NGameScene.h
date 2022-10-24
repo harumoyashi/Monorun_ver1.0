@@ -33,17 +33,7 @@ private:
 	NMaterial material_;// -> マテリアル
 	std::unique_ptr<NCube> cube;	//立方体情報(頂点、インデックス)
 
-#pragma region カメラ関係
-	//カメラ
-	XMMATRIX matProjection;
-	XMMATRIX matView;
-
-	//カメラ
-	XMFLOAT3 eye;		//視点座標
-	XMFLOAT3 target;	//注視点座標
-	XMFLOAT3 up;		//上方向ベクトル
-	float angle = 0.0f;	//カメラの回転角
-#pragma endregion
+	std::unique_ptr<NCamera> camera;	//カメラ
 
 public:
 

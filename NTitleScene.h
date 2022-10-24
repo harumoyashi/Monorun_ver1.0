@@ -16,6 +16,7 @@
 #include "Particle.h"
 #include "Effect.h"
 #include "NAudio.h"
+#include "NCamera.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -38,15 +39,7 @@ private:
 	std::unique_ptr<NSprite> titleSprite;	//タイトルロゴ
 	std::unique_ptr<NSprite> startSprite;	//スタートUI
 
-	//カメラ
-	XMMATRIX matProjection;
-	XMMATRIX matView;
-
-	//カメラ
-	XMFLOAT3 eye = { 0, 0, -100 };	//視点座標
-	XMFLOAT3 target = { 0, 0, 0 };	//注視点座標
-	XMFLOAT3 up = { 0, 1, 0 };		//上方向ベクトル
-	float angle = 0.0f;				//カメラの回転角
+	std::unique_ptr<NCamera> camera;	//カメラ
 
 	NAudio* audio = nullptr;
 	static const int maxSoundData = 3;

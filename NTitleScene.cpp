@@ -19,22 +19,9 @@ void NTitleScene::Initialize(NDX12* dx12)
 	audio->PlayWave(soundData[0], true);
 #pragma endregion
 #pragma region	カメラ初期化
-	//射影投影変換//
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0f),		//上下画角45度
-		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-		0.1f, 2000.0f					//前端、奥端
-	);
-
-	//ここでビュー変換行列計算
-	matView;
-	eye = { -100, 100, -1000 };	//視点座標
-	target = { 0, 0, 0 };	//注視点座標
-	up = { 0, 1, 0 };		//上方向ベクトル
-	//ビュー変換行列作成
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-	angle = 0.0f;	//カメラの回転角
+	camera = std::make_unique<NCamera>();
+	camera->ProjectiveProjection();
+	camera->CreateMatView();
 #pragma endregion
 #pragma region 描画初期化処理
 	//マテリアル(定数バッファ)
@@ -51,7 +38,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	player->scale = { 24.0f,24.0f,24.0f };
 	player->position = { 0.0f,-100.0f,0.0f };
 	//設定したのを適用
-	player->UpdateMatrix(matView, matProjection);
+	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());
 #pragma endregion
 	////背景スプライト生成
 	//for (size_t i = 0; i < maxBackSprite; i++)
@@ -97,7 +84,7 @@ void NTitleScene::Update()
 	}
 #pragma region 行列の計算
 	player->rotation.z += 0.3f;
-	player->UpdateMatrix(matView, matProjection);
+	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());
 #pragma endregion
 }
 
