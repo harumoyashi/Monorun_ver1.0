@@ -48,7 +48,7 @@ private:
 	const float defSpeedY_ = 2.5f;// -> Y軸基本速度
 
 	// --回転速度-- //
-	const float rotaSpeed = 60.0f;
+	const float rotaSpeed = 18.0f;
 
 	// --Y軸の最高速度-- //
 	const float maxSpeedY_ = 20.0f;

@@ -12,6 +12,8 @@ void NGameScene::Initialize(NDX12* dx12)
 #pragma region	カメラ初期化
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
+	camera->SetEye({ 0, -300, -1500 });
+	camera->SetTarget({ 0.0f, -300.0f, 0.0f });
 	camera->CreateMatView();
 #pragma endregion
 	//マテリアル(定数バッファ)
@@ -39,7 +41,7 @@ void NGameScene::Update()
 	camera->SetScrollY(player_->GetScrollY());
 
 	col_->Update(camera->GetMatView(), camera->GetMatProjection());
-	camera->SetScrollY(player_->GetScrollY());
+	camera->SetScrollY(col_->GetScrollY());
 
 	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
 

@@ -168,7 +168,7 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 
 	// --プレイヤーの移動分スクロール-- //
 	object_.position.y += speedY_ * directionY_;
-	scrollY_ += speedY_ * directionY_;
+	scrollY_ = speedY_ * directionY_;
 
 	// --x座標が最低座標以下になったら-- //
 	if (object_.position.x < minPosX_ ) {
