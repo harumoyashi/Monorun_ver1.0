@@ -135,7 +135,7 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 			}
 
 			// --ブースト状態になってからの経過時間-- //
-			float nowCount = Util::GetNowCount();
+			float nowCount = static_cast<float>(Util::GetNowCount());
 			float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
 
 			// --指定されているブースト時間が過ぎたら-- //
@@ -151,7 +151,7 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 #pragma region 回転状態かつ空中にいる
 		else if (state_ == RotateAir) {
 			// --ブースト状態になってからの経過時間-- //
-			float nowCount = Util::GetNowCount();
+			float nowCount = static_cast<float>(Util::GetNowCount());
 			float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
 
 			// --指定されているブースト時間が過ぎたら-- //
@@ -219,7 +219,7 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 
 	else if (state_ == Goal) {
 		// --ゴール状態になってからの経過時間-- //
-		float nowCount = Util::GetNowCount();
+		float nowCount = static_cast<float>(Util::GetNowCount());
 		float nowTime = (nowCount - easeStartCount_) / 1000.0f;
 
 		float easeRota = nowTime / goalEaseTime_;

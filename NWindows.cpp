@@ -90,6 +90,11 @@ bool NWindows::WindowMessage()
 	return false;
 }
 
+void NWindows::Escape()
+{
+	msg.message = WM_QUIT;
+}
+
 void NWindows::Finalize()
 {
 	//‚à‚¤ƒNƒ‰ƒX‚Íg‚í‚È‚¢‚Ì‚Å“o˜^‰ğœ‚·‚é

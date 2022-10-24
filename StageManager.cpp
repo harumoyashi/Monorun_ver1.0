@@ -199,7 +199,7 @@ void StageManager::LoadCSV(NDX12* dx12)
 		obstacles_[i].Initialize();
 	}
 
-	lineCounter_ = loopCount;
+	lineCounter_ = static_cast<int>(loopCount);
 }
 
 int StageManager::GetLineCount() { return lineCounter_; }

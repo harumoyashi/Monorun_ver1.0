@@ -160,7 +160,7 @@ void NStageSelectScene::Update()
 	// --Œo‰ßŽžŠÔtimeRate[s]‚ÌŒvŽZ
 	//nowCount_ = GetNowCount();
 	nowCount_ = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
-	nowScrollTime_ = nowCount_ - startCount_;
+	nowScrollTime_ = static_cast<float>(nowCount_ - startCount_);
 	nowScrollTime_ = nowScrollTime_ / 1000.0f;
 
 	float timeRate = Util::Clamp(nowScrollTime_ / maxScrollTime_, 1.0f, 0.0f);
