@@ -100,7 +100,8 @@ uint32_t NAudio::LoadWave(const std::string& fileName) {
 	ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
 	// JUNKチャンクか Broadcast Wave Formatを検出した場合。
-	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "bext", 4) == 0) {
+	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "bext", 4) == 0||
+		_strnicmp(data.id, "LIST", 4) == 0 || _strnicmp(data.id, "FLLR", 4) == 0) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
 		// 再読み込み
