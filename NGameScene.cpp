@@ -49,8 +49,11 @@ void NGameScene::Update()
 
 	stage_->Update(matView, matProjection, eye, target, up);
 
-	if (NInput::IsKeyTrigger(DIK_Q)) {
-		NSceneManager::SetScene(TITLESCENE);
+	if (NSceneManager::GetPlayEffect() == false)
+	{
+		if (NInput::IsKeyTrigger(DIK_Q)) {
+			NSceneManager::SetScene(TITLESCENE);
+		}
 	}
 }
 

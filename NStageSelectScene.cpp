@@ -123,11 +123,14 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 void NStageSelectScene::Update()
 {
 	// --[SPACE]‚ð‰Ÿ‚µ‚½‚ç-- //
-	if (NInput::IsKeyTrigger(DIK_SPACE))
+	if (NSceneManager::GetPlayEffect() == false)
 	{
-		stage_->SetCSV(selectStage_);
-		if (!NSceneManager::GetPlayEffect()) {
-			NSceneManager::SetScene(GAMESCENE);
+		if (NInput::IsKeyTrigger(DIK_SPACE))
+		{
+			stage_->SetCSV(selectStage_);
+			if (!NSceneManager::GetPlayEffect()) {
+				NSceneManager::SetScene(GAMESCENE);
+			}
 		}
 	}
 

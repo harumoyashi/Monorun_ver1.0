@@ -84,13 +84,16 @@ void NTitleScene::Initialize(NDX12* dx12)
 
 void NTitleScene::Update()
 {
-	if (NInput::IsKeyTrigger(DIK_SPACE))
+	if (NSceneManager::GetPlayEffect() == false)
 	{
-		if (audio->IsPlaying(soundData[0]))
+		if (NInput::IsKeyTrigger(DIK_SPACE))
 		{
-			audio->StopWave(soundData[0]);
+			if (audio->IsPlaying(soundData[0]))
+			{
+				audio->StopWave(soundData[0]);
+			}
+			NSceneManager::SetScene(STAGESELECTSCENE);
 		}
-		NSceneManager::SetScene(STAGESELECTSCENE);
 	}
 #pragma region s—ñ‚ÌŒvŽZ
 	player->rotation.z += 0.3f;
