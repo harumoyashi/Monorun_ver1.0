@@ -49,22 +49,22 @@ StageManager::~StageManager()
 void StageManager::Initialize(NDX12* dx12)
 {
 	whiteMaterial_.Initialize(dx12->GetDevice());
-	whiteMaterial_.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
+	whiteMaterial_.SetColor({0.9f, 0.9f, 0.9f, 1.0f });
 
 	blackMaterial_.Initialize(dx12->GetDevice());
 	blackMaterial_.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 
 	redMaterial_.Initialize(dx12->GetDevice());
-	redMaterial_.SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	redMaterial_.SetColor({ 0.95f, 0.05f, 0.05f, 1.0f });
 
 	greenMaterial_.Initialize(dx12->GetDevice());
-	greenMaterial_.SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+	greenMaterial_.SetColor({ 0.1f, 0.9f, 0.1f, 1.0f });
 
 	blueMaterial_.Initialize(dx12->GetDevice());
-	blueMaterial_.SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
+	blueMaterial_.SetColor({ 0.1f, 0.6f, 0.6f, 1.0f });
 
 	goalMaterial_.Initialize(dx12->GetDevice());
-	goalMaterial_.SetColor({1.0f, 1.0f, 0.0f, 0.3f});
+	goalMaterial_.SetColor({ 0.9f, 0.9f, 0.0f, 0.3f});
 
 	// --Å‘åƒRƒCƒ“”-- //
 	maxCoin_ = 0;

@@ -195,9 +195,18 @@ void NGPipeline::SetRasterizer(bool isCull)
 	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 }
 
-void NGPipeline::SetBlend()
+void NGPipeline::SetBlend(bool AlphaToCoverageEnable)
 {
-	pipelineDesc.BlendState.AlphaToCoverageEnable = false;			//網羅率考慮してブレンドするか
+	if (AlphaToCoverageEnable)
+	{
+		//スプライトはこっちの方がいいかも
+		pipelineDesc.BlendState.AlphaToCoverageEnable = true;		//網羅率考慮してブレンドするか
+	}
+	else
+	{
+		//オブジェクトはこっちにしないと消えるかも
+		pipelineDesc.BlendState.AlphaToCoverageEnable = false;		//網羅率考慮してブレンドするか
+	}
 	pipelineDesc.BlendState.IndependentBlendEnable = false;			//それぞれのレンダーターゲットに別々のブレンドするか
 
 	//レンダーターゲットのブレンド設定
@@ -308,7 +317,7 @@ NGPipeline::PipelineSet NGPipeline::CreatePipeline3d(ComPtr<ID3D12Device> device
 	//パイプラインステート
 	SetShader();
 	SetRasterizer(true);
-	SetBlend();
+	SetBlend(false);
 	SetInputLayout(true);
 	SetTopology();
 	SetRenderTarget();
@@ -339,7 +348,7 @@ NGPipeline::PipelineSet NGPipeline::CreatePipelineSprite(ComPtr<ID3D12Device> de
 	//パイプラインステート
 	SetShader();
 	SetRasterizer(false);
-	SetBlend();
+	SetBlend(true);
 	SetInputLayout(false);
 	SetTopology();
 	SetRenderTarget();

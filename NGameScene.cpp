@@ -12,7 +12,7 @@ void NGameScene::Initialize(NDX12* dx12)
 #pragma region	ƒJƒƒ‰‰Šú‰»
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
-	camera->SetEye({ 0, -300, -1500 });
+	camera->SetEye({ -100, -300, -1500 });
 	camera->SetTarget({ 0.0f, -300.0f, 0.0f });
 	camera->CreateMatView();
 #pragma endregion

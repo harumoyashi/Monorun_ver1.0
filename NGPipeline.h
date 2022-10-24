@@ -73,7 +73,7 @@ public:
 	//ラスタライザー設定
 	void SetRasterizer(bool isCull);
 	//ブレンド設定
-	void SetBlend();
+	void SetBlend(bool AlphaToCoverageEnable);
 	//入力レイアウトの設定
 	void SetInputLayout(bool is3d);
 	//図形の形状設定
