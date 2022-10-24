@@ -52,15 +52,15 @@ void NGameScene::Update()
 		}
 	}
 
-	if (player_->GetCamShake()) {
-		eye = Util::CameraShake(eye, shakeCount);
-		if (0 < shakeCount) {
-			shakeCount--;
-		}
-		else {
-			player_->SetCamShakeState(false);
-		}
-	}
+	//if (player_->GetCamShake()) {
+	//	eye = Util::CameraShake(eye, shakeCount);
+	//	if (0 < shakeCount) {
+	//		shakeCount--;
+	//	}
+	//	else {
+	//		player_->SetCamShakeState(false);
+	//	}
+	//}
 }
 
 void NGameScene::Draw(NDX12* dx12)

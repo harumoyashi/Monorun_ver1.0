@@ -73,7 +73,7 @@ void Effect::ExpandSquareUpdate()
 		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
 			particles_.front().get()->SetPos(NVector2{
 				particles_.front().get()->GetPos().x,
-				InOutBack((float)frameCount_, 30, NWindows::win_height + 20, NWindows::win_height / 2) }
+				InOutBack((float)frameCount_, 30, NWindows::win_height + 30, NWindows::win_height / 2) }
 			);
 			frameCount_++;
 		}
