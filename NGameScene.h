@@ -46,10 +46,20 @@ private:
 	std::unique_ptr<NSprite> stageSelectSprite;	//ステージセレクトテキスト
 	std::unique_ptr<NSprite> retrySprite;	//リトライテキスト
 	std::unique_ptr<NSprite> nextSprite;	//ネクストテキスト
+	std::unique_ptr<NSprite> timeSprite[5];//数字
+	std::unique_ptr<NSprite> decimalPointSprite;
+
+	int displayNum[5] = {0, 0, 0, 0, 0};
 
 	int selectText = 1;
 
 	float cosRota;
+
+	int startCount_;
+
+	float gameTime_;
+
+	bool isDisplayTimeChange;
 
 public:
 
@@ -61,7 +71,7 @@ public:
 	//初期化
 	void Initialize(NDX12* dx12);
 	//更新
-	void Update();
+	void Update(NDX12* dx12);
 	//描画
 	void Draw(NDX12* dx12);
 	//リセット処理

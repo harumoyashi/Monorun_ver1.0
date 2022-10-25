@@ -135,10 +135,7 @@ void StageManager::Reset() {
 
 // --I—¹ˆ—-- //
 void StageManager::Finalize() {
-	//for (size_t i = obstacles_.size() - 1; i >= 0; i--) {
-	//	obstacles_.erase(obstacles_.begin() + i);
-	//}
-	//obstacles_.clear();
+	obstacles_.clear();
 	leftWalls_.clear();
 	rightWalls_.clear();
 }
@@ -239,6 +236,8 @@ void StageManager::SetCSV(int num) {
 	else if (num == 6) {
 		path_ = "csv/check_progress_gimic6.csv";
 	}
-
+	else if (num == 7) {
+		path_ = "csv/check_progress_gimic7.csv";
+	}
 	selectStage_ = num;
 }

@@ -74,7 +74,7 @@ void NSceneManager::Update(NDX12* dx12)
 
 	// --ゲームシーンの更新処理-- //
 	else if (scene == GAMESCENE) {
-		gameScene->Update();
+		gameScene->Update(dx12);
 	}
 
 	// --シーン変更がされたら-- //
