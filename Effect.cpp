@@ -87,17 +87,17 @@ void Effect::ExpandSquareUpdate(void)
 		}
 
 		// Ä¶I—¹Œã‰æ–ÊŠO‚ÉˆÚ“®
-		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
-			particles_.front().get()->SetPos(NVector2{
-				particles_.front().get()->GetPos().x,
-				InOutBack((float)frameCount_, 30, NWindows::win_height + 30, NWindows::win_height / 2) }
-			);
-			frameCount_++;
+		if (1.7f <= elapsedTime_ /*&& elapsedTime_ <= 2.5f*/) {
+			//particles_.front().get()->SetPos(NVector2{
+			//	particles_.front().get()->GetPos().x,
+			//	InOutBack((float)frameCount_, 30, NWindows::win_height + 30, NWindows::win_height / 2) }
+			//);
+			//frameCount_++;
+			Reset();
 		}
 
 		// --w’è‚³‚ê‚Ä‚¢‚éŠÔ‚ª‰ß‚¬‚½‚ç-- //
 		if (2.5f <= elapsedTime_) {
-			Reset();
 		}
 	}
 }
