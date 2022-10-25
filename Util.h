@@ -123,3 +123,10 @@ namespace Util {
 		? start + (end - start) * (static_cast<float>(pow(2.0f * timeRate, 2.0f)) * ((c2 + 1.0f) * 2.0f * timeRate - c2)) / 2.0f
 		: start + (end - start) * (static_cast<float>(pow(2.0f * timeRate - 2.0f, 2.0f)) * ((c2 + 1.0f) * (timeRate * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 }
+
+[[nodiscard]] static inline float OutExpo(float time, float totaltime, float end = 1.0f, float start = 0.0f)
+{
+	float timeRate = time / totaltime < 1.0f ? time / totaltime : 1.0f;
+
+	return timeRate ==  1.0f ? 1.0f : 1.0f - powf(2, -10 * timeRate);
+}

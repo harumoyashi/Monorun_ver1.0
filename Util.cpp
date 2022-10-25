@@ -45,12 +45,15 @@ float Util::Degree2Radian(float degree)
 
 void Util::CameraShake(NCamera* camera, int value)
 {
-	camera->MemorizeEye();
 	std::uniform_real_distribution<> dist(-value, value);
-	camera->SetEye(XMFLOAT3{ camera->GetEye().x + static_cast<float>(dist(engine)), camera->GetEye().y, camera->GetEye().z + static_cast<float>(dist(engine)) });
+	float randomNumX = static_cast<float>(dist(engine));
+	float randomNumY = static_cast<float>(dist(engine));
 
-	if(0 < camera->GetShakeCount())
-	camera->SetShakeCount(camera->GetShakeCount() - 1);
+	camera->CreateShakeMatView(randomNumX, randomNumY);
+
+	if (0 < camera->GetShakeCount()) {
+		camera->SetShakeCount(camera->GetShakeCount() - 3);
+	}
 }
 
 float Util::EaseOutCubic(float start, float end, float t) {
