@@ -42,24 +42,26 @@ void NGameScene::Initialize(NDX12* dx12)
 	stageSelectSprite = std::make_unique<NSprite>();
 	stageSelectSprite->texNum = STAGESELECTTEXT;
 	stageSelectSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[stageSelectSprite->texNum].texBuff);
-	stageSelectSprite->position = { NWindows::win_width / 2,500.0f,0 };
+	stageSelectSprite->position = { NWindows::win_width / 2,600.0f,0 };
 	stageSelectSprite->UpdateMatrix();
 
 	retrySprite = std::make_unique<NSprite>();
 	retrySprite->texNum = RETRYTEXT;
 	retrySprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[retrySprite->texNum].texBuff);
-	retrySprite->position = { NWindows::win_width / 2,600.0f,0 };
+	retrySprite->position = { NWindows::win_width / 2,500.0f,0 };
 	retrySprite->UpdateMatrix();
 
 	nextSprite = std::make_unique<NSprite>();
 	nextSprite->texNum = NEXTTEXT;
 	nextSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[nextSprite->texNum].texBuff);
-	nextSprite->position = { NWindows::win_width / 2,600.0f,0 };
+	nextSprite->position = { NWindows::win_width / 2,500.0f,0 };
 	nextSprite->UpdateMatrix();
 }
 
 void NGameScene::Update()
 {
+	cosRota += 0.1;
+
 	// --プレイヤー更新処理-- //
 	player_->Update(camera->GetMatView(), camera->GetMatProjection());
 	camera->SetScrollY(player_->GetScrollY());
@@ -80,86 +82,106 @@ void NGameScene::Update()
 
 	if (player_->GetState() == Goal) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
-			if (stage_->GetSelectStage() < 10) {
-				if (selectText == StageSelectText) {
-					selectText = NextText;
-				}
-
-				else if (selectText == NextText) {
-					selectText = StageSelectText;
-				}
-
-				else {
-					selectText = StageSelectText;
-				}
+			if (selectText == NextText) {
+				selectText = StageSelectText;
+				nextSprite->size.x = 162.0f;
+				nextSprite->size.y = 69.0f;
+				nextSprite->TransferVertex();
+				cosRota = 0.0f;
 			}
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
-			if (stage_->GetSelectStage() < 10) {
-				if (selectText == StageSelectText) {
-					selectText = NextText;
-				}
-
-				else if (selectText == NextText) {
-					selectText = StageSelectText;
-				}
-
-				else {
-					selectText = StageSelectText;
-				}
+			if (selectText == StageSelectText) {
+				selectText = NextText;
+				stageSelectSprite->size.x = 439.0f;
+				stageSelectSprite->size.y = 69.0f;
+				stageSelectSprite->TransferVertex();
+				cosRota = 0.0f;
 			}
 		}
 
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
 			if (selectText == StageSelectText) {
-				NSceneManager::SetScene(STAGESELECTSCENE);
+				if (!NSceneManager::GetPlayEffect()) {
+					NSceneManager::SetScene(STAGESELECTSCENE);
+				}
 			}
 
 			else if (selectText == NextText) {
-				stage_->SetCSV(stage_->GetSelectStage() + 1);
-				NSceneManager::SetScene(GAMESCENE);
+				if (stage_->GetSelectStage() < 10) {
+					stage_->SetCSV(stage_->GetSelectStage() + 1);
+					if (!NSceneManager::GetPlayEffect()) {
+						NSceneManager::SetScene(GAMESCENE);
+					}
+				}
+
+				else {
+					if (!NSceneManager::GetPlayEffect()) {
+						NSceneManager::SetScene(STAGESELECTSCENE);
+					}
+				}
 			}
+		}
+
+		if (selectText == NextText) {
+			nextSprite->size.x = 162.0f + 16.2f * cosf(cosRota);
+			nextSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			nextSprite->TransferVertex();
+		}
+
+		else if (selectText == StageSelectText) {
+			stageSelectSprite->size.x = 439.0f + 43.9f * cosf(cosRota);
+			stageSelectSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			stageSelectSprite->TransferVertex();
 		}
 	}
 
 	else if (player_->GetState() == DeathResult) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
-			if (selectText == StageSelectText) {
-				selectText = RetryText;
-			}
-
-			else if (selectText == RetryText) {
+			if (selectText == RetryText) {
 				selectText = StageSelectText;
-			}
-
-			else {
-				selectText = StageSelectText;
+				retrySprite->size.x = 197.0f;
+				retrySprite->size.y = 69.0f;
+				retrySprite->TransferVertex();
+				cosRota = 0.0f;
 			}
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
-			}
-
-			else if (selectText == RetryText) {
-				selectText = StageSelectText;
-			}
-
-			else {
-				selectText = StageSelectText;
+				stageSelectSprite->size.x = 439.0f;
+				stageSelectSprite->size.y = 69.0f;
+				stageSelectSprite->TransferVertex();
+				cosRota = 0.0f;
 			}
 		}
 
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
 			if (selectText == StageSelectText) {
-				NSceneManager::SetScene(STAGESELECTSCENE);
+				if (!NSceneManager::GetPlayEffect()) {
+					NSceneManager::SetScene(STAGESELECTSCENE);
+				}
 			}
 
 			else if (selectText == RetryText) {
-				NSceneManager::SetScene(GAMESCENE);
+				if (!NSceneManager::GetPlayEffect()) {
+					NSceneManager::SetScene(GAMESCENE);
+				}
 			}
+		}
+
+		if (selectText == RetryText) {
+			retrySprite->size.x = 197.0f + 19.7f * cosf(cosRota);
+			retrySprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			retrySprite->TransferVertex();
+		}
+
+		else if (selectText == StageSelectText) {
+			stageSelectSprite->size.x = 439.0f + 43.9f * cosf(cosRota);
+			stageSelectSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			stageSelectSprite->TransferVertex();
 		}
 	}
 
@@ -178,7 +200,7 @@ void NGameScene::Draw(NDX12* dx12)
 	// --プレイヤー描画処理-- //
 	player_->Draw(dx12, cube.get());
 
-	stage_->Draw(dx12, material_,cube.get());
+	stage_->Draw(dx12, material_, cube.get());
 
 	if (player_->GetState() == Goal) {
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,

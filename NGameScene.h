@@ -22,9 +22,9 @@
 #pragma comment(lib,"dxgi.lib")
 
 enum SelectText {
-	StageSelectText = 1,
-	RetryText = 2,
-	NextText = 3
+	RetryText = 1,
+	NextText = 1,
+	StageSelectText = 2
 };
 
 class NGameScene
@@ -48,6 +48,8 @@ private:
 	std::unique_ptr<NSprite> nextSprite;	//ネクストテキスト
 
 	int selectText = 1;
+
+	float cosRota;
 
 public:
 
