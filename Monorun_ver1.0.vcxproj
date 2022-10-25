@@ -147,6 +147,7 @@
     <ClInclude Include="NCamera.h" />
     <ClInclude Include="NCube.h" />
     <ClInclude Include="NGameScene.h" />
+    <ClInclude Include="NParticle.h" />
     <ClInclude Include="NPreDraw.h" />
     <ClInclude Include="NObj3d.h" />
     <ClInclude Include="NMaterial.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="NCamera.cpp" />
     <ClCompile Include="NCube.cpp" />
     <ClCompile Include="NGameScene.cpp" />
+    <ClCompile Include="NParticle.cpp" />
     <ClCompile Include="NPreDraw.cpp" />
     <ClCompile Include="NObj3d.cpp" />
     <ClCompile Include="NMaterial.cpp" />

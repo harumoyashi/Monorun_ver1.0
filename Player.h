@@ -9,6 +9,7 @@
 #include "NGPipeline.h"
 #include "NRootSignature.h"
 #include "NObj3d.h"
+#include "NParticle.h"
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NCube.h"
@@ -32,12 +33,14 @@ class Player {
 	/// --メンバ変数-- ///
 public:
 	// --オブジェクト-- //
-	NObj3d object_;// ------> オブジェクト(定数バッファ)
+	std::unique_ptr<NObj3d> object_;// ------> オブジェクト(定数バッファ)
 
 private:
 
 #pragma region クラス宣言
 	NMaterial material;				//マテリアル
+
+	std::unique_ptr<NParticle> particle;	//パーティクル
 #pragma endregion
 
 	// --プレイヤーの状態-- //
@@ -92,8 +95,8 @@ private:
 	bool isAirKickActive_;
 
 	// --移動する向き-- //
-	float directionX_;
-	float directionY_;
+	int directionX_;
+	int directionY_;
 
 	// --Y軸スクロールの速度-- //
 	float scrollY_;
@@ -124,6 +127,8 @@ private:
 
 	const float deathWaitingTime = 3.0f;
 #pragma endregion
+
+	bool isParticle = false;	//パーティクル出すか否か
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///
@@ -157,12 +162,6 @@ public:
 
 	float& GetSpeedX();
 	float& GetSpeedY();
-
-	// --通常状態に変更-- //
-	void SetNormal();
-
-	// --ブースト状態に変更-- //
-	void SetBoost();
 
 	// --死亡状態に変更-- //
 	void SetDeath();

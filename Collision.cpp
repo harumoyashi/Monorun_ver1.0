@@ -192,14 +192,14 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 							if (oldObj_.pos.x >= colObs.pos.x) {
 								// --ÉvÉåÉCÉÑÅ[Ç…ãóó£Ç∆îºåaÇà¯Ç¢ÇΩêîÇâ¡éZ-- //
 								oldObj_.pos.x += radius - len;
-								player_->object_.position.x = oldObj_.pos.x;
+								player_->object_->position.x = oldObj_.pos.x;
 							}
 
 							// --ÉvÉåÉCÉÑÅ[Ç™è·äQï®ÇÃç∂ë§Ç…Ç¢ÇΩÇÁ-- //
 							else if (oldObj_.pos.x < colObs.pos.x) {
 								// --ÉJÉÅÉâÇ…ãóó£Ç∆îºåaÇà¯Ç¢ÇΩêîÇâ¡éZ-- //
 								oldObj_.pos.x -= radius - len;
-								player_->object_.position.x = oldObj_.pos.x;
+								player_->object_->position.x = oldObj_.pos.x;
 							}
 						}
 
@@ -220,7 +220,7 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 							if (oldObj_.pos.y >= colObs.pos.y) {
 								// --ÉJÉÅÉâÇ…ãóó£Ç∆îºåaÇà¯Ç¢ÇΩêîÇâ¡éZ-- //
 								oldObj_.pos.y += radius - len;
-								player_->object_.position.y += radius - len;
+								player_->object_->position.y += radius - len;
 								scrollY_ += radius - len;
 							}
 
@@ -228,7 +228,7 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 							else if (oldObj_.pos.y < colObs.pos.y) {
 								// --ÉJÉÅÉâÇ…ãóó£Ç∆îºåaÇà¯Ç¢ÇΩêîÇâ¡éZ-- //
 								oldObj_.pos.y -= radius - len;
-								player_->object_.position.y -= radius - len;
+								player_->object_->position.y -= radius - len;
 								scrollY_ -= radius - len;
 							}
 						}
@@ -253,7 +253,7 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 			}
 		}
 
-		player_->object_.UpdateMatrix(matView, matProjection);
+		player_->object_->UpdateMatrix(matView, matProjection);
 
 		// --å√Ç¢ÉvÉåÉCÉÑÅ[èÓïÒÇäiî[-- //
 		oldObj_ = player_->GetBoxObj();

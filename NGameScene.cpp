@@ -26,6 +26,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	// --ƒvƒŒƒCƒ„[‰Šú‰»-- //
 	player_ = Player::GetInstance();
 	player_->Initialize(dx12);
+	player_->GetState();
 
 	stage_ = StageManager::GetInstance();
 	stage_->Initialize(dx12);
