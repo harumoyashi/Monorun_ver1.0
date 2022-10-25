@@ -50,6 +50,12 @@ void NGameScene::Initialize(NDX12* dx12)
 	retrySprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[retrySprite->texNum].texBuff);
 	retrySprite->position = { NWindows::win_width / 2,600.0f,0 };
 	retrySprite->UpdateMatrix();
+
+	nextSprite = std::make_unique<NSprite>();
+	nextSprite->texNum = NEXTTEXT;
+	nextSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[nextSprite->texNum].texBuff);
+	nextSprite->position = { NWindows::win_width / 2,600.0f,0 };
+	nextSprite->UpdateMatrix();
 }
 
 void NGameScene::Update()
@@ -73,6 +79,51 @@ void NGameScene::Update()
 	}
 
 	if (player_->GetState() == Goal) {
+		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			if (stage_->GetSelectStage() < 10) {
+				if (selectText == StageSelectText) {
+					selectText = NextText;
+				}
+
+				else if (selectText == NextText) {
+					selectText = StageSelectText;
+				}
+
+				else {
+					selectText = StageSelectText;
+				}
+			}
+		}
+
+		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			if (stage_->GetSelectStage() < 10) {
+				if (selectText == StageSelectText) {
+					selectText = NextText;
+				}
+
+				else if (selectText == NextText) {
+					selectText = StageSelectText;
+				}
+
+				else {
+					selectText = StageSelectText;
+				}
+			}
+		}
+
+		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			if (selectText == StageSelectText) {
+				NSceneManager::SetScene(STAGESELECTSCENE);
+			}
+
+			else if (selectText == NextText) {
+				stage_->SetCSV(stage_->GetSelectStage() + 1);
+				NSceneManager::SetScene(GAMESCENE);
+			}
+		}
+	}
+
+	else if (player_->GetState() == DeathResult) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
@@ -138,6 +189,20 @@ void NGameScene::Draw(NDX12* dx12)
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		stageSelectSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 
+		nextSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		nextSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+	}
+
+	if (player_->GetState() == DeathResult) {
+		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		stageSelectSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		stageSelectSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
 		retrySprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		retrySprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
@@ -146,6 +211,13 @@ void NGameScene::Draw(NDX12* dx12)
 
 // --ƒŠƒZƒbƒgˆ—-- //
 void NGameScene::Reset(NDX12* dx12) {
+	selectText = 1;
+	camera->SetEye({ -100, -300, -1500 });
+	camera->SetTarget({ 0.0f, -300.0f, 0.0f });
+	camera->CreateMatView();
+	player_->Reset();
+	col_->Reset();
+	stage_->Reset();
 	stage_->LoadCSV(dx12);
 }
 

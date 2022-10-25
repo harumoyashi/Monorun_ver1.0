@@ -22,6 +22,7 @@ enum Texture
 	STAGESELECTTEXT,	//ステージセレクトテキスト
 	RESULTTEXT,			//リザルトテキスト
 	RETRYTEXT,			//リトライテキスト
+	NEXTTEXT,			//ネクストテキスト
 	STAGESELECTFRAME,	//ステージセレクト枠
 
 	MAXTEX

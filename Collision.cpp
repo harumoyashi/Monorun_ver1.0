@@ -84,6 +84,10 @@ Collision::~Collision() {
 
 }
 
+void Collision::Reset() {
+	oldObj_ = { {0.0f, 0.0f}, 0.0f };
+}
+
 // --‰Šú‰»ˆ—
 void Collision::Initialize() {
 

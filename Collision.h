@@ -42,6 +42,8 @@ public:
 	// --デストラクタ-- //
 	~Collision();
 
+	void Reset();
+
 	// --初期化処理-- //
 	void Initialize();
 

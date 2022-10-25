@@ -25,6 +25,34 @@ Player* Player::GetInstance()
 void Player::Reset() {
 	object_.position.x = minPosX_;
 	object_.position.y = 0.0f;
+	object_.rotation.z = 0.0f;
+	// --プレイヤーの状態-- //
+	state_ = NormalWallHit;
+
+	// --速度-- //
+	speedX_ = 0.0f;
+	speedY_ = defSpeedY_;
+
+	// --移動する向き-- //
+	directionX_ = LEFT;
+	directionY_ = DOWN;
+
+	// --ブーストの経過時間[s]-- //
+	rotateTimer_ = 0.0f;
+
+	// --ブーストが始まった時の時間-- //
+	rotateStartTime_ = 0;
+
+	// --空中にいるか-- //
+	isAir_ = false;
+
+	// --空中キックができるか-- //
+	isAirKickActive_ = true;
+
+	// --衝突判定を行うか-- //
+	isColActive_ = true;
+
+	deathStartCount_ = 0;
 }
 
 // --初期化処理-- //
@@ -69,7 +97,7 @@ void Player::Initialize(NDX12* dx12) {
 // --更新処理-- //
 void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 	scrollY_ = 0.0f;
-	if (state_ != Goal) {
+	if (state_ != Goal && state_ != Death && state_ != DeathResult) {
 #pragma region 通常状態かつ壁伝い中の処理
 		if (state_ == NormalWallHit) {
 			// --[SPACE]を押したら-- //
@@ -230,6 +258,17 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 		object_.rotation.z += rotaSpeed;
 	}
 
+	else if (state_ == Death || state_ == DeathResult) {
+		// --ゴール状態になってからの経過時間-- //
+		float nowCount = static_cast<float>(Util::GetNowCount());
+		float nowTime = (nowCount - deathStartCount_) / 1000.0f;
+
+		if (nowTime >= deathWaitingTime) {
+			object_.position.x = 1000.0f;
+			state_ = DeathResult;
+		}
+	}
+
 	object_.UpdateMatrix(matView, matProjection);
 }
 
@@ -253,7 +292,8 @@ void Player::SetState(int state) { state_ = state; }
 //
 // --死亡状態に変更-- //
 void Player::SetDeath() {
-	NSceneManager::SetScene(TITLESCENE);
+	state_ = Death;
+	deathStartCount_ = Util::GetNowCount();
 }
 
 float& Player::GetSpeedX() { return speedX_; }

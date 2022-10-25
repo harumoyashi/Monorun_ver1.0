@@ -40,6 +40,8 @@ public:
 	// csv行数
 	int lineCounter_;
 
+	int selectStage_;
+
 private:
 	// --インスタンス-- //
 	static StageManager* myInstance_;
@@ -72,6 +74,9 @@ public:
 	// --描画処理-- //
 	void Draw(NDX12* dx12, NMaterial material,NCube* cube);
 
+	// --リセット処理-- //
+	void Reset();
+
 	// --CSVを読み込む-- //
 	void LoadCSV(NDX12* dx12);
 
@@ -89,6 +94,9 @@ public:
 
 	// --読み込むファイルをセットする-- //
 	void SetCSV(int num);
+
+	// --現在選んでいるステージを取得-- //
+	int GetSelectStage() { return selectStage_; }
 
 private:
 

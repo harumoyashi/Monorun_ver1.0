@@ -33,7 +33,8 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[6].Load(L"Resources/droppin_stageselect.png");
 	tex[7].Load(L"Resources/droppin_result.png");
 	tex[8].Load(L"Resources/droppin_retry.png");
-	tex[9].Load(L"Resources/droppin_stage_frame.png");
+	tex[9].Load(L"Resources/dorppin_next.png");
+	tex[10].Load(L"Resources/droppin_stage_frame.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{

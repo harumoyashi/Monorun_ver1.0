@@ -123,19 +123,28 @@ void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 	}
 }
 
+// --リセット処理-- //
+void StageManager::Reset() {
+	obstacles_.clear();
+	leftWalls_.clear();
+	rightWalls_.clear();
+
+	// --現在のコイン数-- //
+	coin_ = 0;
+}
+
 // --終了処理-- //
 void StageManager::Finalize() {
-	obstacles_.clear();
+	//for (size_t i = obstacles_.size() - 1; i >= 0; i--) {
+	//	obstacles_.erase(obstacles_.begin() + i);
+	//}
+	//obstacles_.clear();
 	leftWalls_.clear();
 	rightWalls_.clear();
 }
 
 void StageManager::LoadCSV(NDX12* dx12)
 {
-	obstacles_.clear();
-	leftWalls_.clear();
-	rightWalls_.clear();
-
 	lineCounter_ = 0;
 
 	// --読み込むCSVファイルを開く-- //
@@ -230,4 +239,6 @@ void StageManager::SetCSV(int num) {
 	else if (num == 6) {
 		path_ = "csv/check_progress_gimic6.csv";
 	}
+
+	selectStage_ = num;
 }

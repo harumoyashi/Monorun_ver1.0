@@ -23,7 +23,8 @@
 
 enum SelectText {
 	StageSelectText = 1,
-	RetryText = 2
+	RetryText = 2,
+	NextText = 3
 };
 
 class NGameScene
@@ -44,8 +45,9 @@ private:
 	std::unique_ptr<NSprite> resultSprite;	//リザルトテキスト
 	std::unique_ptr<NSprite> stageSelectSprite;	//ステージセレクトテキスト
 	std::unique_ptr<NSprite> retrySprite;	//リトライテキスト
+	std::unique_ptr<NSprite> nextSprite;	//ネクストテキスト
 
-	int selectText = 0;
+	int selectText = 1;
 
 public:
 

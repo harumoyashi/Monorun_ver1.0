@@ -24,6 +24,7 @@ enum State {
 	RotateWallHit,// -> 回転状態で壁伝い中
 	RotateAir,// -> 回転状態で空中にいる
 	Death,// --死亡状態
+	DeathResult,
 	Goal
 };
 
@@ -115,6 +116,13 @@ private:
 
 	// --イージング時間-- //
 	const float goalEaseTime_ = 2.5f;
+#pragma endregion
+
+#pragma region 死亡時のタイマー
+	// --死亡状態開始時のカウント-- //
+	int deathStartCount_;
+
+	const float deathWaitingTime = 3.0f;
 #pragma endregion
 
 	/// --メンバ変数END-- ///
