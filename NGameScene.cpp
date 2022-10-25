@@ -113,7 +113,7 @@ void NGameScene::Update()
 	}
 
 	if (player_->GetCamShake() || col_->GetCamShake()) {
-		camera.get()->SetShakeCount(5);
+		camera.get()->SetShakeCount(6);
 		player_->SetCamShakeState(false);
 		col_->SetCamShakeState(false);
 	}

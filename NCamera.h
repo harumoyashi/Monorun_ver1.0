@@ -16,7 +16,7 @@ private:
 	XMFLOAT3 up = { 0, 1, 0 };			//上方向ベクトル
 	float angle = 0.0f;					//カメラの回転角
 
-	XMFLOAT3 oldEye_{};
+	XMFLOAT3 defaultEye_{ 0, 100, -1500 };
 
 	int shakeCount_{ 5 };
 
@@ -28,8 +28,10 @@ public:
 	// --縦スクロールのスピード取得-- //
 	void SetScrollY(float scrollY);
 
-	void MemorizeEye(void) { oldEye_ = eye; }
-	void RecoveryEye(void) { eye = oldEye_; }
+	void RecoveryEye(void) {
+		eye.x = defaultEye_.x;
+		eye.z = defaultEye_.z;
+	}
 	void SetShakeCount(int count) { shakeCount_ = count; }
 
 	//セッター

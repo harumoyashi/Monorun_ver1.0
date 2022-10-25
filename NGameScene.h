@@ -46,7 +46,6 @@ private:
 	std::unique_ptr<NSprite> retrySprite;	//リトライテキスト
 
 	int selectText = 0;
-
 public:
 
 

@@ -190,9 +190,9 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 			// --X²‚Ì‘¬“x‚ğ•Ï‚¦‚é-- //
 			speedX_ = 0.0f;// -> “®‚©‚È‚¢‚æ‚¤‚É
 
-			//if (!isCameraShake_) {
-			//	SetCamShakeState(true);
-			//}
+			if (!isCameraShake_) {
+				SetCamShakeState(true);
+			}
 		}
 
 		// --xÀ•W‚ªÅ‚À•WˆÈã‚É‚È‚Á‚½‚ç-- //
