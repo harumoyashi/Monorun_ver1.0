@@ -61,163 +61,180 @@ void Player::Initialize(NDX12* dx12) {
 
 	// --空中キックができるか-- //
 	isAirKickActive_ = true;
+
+	// --衝突判定を行うか-- //
+	isColActive_ = true;
 }
 
 // --更新処理-- //
 void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 	scrollY_ = 0.0f;
-
+	if (state_ != Goal) {
 #pragma region 通常状態かつ壁伝い中の処理
-	if (state_ == NormalWallHit) {
-		// --[SPACE]を押したら-- //
-		if (NInput::IsKeyTrigger(DIK_SPACE)) {
-			// --左右の向きを変える-- //
-			ChangeDireX();
+		if (state_ == NormalWallHit) {
+			// --[SPACE]を押したら-- //
+			if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				// --左右の向きを変える-- //
+				ChangeDireX();
 
-			// --状態を変える-- //
-			state_ = NormalAir;// -> 通常状態かつ空中
+				// --状態を変える-- //
+				state_ = NormalAir;// -> 通常状態かつ空中
 
-			// --X軸の速度を変える-- //
-			speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
+				// --X軸の速度を変える-- //
+				speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
 
-			// --Y軸の移動方向が上だったら-- //
-			if (directionY_ == UP) {
-				speedY_ -= accelerationY_ * 2.0f;
+				// --Y軸の移動方向が上だったら-- //
+				if (directionY_ == UP) {
+					speedY_ -= accelerationY_ * 2.0f;
+				}
+
+				// --Y軸の移動方向が下だったら-- //
+				else if (directionY_ == DOWN) {
+					speedY_ += accelerationY_;
+				}
 			}
 
-			// --Y軸の移動方向が下だったら-- //
-			else if (directionY_ == DOWN) {
-				speedY_ += accelerationY_;
+			// --減速処理-- //
+			if (directionY_ == DOWN) {
+				speedY_ -= decelerationY_;
+				speedY_ = Util::Clamp(speedY_, maxSpeedY_, minSpeedY_);
+			}
+
+			else if (directionY_ == UP) {
+				speedY_ -= decelerationY_;
+				if (speedY_ <= 0) {
+					directionY_ = DOWN;
+				}
 			}
 		}
-
-		// --減速処理-- //
-		if (directionY_ == DOWN) {
-			speedY_ -= decelerationY_;
-			speedY_ = Util::Clamp(speedY_, maxSpeedY_, minSpeedY_);
-		}
-
-		else if (directionY_ == UP) {
-			speedY_ -= decelerationY_;
-			if (speedY_ <= 0) {
-				directionY_ = DOWN;
-			}
-		}
-	}
 #pragma endregion
 
 #pragma region 通常状態かつ空中にいる
-	else if (state_ == NormalAir) {
+		else if (state_ == NormalAir) {
 
-	}
+		}
 #pragma endregion
 
 #pragma region 回転状態かつ壁伝い中
-	else if (state_ == RotateWallHit) {
-		// --[SPACE]を押したら-- //
-		if (NInput::IsKeyTrigger(DIK_SPACE)) {
-			// --左右の向きを変える-- //
-			ChangeDireX();
+		else if (state_ == RotateWallHit) {
+			// --[SPACE]を押したら-- //
+			if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				// --左右の向きを変える-- //
+				ChangeDireX();
 
-			// --状態を変える-- //
-			state_ = NormalAir;// -> 通常状態かつ空中
+				// --状態を変える-- //
+				state_ = NormalAir;// -> 通常状態かつ空中
 
-			// --X軸の速度を変える-- //
-			speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
+				// --X軸の速度を変える-- //
+				speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
 
-			object_.rotation.z = 0.0f;
+				object_.rotation.z = 0.0f;
+			}
+			else {
+				object_.rotation.z += rotaSpeed * directionX_;
+			}
+
+			// --ブースト状態になってからの経過時間-- //
+			float nowCount = static_cast<float>(Util::GetNowCount());
+			float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
+
+			// --指定されているブースト時間が過ぎたら-- //
+			if (rotateTime_ <= nowTime) {
+				// --ブースト状態から通常状態に変更-- //
+				state_ = NormalWallHit;
+
+				object_.rotation.z = 0.0f;
+			}
 		}
-		else {
-			object_.rotation.z += rotaSpeed * directionX_;
-		}
-
-		// --ブースト状態になってからの経過時間-- //
-		float nowCount = Util::GetNowCount();
-		float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
-
-		// --指定されているブースト時間が過ぎたら-- //
-		if (rotateTime_ <= nowTime) {
-			// --ブースト状態から通常状態に変更-- //
-			state_ = NormalWallHit;
-
-			object_.rotation.z = 0.0f;
-		}
-	}
 #pragma endregion
 
 #pragma region 回転状態かつ空中にいる
-	else if (state_ == RotateAir) {
-		// --ブースト状態になってからの経過時間-- //
-		float nowCount = Util::GetNowCount();
-		float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
+		else if (state_ == RotateAir) {
+			// --ブースト状態になってからの経過時間-- //
+			float nowCount = static_cast<float>(Util::GetNowCount());
+			float nowTime = (nowCount - rotateStartTime_) / 1000.0f;
 
-		// --指定されているブースト時間が過ぎたら-- //
-		if (rotateTime_ <= nowTime) {
-			// --ブースト状態から通常状態に変更-- //
-			state_ = NormalAir;
+			// --指定されているブースト時間が過ぎたら-- //
+			if (rotateTime_ <= nowTime) {
+				// --ブースト状態から通常状態に変更-- //
+				state_ = NormalAir;
 
-			object_.rotation.z = 0.0f;
+				object_.rotation.z = 0.0f;
+			}
+
+			object_.rotation.z += rotaSpeed * directionX_;
 		}
-
-		object_.rotation.z += rotaSpeed * directionX_;
-	}
 #pragma endregion
 
-	// --プレイヤーのX軸に加算-- //
-	object_.position.x += speedX_ * directionX_;
+		// --プレイヤーのX軸に加算-- //
+		object_.position.x += speedX_ * directionX_;
 
-	// --プレイヤーの移動分スクロール-- //
-	object_.position.y += speedY_ * directionY_;
-	scrollY_ += speedY_ * directionY_;
+		// --プレイヤーの移動分スクロール-- //
+		object_.position.y += speedY_ * directionY_;
+		scrollY_ = speedY_ * directionY_;
 
-	// --x座標が最低座標以下になったら-- //
-	if (object_.position.x < minPosX_ ) {
-		// --x座標を変更-- //
-		object_.position.x = minPosX_;
+		// --x座標が最低座標以下になったら-- //
+		if (object_.position.x < minPosX_) {
+			// --x座標を変更-- //
+			object_.position.x = minPosX_;
 
-		// --状態を変更-- //
-		if (state_ == RotateAir) {
-			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			// --状態を変更-- //
+			if (state_ == RotateAir) {
+				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			}
+
+			else if (state_ == NormalAir) {
+				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+			}
+
+			// --X軸の速度を変える-- //
+			speedX_ = 0.0f;// -> 動かないように
+
+			//if (!isCameraShake_) {
+			//	SetCamShakeState(true);
+			//}
 		}
 
-		else if (state_ == NormalAir) {
-			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+		// --x座標が最高座標以上になったら-- //
+		else if (object_.position.x > maxPosX_) {
+			// --X座標を変更-- //
+			object_.position.x = maxPosX_;
+
+			if (state_ == RotateAir) {
+				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			}
+
+			else if (state_ == NormalAir) {
+				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+			}
+
+			// --X軸の速度を変える-- //
+			speedX_ = 0.0f;// -> 動かないように
+
+			if (!isCameraShake_) {
+				SetCamShakeState(true);
+			}
 		}
-
-		// --X軸の速度を変える-- //
-		speedX_ = 0.0f;// -> 動かないように
-
-		//if (!isCameraShake_) {
-		//	SetCamShakeState(true);
-		//}
 	}
 
-	// --x座標が最高座標以上になったら-- //
-	else if (object_.position.x > maxPosX_) {
-		// --X座標を変更-- //
-		object_.position.x = maxPosX_;
+	else if (state_ == Goal) {
+		// --ゴール状態になってからの経過時間-- //
+		float nowCount = static_cast<float>(Util::GetNowCount());
+		float nowTime = (nowCount - easeStartCount_) / 1000.0f;
 
-		if (state_ == RotateAir) {
-			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
-		}
+		float easeRota = nowTime / goalEaseTime_;
+		easeRota = Util::Clamp(easeRota, 1.0f, 0.0f);
 
-		else if (state_ == NormalAir) {
-			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
-		}
+		object_.position.x = Util::EaseOutCubic(easeStartPosX_, easeEndPosX_, easeRota);
 
-		// --X軸の速度を変える-- //
-		speedX_ = 0.0f;// -> 動かないように
-
-		if (!isCameraShake_) {
-			SetCamShakeState(true);
-		}
+		object_.rotation.z += rotaSpeed;
 	}
 
 	object_.UpdateMatrix(matView, matProjection);
 }
 
 // --描画処理-- //
-void Player::Draw(NDX12* dx12,NCube* cube) {
+void Player::Draw(NDX12* dx12, NCube* cube) {
 	// --オブジェクト描画-- //
 	object_.CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 	object_.Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
@@ -262,6 +279,15 @@ void Player::SetRotate() {
 	else if (state_ == RotateAir) state_ = RotateAir;
 	else if (state_ == RotateWallHit) state_ = RotateWallHit;
 	rotateStartTime_ = Util::GetNowCount();
+}
+
+// --ゴール状態にする-- //
+void Player::SetGoal() {
+	state_ = Goal;
+	speedY_ = 5.0f;
+	easeStartCount_ = Util::GetNowCount();
+	easeStartPosX_ = object_.position.x;
+	isColActive_ = false;
 }
 
 // --構造体で返す-- //

@@ -4,13 +4,6 @@
 #include "Util.h"
 #include <chrono>
 
-// --イージング-- //
-float EaseOutCubic(float start, float end, float t) {
-	float time = 1 - pow(1 - t, 3);
-	return start * (1.0f - time) + end * time;
-	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
-}
-
 NStageSelectScene* NStageSelectScene::GetInstance()
 {
 	static NStageSelectScene instance;
@@ -28,10 +21,10 @@ void NStageSelectScene::Reset() {
 	// --現在選んでいるステージ-- //
 	selectStage_ = 1;
 
-	for (size_t i = 0; i < maxForeSprite; i++) {
-		foreSprite[i]->position.x = 300.0f;
-		foreSprite[i]->position.y = 400.0f + (i * 250.0f);
-		foreSprite[i]->UpdateMatrix();
+	for (size_t i = 0; i < maxNumSprite; i++) {
+		numSprite[i]->position.x = 300.0f;
+		numSprite[i]->position.y = 400.0f + (i * 250.0f);
+		numSprite[i]->UpdateMatrix();
 
 		// --イージング用変数初期化-- //
 		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
@@ -77,21 +70,30 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	stage_->Initialize(dx12);
 
 	//前景スプライト生成
-	for (size_t i = 0; i < maxForeSprite; i++) {
-		foreSprite[i] = new NSprite();
-		foreSprite[i]->texNum = static_cast<int>(STAGESELECTIMAGE);
-		foreSprite[i]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[foreSprite[i]->texNum].texBuff, {i * 200.0f, 0.0f}, {200.0f, 200.0f});
-		//sprite[i]->CreateClipSprite(dx12->GetDevice(),tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
-		foreSprite[i]->SetColor(1, 1, 1, 1);
-		foreSprite[i]->size = { 200.0f,200.0f };
-		foreSprite[i]->TransferVertex();
-		foreSprite[i]->position.x = 300.0f;
-		foreSprite[i]->position.y = 400.0f + (i * 250.0f);
-		foreSprite[i]->UpdateMatrix();
+	for (size_t i = 0; i < maxNumSprite; i++) {
+		numSprite[i] = std::make_unique<NSprite>();
+		numSprite[i]->texNum = static_cast<int>(NUMBER);
+		numSprite[i]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[numSprite[i]->texNum].texBuff, {i * 48.0f, 0.0f}, {48.0f, 69.0f});
+		numSprite[i]->SetColor(1, 1, 1, 1);
+		numSprite[i]->size = { 120.0f,180.0f };
+		numSprite[i]->TransferVertex();
+		numSprite[i]->position.x = 300.0f;
+		numSprite[i]->position.y = 400.0f + (i * 250.0f);
+		numSprite[i]->UpdateMatrix();
 
 		// --イージング用変数初期化-- //
 		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
 		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
+
+		frameSprite[i] = std::make_unique<NSprite>();
+		frameSprite[i]->texNum = STAGESELECTFRAME;
+		frameSprite[i]->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[frameSprite[i]->texNum].texBuff);
+		frameSprite[i]->SetColor(1, 1, 1, 1);
+		frameSprite[i]->size = { 250.0f,250.0f };
+		frameSprite[i]->TransferVertex();
+		frameSprite[i]->position.x = 300.0f;
+		frameSprite[i]->position.y = 400.0f + (i * 250.0f);
+		frameSprite[i]->UpdateMatrix();
 	}
 
 	// --時間計測に必要なデータ変数-- //
@@ -129,7 +131,7 @@ void NStageSelectScene::Update()
 			startCount_ = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
 
 			for (size_t i = 0; i < 10; i++) {
-				easeStartPos_[i] = foreSprite[i]->position;
+				easeStartPos_[i] = numSprite[i]->position;
 				easeEndPos_[i].y += 250.0f;
 			}
 
@@ -146,7 +148,7 @@ void NStageSelectScene::Update()
 			startCount_ = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
 
 			for (size_t i = 0; i < 10; i++) {
-				easeStartPos_[i] = foreSprite[i]->position;
+				easeStartPos_[i] = numSprite[i]->position;
 				easeEndPos_[i].y -= 250.0f;
 			}
 
@@ -158,20 +160,28 @@ void NStageSelectScene::Update()
 	// --経過時間timeRate[s]の計算
 	//nowCount_ = GetNowCount();
 	nowCount_ = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count());
-	nowScrollTime_ = nowCount_ - startCount_;
+	nowScrollTime_ = static_cast<float>(nowCount_ - startCount_);
 	nowScrollTime_ = nowScrollTime_ / 1000.0f;
 
 	float timeRate = Util::Clamp(nowScrollTime_ / maxScrollTime_, 1.0f, 0.0f);
 
 	float len[10];
 	for (size_t i = 0; i < 10; i++) {
-		foreSprite[i]->position.y = EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
-		len[i] = abs(400.0f - foreSprite[i]->position.y);
+		numSprite[i]->position.y = Util::EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
+		len[i] = abs(400.0f - numSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
-		foreSprite[i]->size.x = 200 * (1.0f - len[i]);
-		foreSprite[i]->size.y = 200 * (1.0f - len[i]);
-		foreSprite[i]->TransferVertex();
-		foreSprite[i]->UpdateMatrix();
+		numSprite[i]->size.x = 120 * (1.0f - len[i]);
+		numSprite[i]->size.y = 180 * (1.0f - len[i]);
+		numSprite[i]->TransferVertex();
+		numSprite[i]->UpdateMatrix();
+
+		frameSprite[i]->position.y = numSprite[i]->position.y;
+		len[i] = abs(400.0f - frameSprite[i]->position.y);
+		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
+		frameSprite[i]->size.x = 250.0f * (1.0f - len[i]);
+		frameSprite[i]->size.y = 250.0f * (1.0f - len[i]);
+		frameSprite[i]->TransferVertex();
+		frameSprite[i]->UpdateMatrix();
 	}
 
 
@@ -207,10 +217,13 @@ void NStageSelectScene::Draw(NDX12* dx12)
 	//}
 
 	//前景スプライト
-	for (size_t i = 0; i < maxForeSprite; i++)
+	for (size_t i = 0; i < maxNumSprite; i++)
 	{
-		foreSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-		foreSprite[i]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		numSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		numSprite[i]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		frameSprite[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		frameSprite[i]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 	}
 	// 4.描画コマンドここまで
 #pragma endregion
@@ -218,13 +231,4 @@ void NStageSelectScene::Draw(NDX12* dx12)
 
 void NStageSelectScene::Finalize()
 {
-	for (size_t i = 0; i < maxForeSprite; i++)
-	{
-		delete foreSprite[i];
-	}
-
-	//for (size_t i = 0; i < maxBackSprite; i++)
-	//{
-	//	delete backSprite[i];
-	//}
 }

@@ -11,7 +11,7 @@ void NCamera::ProjectiveProjection()
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0f),		//上下画角45度
 		(float)NWindows::win_width / NWindows::win_height,	//アスペクト比(画面横幅/画面縦幅)
-		0.1f, 1000.0f					//前端、奥端
+		0.1f, 1600.0f					//前端、奥端
 	);
 }
 

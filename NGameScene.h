@@ -21,6 +21,11 @@
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 
+enum SelectText {
+	StageSelectText = 1,
+	RetryText = 2
+};
+
 class NGameScene
 {
 private:
@@ -35,6 +40,12 @@ private:
 	std::unique_ptr<NCube> cube;	//立方体情報(頂点、インデックス)
 
 	std::unique_ptr<NCamera> camera;	//カメラ
+
+	std::unique_ptr<NSprite> resultSprite;	//リザルトテキスト
+	std::unique_ptr<NSprite> stageSelectSprite;	//ステージセレクトテキスト
+	std::unique_ptr<NSprite> retrySprite;	//リトライテキスト
+
+	int selectText = 0;
 
 public:
 

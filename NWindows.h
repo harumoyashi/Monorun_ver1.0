@@ -39,6 +39,8 @@ public:
 	bool WindowMessage();
 #pragma endregion
 #pragma region 終了
+	//終わらせる処理
+	void Escape();
 	//終了処理
 	//クラスの解除
 	void Finalize();

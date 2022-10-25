@@ -87,6 +87,8 @@ namespace Util {
 	}
 
 	void CameraShake(NCamera* camera, int value);
+	float EaseOutCubic(float start, float end, float t);
+
 } // namespace MathUtility
 
 [[nodiscard]] inline float OutBounce(float time, float totaltime, float end = 1.0f, float start = 0.0f)
@@ -121,4 +123,3 @@ namespace Util {
 		? start + (end - start) * (static_cast<float>(pow(2.0f * timeRate, 2.0f)) * ((c2 + 1.0f) * 2.0f * timeRate - c2)) / 2.0f
 		: start + (end - start) * (static_cast<float>(pow(2.0f * timeRate - 2.0f, 2.0f)) * ((c2 + 1.0f) * (timeRate * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
 }
-

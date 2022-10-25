@@ -14,6 +14,7 @@
 #include "NTexture.h"
 #include "NSprite.h"
 #include "NPreDraw.h"
+#include "NReaction.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -24,10 +25,16 @@ public:
 
 private:
 	// --オブジェクト-- //
-	NObj3d object_;
+	NObj3d object_[3];
 
 	// --ブロックの種類
 	int blockType_;
+
+	// --衝突フラグ-- //
+	bool isCollision_ = false;
+
+	//リアクション//
+	NReaction* reaction;
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///
@@ -54,7 +61,13 @@ public:
 	// --ブロックの種類を参照
 	int GetBlockType();
 
-private:
+	// --衝突フラグの取得-- //
+	bool GetIsCol() { return isCollision_; }
 
+	// --衝突フラグの設定-- //
+	void SetIsCol(bool isCollision) { isCollision_ = isCollision; }
+
+private:
+	
 	/// --メンバ関数END-- ///
 };

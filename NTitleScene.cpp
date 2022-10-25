@@ -12,15 +12,16 @@ void NTitleScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
 	audio = NAudio::GetInstance();
-	soundData[0] = audio->LoadWave("preparation.wav");
+	soundData[0] = audio->LoadWave("fever.wav");
 	soundData[1] = audio->LoadWave("mokugyo.wav");
 	soundData[2] = audio->LoadWave("fanfare.wav");
 	//BGM鳴らす
-	audio->PlayWave(soundData[0], true);
+	audio->PlayWave(soundData[0], true,0.5f);
 #pragma endregion
 #pragma region	カメラ初期化
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
+	camera->SetEye({0,100.0f,-800.0f});
 	camera->CreateMatView();
 #pragma endregion
 #pragma region 描画初期化処理
@@ -83,8 +84,10 @@ void NTitleScene::Update()
 		}
 	}
 #pragma region 行列の計算
-	player->rotation.z += 0.3f;
+	player->rotation.z += 18.0f;
 	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());
+
+	camera->CreateMatView();
 #pragma endregion
 }
 

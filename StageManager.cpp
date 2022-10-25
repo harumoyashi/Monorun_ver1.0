@@ -49,22 +49,22 @@ StageManager::~StageManager()
 void StageManager::Initialize(NDX12* dx12)
 {
 	whiteMaterial_.Initialize(dx12->GetDevice());
-	whiteMaterial_.SetColor({1.0f, 1.0f, 1.0f, 1.0f});
+	whiteMaterial_.SetColor({0.9f, 0.9f, 0.9f, 1.0f });
 
 	blackMaterial_.Initialize(dx12->GetDevice());
 	blackMaterial_.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 
 	redMaterial_.Initialize(dx12->GetDevice());
-	redMaterial_.SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+	redMaterial_.SetColor({ 0.95f, 0.05f, 0.05f, 1.0f });
 
 	greenMaterial_.Initialize(dx12->GetDevice());
-	greenMaterial_.SetColor({ 0.0f, 1.0f, 0.0f, 1.0f });
+	greenMaterial_.SetColor({ 0.1f, 0.9f, 0.1f, 1.0f });
 
 	blueMaterial_.Initialize(dx12->GetDevice());
-	blueMaterial_.SetColor({ 0.0f, 0.0f, 1.0f, 1.0f });
+	blueMaterial_.SetColor({ 0.1f, 0.6f, 0.6f, 1.0f });
 
-	// --è·äQï®ÇçÌèú-- //
-	obstacles_.clear();
+	goalMaterial_.Initialize(dx12->GetDevice());
+	goalMaterial_.SetColor({ 0.9f, 0.9f, 0.0f, 0.3f});
 
 	// --ç≈ëÂÉRÉCÉìêî-- //
 	maxCoin_ = 0;
@@ -74,6 +74,10 @@ void StageManager::Initialize(NDX12* dx12)
 
 	// --CSVÇÃçsêî-- //
 	lineCounter_ = 0;
+
+	//óßï˚ëÃèÓïÒ
+	crystalCube = std::make_unique<NCube>();
+	crystalCube->Initialize(dx12->GetDevice(), CRYSTAL);
 }
 
 void StageManager::Update(XMMATRIX matView, XMMATRIX matProjection)
@@ -100,10 +104,13 @@ void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 			obstacles_[i].Draw(dx12, blueMaterial_, cube);
 		}
 		else if (obstacles_[i].GetBlockType() == DeathBlock) {
-			obstacles_[i].Draw(dx12, redMaterial_, cube);
+			obstacles_[i].Draw(dx12, redMaterial_, crystalCube.get());
 		}
 		else if (obstacles_[i].GetBlockType() == Coin) {
-			obstacles_[i].Draw(dx12, greenMaterial_, cube);
+			obstacles_[i].Draw(dx12, greenMaterial_, crystalCube.get());
+		}
+		else if (obstacles_[i].GetBlockType() == GoalBlock) {
+			obstacles_[i].Draw(dx12, goalMaterial_, cube);
 		}
 	}
 
@@ -178,11 +185,11 @@ void StageManager::LoadCSV(NDX12* dx12)
 	}
 
 	for (size_t i = 0; i < loopCount; i++) {
-		Obstacle lObj(dx12, {-352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f}, BLOCK);
+		Obstacle lObj(dx12, {-352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f}, WallBlock);
 		leftWalls_.push_back(lObj);
 		leftWalls_[i].Initialize();
 
-		Obstacle rObj(dx12, { 352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f }, BLOCK);
+		Obstacle rObj(dx12, { 352.0f, -static_cast<float>(i * blockSize_ + 32.0f), 0.0f }, WallBlock);
 		rightWalls_.push_back(rObj);
 		rightWalls_[i].Initialize();
 	}
@@ -192,7 +199,7 @@ void StageManager::LoadCSV(NDX12* dx12)
 		obstacles_[i].Initialize();
 	}
 
-	lineCounter_ = loopCount;
+	lineCounter_ = static_cast<int>(loopCount);
 }
 
 int StageManager::GetLineCount() { return lineCounter_; }

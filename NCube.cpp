@@ -212,7 +212,7 @@ void NCube::SetIndexCrystal()
 
 void NCube::SetNormal()
 {
-	for (int i = 0; i < numIB / 3; i++)
+	for (int i = 0; i < static_cast<int>(numIB) / 3; i++)
 	{//三角形1つごとに計算していく
 		//三角形のインデックスを取り出して、一時的な変数にいれる
 		unsigned short index0 = indices[i * 3 + 0];
@@ -269,7 +269,7 @@ void NCube::IndexMaping()
 	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < numIB; i++)
+	for (int i = 0; i < static_cast<int>(numIB); i++)
 	{
 		indexMap[i] = indices[i];	//インデックスをコピー
 	}

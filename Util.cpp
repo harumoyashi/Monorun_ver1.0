@@ -52,3 +52,9 @@ void Util::CameraShake(NCamera* camera, int value)
 	if(0 < camera->GetShakeCount())
 	camera->SetShakeCount(camera->GetShakeCount() - 1);
 }
+
+float Util::EaseOutCubic(float start, float end, float t) {
+	float time = 1 - pow(1 - t, 3);
+	return start * (1.0f - time) + end * time;
+	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
+}

@@ -13,12 +13,16 @@ enum Scene
 
 enum Texture
 {
-	TITLE,	//タイトル画像
-	START,	//スタートUI
-	PLAYER,	//プレイヤーテクスチャ
-	BLOCK,	//ブロックテクスチャ
-	STAGESELECTIMAGE,//ステージ選択画面の各ステージの画像
-	WHITEPNG,	// 0xffffffの64x64(px)のpng
+	TITLE,				//タイトル画像
+	START,				//スタートUI
+	PLAYER,				//プレイヤーテクスチャ
+	BLOCK,				//ブロックテクスチャ
+	NUMBER,				//数字＋小数点
+	WHITEPNG,			//0xffffffの64x64(px)のpng
+	STAGESELECTTEXT,	//ステージセレクトテキスト
+	RESULTTEXT,			//リザルトテキスト
+	RETRYTEXT,			//リトライテキスト
+	STAGESELECTFRAME,	//ステージセレクト枠
 
 	MAXTEX
 };
