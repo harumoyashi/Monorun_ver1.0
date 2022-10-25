@@ -46,8 +46,12 @@ private:
 	std::unique_ptr<NSprite> stageSelectSprite;	//ステージセレクトテキスト
 	std::unique_ptr<NSprite> retrySprite;	//リトライテキスト
 	std::unique_ptr<NSprite> nextSprite;	//ネクストテキスト
-	std::unique_ptr<NSprite> timeSprite[5];//数字
-	std::unique_ptr<NSprite> decimalPointSprite;
+	std::unique_ptr<NSprite> timeNumSprite[5];//数字
+	std::unique_ptr<NSprite> decimalPointSprite;//小数点
+	std::unique_ptr<NSprite> timeSprite;//タイムテキスト
+
+	XMFLOAT4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };
 
 	int displayNum[5] = {0, 0, 0, 0, 0};
 

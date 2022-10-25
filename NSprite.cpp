@@ -239,7 +239,10 @@ void NSprite::MappingCB()
 void NSprite::SetColor(float R, float G, float B, float A)
 {
 	constMapTransform->color = XMFLOAT4(R, G, B, A);
+}
 
+void NSprite::SetColor(XMFLOAT4 color) {
+	constMapTransform->color = color;
 }
 
 void NSprite::ParallelProjection()
