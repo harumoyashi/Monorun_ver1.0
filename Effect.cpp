@@ -144,7 +144,7 @@ void Effect::ExpandSquareDraw(void)
 void Effect::BrokenDeathBlockUpdate(XMMATRIX matView, XMMATRIX matProjection)
 {
 	if (isPlay_) {
-		objs_.at(0)->position = {OutExpo()}
+		//objs_.at(0)->position = {OutExpo()}
 		for (int i = 0; i < objs_.size(); i++) {
 			objs_.at(i)->UpdateMatrix(matView, matProjection);
 		}
