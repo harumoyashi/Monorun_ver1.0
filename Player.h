@@ -41,10 +41,15 @@ private:
 	NMaterial material;				//マテリアル
 
 	std::unique_ptr<NParticle> particle;	//パーティクル
+	std::unique_ptr<NSprite> speedSprite[3];	//速度表示用スプライト
+	std::unique_ptr<NSprite> decimalPointSprite;//小数点
 #pragma endregion
 
 	// --プレイヤーの状態-- //
 	int state_;
+
+	// --表示する速度の値-- //
+	int disPlaySpeed[3];
 
 #pragma region プレイヤーの速度変数
 	// --実際に加算する速度変数-- //

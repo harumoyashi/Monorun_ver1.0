@@ -97,6 +97,15 @@ void Player::Initialize(NDX12* dx12) {
 
 	// --衝突判定を行うか-- //
 	isColActive_ = true;
+
+	speedSprite[0] = std::make_unique<NSprite>();
+	speedSprite[0]->texNum = static_cast<int>(NUMBER);
+
+	speedSprite[1] = std::make_unique<NSprite>();
+	speedSprite[1]->texNum = static_cast<int>(NUMBER);
+
+	speedSprite[2] = std::make_unique<NSprite>();
+	speedSprite[2]->texNum = static_cast<int>(NUMBER);
 }
 
 // --更新処理-- //
@@ -280,10 +289,48 @@ void Player::Update(XMMATRIX matView, XMMATRIX matProjection) {
 	}
 
 	object_->UpdateMatrix(matView, matProjection);
+
+	int saveNum = speedY_ * 10;
+	disPlaySpeed[0] = static_cast<int>(saveNum / 100);
+	saveNum = saveNum % 100;
+	disPlaySpeed[1] = static_cast<int>(saveNum / 10);
+	saveNum = saveNum % 10;
+	disPlaySpeed[2] = static_cast<int>(saveNum / 1);
 }
 
 // --描画処理-- //
 void Player::Draw(NDX12* dx12, NCube* cube) {
+	speedSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[0]->texNum].texBuff, { disPlaySpeed[0] * 48.0f, 0.0f }, { 48.0f, 69.0f });
+	speedSprite[0]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+	speedSprite[0]->size = { 48.0f * 3, 69.0f * 3 };
+	speedSprite[0]->TransferVertex();
+	speedSprite[0]->position = { 180.0f,NWindows::win_height / 2.0f,0 };
+	speedSprite[0]->UpdateMatrix();
+
+	speedSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[1]->texNum].texBuff, { disPlaySpeed[1] * 48.0f, 0.0f }, { 48.0f, 69.0f });
+	speedSprite[1]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+	speedSprite[1]->size = { 48.0f * 3, 69.0f * 3 };
+	speedSprite[1]->TransferVertex();
+	speedSprite[1]->position = { 300.0f,NWindows::win_height / 2.0f,0 };
+	speedSprite[1]->UpdateMatrix();
+
+	speedSprite[2]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[2]->texNum].texBuff, { disPlaySpeed[2] * 48.0f, 0.0f }, { 48.0f, 69.0f });
+	speedSprite[2]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+	speedSprite[2]->size = { 48.0f, 69.0f };
+	speedSprite[2]->TransferVertex();
+	speedSprite[2]->position = { 415.0f,464.0f,0 };
+	speedSprite[2]->UpdateMatrix();
+
+	speedSprite[0]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+		NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+	speedSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+	//speedSprite[1]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+	//	NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+	speedSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+	speedSprite[2]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+
 	// --オブジェクト描画-- //
 	object_->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 	object_->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);

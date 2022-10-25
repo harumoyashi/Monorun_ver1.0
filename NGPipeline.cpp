@@ -348,7 +348,7 @@ NGPipeline::PipelineSet NGPipeline::CreatePipelineSprite(ComPtr<ID3D12Device> de
 	//パイプラインステート
 	SetShader();
 	SetRasterizer(false);
-	SetBlend(true);
+	SetBlend(false);
 	SetInputLayout(false);
 	SetTopology();
 	SetRenderTarget();
