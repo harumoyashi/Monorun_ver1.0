@@ -108,6 +108,7 @@ public:
 #pragma region 更新
 	//スプライトの色変更
 	void SetColor(float R = 1, float G = 1, float B = 1, float A = 1);
+	void SetColor(XMFLOAT4 color);
 	//平行投影変換
 	void ParallelProjection();
 	//マップ解除
