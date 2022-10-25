@@ -24,6 +24,7 @@ enum Texture
 	RETRYTEXT,			//リトライテキスト
 	NEXTTEXT,			//ネクストテキスト
 	STAGESELECTFRAME,	//ステージセレクト枠
+	TIMETEXT,			//タイムテキスト
 
 	MAXTEX
 };
