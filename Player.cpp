@@ -335,7 +335,7 @@ void Player::Draw(NDX12* dx12, NCube* cube) {
 	object_->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 	object_->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
 
-	particle->Draw(dx12, NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, NSceneManager::GetTex()[0].incrementSize);
+	particle->Draw(dx12);
 }
 
 // --I—¹ˆ—-- //

@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "StageManager.h"
 #include "Util.h"
+#include "NParticle.h"
+#include <vector>
 
 class Collision {
 	/// --ƒƒ“ƒo•Ï”-- ///
@@ -16,6 +18,9 @@ private:
 	StageManager* stage_;
 
 	BoxObj oldObj_;
+
+	//std::vector<NParticle> particles;
+	std::unique_ptr<NParticle[]> particles;
 
 	// --“–‚½‚è”»’è‚ğ‚Æ‚é‚©-- //
 	bool isCollision_ = true;
@@ -44,11 +49,16 @@ public:
 
 	void Reset();
 
+	void Finalize();
+
 	// --‰Šú‰»ˆ—-- //
 	void Initialize();
 
 	// --XVˆ—-- //
-	void Update(XMMATRIX matView, XMMATRIX matProjection);
+	void Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection);
+
+	// --•`‰æˆ—-- //
+	void Draw(NDX12* dx12);
 
 	float GetScrollY() { return scrollY_; }
 

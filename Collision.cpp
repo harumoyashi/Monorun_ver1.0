@@ -81,19 +81,24 @@ Collision::Collision() {
 
 // --デストラクタ
 Collision::~Collision() {
-
+	
 }
 
 void Collision::Reset() {
 	oldObj_ = { {0.0f, 0.0f}, 0.0f };
+	//particles.clear();
+}
+
+void Collision::Finalize() {
+
 }
 
 // --初期化処理
 void Collision::Initialize() {
-
+	particles = std::make_unique<NParticle[]>(10);
 }
 
-void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
+void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 	scrollY_ = 0.0f;
 
 	if (player_->GetIsColActive() == true) {
@@ -146,17 +151,22 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 
 				if (isCollision == true) {
 					if (stage_->obstacles_[closestObsIndex].GetBlockType() == DeathBlock) {
-						stage_->obstacles_.erase(stage_->obstacles_.begin() + closestObsIndex);
 
 						// --プレイヤーの状態が通常状態なら-- //
 						if (player_->GetState() == NormalAir || player_->GetState() == NormalWallHit) {
 							// --プレイヤーの状態を変更-- //
 							player_->SetDeath();// -> 死亡状態
 						}
-						// deathブロックを破壊。
-						else {
 
+						for (size_t j = 0; j < 10; j++) {
+							if (particles[j].GetIsActive() == false) {
+								BoxObj obsObj = stage_->obstacles_[closestObsIndex].GetBoxObj();
+								particles[j].BlockBreakInitialize(dx12->GetDevice(), 1, { obsObj.pos.x, obsObj.pos.y });
+								break;
+							}
 						}
+
+						stage_->obstacles_.erase(stage_->obstacles_.begin() + closestObsIndex);
 
 						//// --プレイヤーが回転状態なら-- //
 						//else if (player_->GetState() == RotateWallHit || player_->GetState() == RotateAir) {
@@ -233,10 +243,10 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 							}
 						}
 
-					// 
-					if (!isCameraShake_) {
-						SetCamShakeState(true);
-					}
+						// 
+						if (!isCameraShake_) {
+							SetCamShakeState(true);
+						}
 
 						isOutLoop = true;
 					}
@@ -257,5 +267,20 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 
 		// --古いプレイヤー情報を格納-- //
 		oldObj_ = player_->GetBoxObj();
+	}
+
+	for (size_t i = 0; i < 10; i++) {
+		if (particles[i].GetIsActive() == true) {
+			particles[i].BlockBreak(25, matView, matProjection);
+		}
+	}
+}
+
+// --描画処理-- //
+void Collision::Draw(NDX12* dx12) {
+	for (size_t i = 0; i < 10; i++) {
+		if (particles[i].GetIsActive() == true) {
+			particles[i].Draw(dx12);
+		}
 	}
 }

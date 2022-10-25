@@ -32,6 +32,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	stage_->Initialize(dx12);
 
 	col_ = Collision::GetInstance();
+	col_->Initialize();
 
 	//前景スプライト生成
 	resultSprite = std::make_unique<NSprite>();
@@ -88,7 +89,7 @@ void NGameScene::Update(NDX12* dx12)
 	player_->Update(camera->GetMatView(), camera->GetMatProjection());
 	camera->SetScrollY(player_->GetScrollY());
 
-	col_->Update(camera->GetMatView(), camera->GetMatProjection());
+	col_->Update(dx12, camera->GetMatView(), camera->GetMatProjection());
 	camera->SetScrollY(col_->GetScrollY());
 
 	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
@@ -302,6 +303,8 @@ void NGameScene::Draw(NDX12* dx12)
 
 	stage_->Draw(dx12, material_, cube.get());
 
+	col_->Draw(dx12);
+
 	if (player_->GetState() == Goal) {
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
@@ -367,7 +370,7 @@ void NGameScene::Finalize()
 	stage_->Finalize();
 	stage_->Release();
 	player_->Finalize();
-	col_->Release();
+	//col_->Release();
 	/*for (size_t i = 0; i < maxForeSprite; i++)
 	{
 		delete foreSprite[i];

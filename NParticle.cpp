@@ -4,6 +4,15 @@
 #include <math.h>
 #include <time.h>
 
+NParticle::NParticle() {
+
+}
+
+NParticle::~NParticle() {
+	//delete obj3d;
+	//delete cube;
+}
+
 void NParticle::Initialize(ComPtr<ID3D12Device> device)
 {
 	//マテリアル(定数バッファ)
@@ -26,9 +35,13 @@ void NParticle::Initialize(ComPtr<ID3D12Device> device)
 
 void NParticle::Initialize(ComPtr<ID3D12Device> device, int modelNum)
 {
+	//マテリアル(定数バッファ)
+	material.Initialize(device);
+	material.SetColor({ 0.95f, 0.05f, 0.05f, 1.0f });
+
 	//立方体情報
 	cube = std::make_unique<NCube>();
-	cube->Initialize(device, modelNum);
+	cube->Initialize(device);
 
 	//オブジェクト(定数バッファ)
 	for (size_t i = 0; i < maxObj; i++)
@@ -38,6 +51,29 @@ void NParticle::Initialize(ComPtr<ID3D12Device> device, int modelNum)
 		obj3d[i]->scale = { 0.0f,0.0f,0.0f };
 		obj3d[i]->Initialize(device);
 	}
+}
+
+//即死ブロック破壊する際の初期化
+void NParticle::BlockBreakInitialize(ComPtr<ID3D12Device> device, int modelNum, XMFLOAT2 pos) {
+	//マテリアル(定数バッファ)
+	material.Initialize(device);
+	material.SetColor({ 0.95f, 0.05f, 0.05f, 1.0f });
+
+	//立方体情報
+	cube = std::make_unique<NCube>();
+	cube->Initialize(device);
+
+	//オブジェクト(定数バッファ)
+	for (size_t i = 0; i < maxObj; i++)
+	{
+		obj3d[i] = std::make_unique<NObj3d>();
+		obj3d[i]->texNum = WHITEPNG;
+		obj3d[i]->scale = { 0.0f,0.0f,0.0f };
+		obj3d[i]->position = { pos.x, pos.y, 0.0f };
+		obj3d[i]->Initialize(device);
+	}
+
+	isActive = true;
 }
 
 void NParticle::WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player)
@@ -84,14 +120,9 @@ void NParticle::WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMM
 	}
 }
 
-void NParticle::BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection, NObj3d* block)
+void NParticle::BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection)
 {
 	srand(time(nullptr));
-
-	if (isParticle)
-	{
-		isActive = true;
-	}
 
 	if (isActive)
 	{
@@ -109,11 +140,11 @@ void NParticle::BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATR
 			speedY = static_cast<float>(rand() % 40 - 20) * 0.1f;
 			speedZ = static_cast<float>(rand() % 40 - 20) * 0.1f;
 
-			if (isParticle)
-			{
-				obj3d[i]->scale = { scale,scale,scale };
-				obj3d[i]->position = block->position;
-			}
+			//if (isParticle)
+			//{
+			//	obj3d[i]->scale = { scale,scale,scale };
+			//	obj3d[i]->position = block->position;
+			//}
 
 			//縮小してく
 			obj3d[i]->scale.x -= scale / maxTimer;
@@ -146,11 +177,11 @@ void NParticle::BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATR
 	}
 }
 
-void NParticle::Draw(NDX12* dx12, const ComPtr<ID3D12PipelineState> pipelineState, ComPtr<ID3D12RootSignature> rootSignature, UINT incrementSize)
+void NParticle::Draw(NDX12* dx12)
 {
 	for (size_t i = 0; i < maxObj; i++)
 	{
-		obj3d[i]->CommonBeginDraw(dx12->GetCommandList(), pipelineState, rootSignature, dx12->GetSRVHeap());
-		obj3d[i]->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, incrementSize);
+		obj3d[i]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		obj3d[i]->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
 	}
 }
