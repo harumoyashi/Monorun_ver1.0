@@ -52,23 +52,22 @@ void NGameScene::Update()
 		}
 	}
 
-	//if (player_->GetCamShake()) {
-	//	eye = Util::CameraShake(eye, shakeCount);
-	//	if (0 < shakeCount) {
-	//		shakeCount--;
-	//	}
-	//	else {
-	//		player_->SetCamShakeState(false);
-	//	}
-	//}
+	if (player_->GetCamShake() || col_->GetCamShake()) {
+		camera.get()->SetShakeCount(5);
+		player_->SetCamShakeState(false);
+		col_->SetCamShakeState(false);
+	}
+
+	// 常に実行されてよい
+	Util::CameraShake(camera.get(), camera.get()->GetShakeCount());
 }
 
 void NGameScene::Draw(NDX12* dx12)
 {
 	// --プレイヤー描画処理-- //
-	player_->Draw(dx12,cube.get());
+	player_->Draw(dx12, cube.get());
 
-	stage_->Draw(dx12, material_,cube.get());
+	stage_->Draw(dx12, material_, cube.get());
 }
 
 // --リセット処理-- //

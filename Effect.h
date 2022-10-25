@@ -2,6 +2,9 @@
 #include "Particle.h"
 #include <vector>
 #include <algorithm>
+#include "NObj3d.h"
+#include "NMaterial.h"
+#include "NCube.h"
 
 class Effect
 {
@@ -40,6 +43,10 @@ private: // 変数
 	int effectType_{ 0 };
 	std::vector<std::unique_ptr<Particle>> particles_{};
 	int activeCount_{ 0 };
+
+	NMaterial material_;
+	std::unique_ptr<NCube> c_;
+	std::unique_ptr<NObj3d> p_;
 
 	// effect開始時点でのpc内部の時間を記録
 	int startTime_{ 0 };

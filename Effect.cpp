@@ -20,6 +20,12 @@ void Effect::Activate()
 		particles_.front().get()->Init();
 		particles_.front().get()->Activate();
 	}
+	else if (effectType_ == static_cast<int>(EffectType::Explode)) {
+		material_.Initialize(ndx12_->GetDevice());
+
+		c_ = std::make_unique<NCube>();
+		c_->Initialize(ndx12_->GetDevice(), CUBE);
+	}
 	startTime_ = Util::GetNowCount();
 	isPlay_ = true;
 }

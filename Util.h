@@ -2,6 +2,7 @@
 #include <chrono>
 #include "NVector2.h"
 #include <DirectXMath.h>
+#include "NCamera.h"
 
 using namespace DirectX;
 
@@ -85,7 +86,7 @@ namespace Util {
 		return static_cast<int>(duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count());
 	}
 
-	XMFLOAT3 CameraShake(XMFLOAT3 eyePos, int value);
+	void CameraShake(NCamera* camera, int value);
 } // namespace MathUtility
 
 [[nodiscard]] inline float OutBounce(float time, float totaltime, float end = 1.0f, float start = 0.0f)

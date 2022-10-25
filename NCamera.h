@@ -16,6 +16,10 @@ private:
 	XMFLOAT3 up = { 0, 1, 0 };			//上方向ベクトル
 	float angle = 0.0f;					//カメラの回転角
 
+	XMFLOAT3 oldEye_{};
+
+	int shakeCount_{ 5 };
+
 public:
 	//ビュー変換行列作成
 	void CreateMatView();
@@ -24,6 +28,9 @@ public:
 	// --縦スクロールのスピード取得-- //
 	void SetScrollY(float scrollY);
 
+	void MemorizeEye(void) { oldEye_ = eye; }
+	void RecoveryEye(void) { eye = oldEye_; }
+	void SetShakeCount(int count) { shakeCount_ = count; }
 
 	//セッター
 	void SetEye(XMFLOAT3 eye) { this->eye = eye; }
@@ -33,4 +40,6 @@ public:
 	//ゲッター
 	XMMATRIX GetMatProjection() { return matProjection; }
 	XMMATRIX GetMatView() { return matView; }
+	XMFLOAT3 GetEye() { return eye; }
+	int GetShakeCount(void) { return shakeCount_; }
 };

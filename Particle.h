@@ -6,6 +6,7 @@
 
 enum class EffectType {
 	CToA, // ’†S‚©‚çüˆÍ‚ÉL‚ª‚é
+	Explode,
 };
 
 class Particle

@@ -43,8 +43,12 @@ float Util::Degree2Radian(float degree)
 	return degree * PI / 180.0f;
 }
 
-XMFLOAT3 Util::CameraShake(XMFLOAT3 eyePos, int value)
+void Util::CameraShake(NCamera* camera, int value)
 {
+	camera->MemorizeEye();
 	std::uniform_real_distribution<> dist(-value, value);
-	return XMFLOAT3(eyePos.x, eyePos.y + dist(engine), eyePos.z + dist(engine));
+	camera->SetEye(XMFLOAT3{ camera->GetEye().x + static_cast<float>(dist(engine)), camera->GetEye().y, camera->GetEye().z + static_cast<float>(dist(engine)) });
+
+	if(0 < camera->GetShakeCount())
+	camera->SetShakeCount(camera->GetShakeCount() - 1);
 }

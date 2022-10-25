@@ -26,6 +26,9 @@ private:
 	// --Y軸スクロールの値-- //
 	float scrollY_;
 
+	// getter用
+	bool isCameraShake_ = false;
+
 	/// --メンバ変数END-- ///
 	/// --------------- ///
 	/// --メンバ関数-- ///
@@ -46,6 +49,10 @@ public:
 	void Update(XMMATRIX matView, XMMATRIX matProjection);
 
 	float GetScrollY() { return scrollY_; }
+
+	// cameraShake
+	bool GetCamShake() { return isCameraShake_; }
+	void SetCamShakeState(bool flag) { isCameraShake_ = flag; }
 
 private:
 	// --コンストラクタ-- //

@@ -219,6 +219,9 @@ void Collision::Update(XMMATRIX matView, XMMATRIX matProjection) {
 					}
 
 					// 
+					if (!isCameraShake_) {
+						SetCamShakeState(true);
+					}
 
 					isOutLoop = true;
 				}
