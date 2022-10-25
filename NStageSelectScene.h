@@ -66,4 +66,3 @@ public:
 	void Draw(NDX12* dx12);
 	void Finalize();
 };
-
