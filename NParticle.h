@@ -10,17 +10,29 @@ private:
 	NMaterial material;				//マテリアル
 	static const int maxObj = 50;	//オブジェクト数(これを使いまわす)
 	std::unique_ptr<NObj3d> obj3d[maxObj];			//オブジェクト(定数バッファ)
-
 	std::unique_ptr<NCube> cube;	//立方体情報(頂点、インデックス)
 
-	int impactTimer = 0; //パーティクル出す時間
-	bool isImpact = false; //パーティクル出すかフラグ
+	bool isActive = false;	//これ立ってる限り処理続ける
+	const int maxTimer = 20;
+	int timer = 0;
 
-	int directionX = -1;	//1:右向き -1:左向き
+	float scale = 0.0f;
+	float rot = 0.0f;
+	float speedX = 0.0f;
+	float speedY = 0.0f;
+	float speedZ = 0.0f;
 
 public:
+	//白くてアルファ値ちょい下げの汎用的な奴
 	void Initialize(ComPtr<ID3D12Device> device);
+	//マテリアルとモデルを指定できる
+	void Initialize(ComPtr<ID3D12Device> device, NMaterial material, int modelNum = CRYSTAL);
 	//壁伝いの時出るパーティクル
 	void WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player);
+	//即死ブロック破壊時のパーティクル
+	void BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection, NObj3d* block);
+	//描画
 	void Draw(NDX12* dx12, const ComPtr<ID3D12PipelineState> pipelineState, ComPtr<ID3D12RootSignature> rootSignature, UINT incrementSize);
+
+	bool GetIsActive() { return isActive; }
 };

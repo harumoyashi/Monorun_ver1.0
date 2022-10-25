@@ -24,6 +24,10 @@ void NParticle::Initialize(ComPtr<ID3D12Device> device)
 	}
 }
 
+void NParticle::Initialize(ComPtr<ID3D12Device> device, NMaterial material, int modelNum)
+{
+}
+
 void NParticle::WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player)
 {
 	srand(time(nullptr));
@@ -65,6 +69,68 @@ void NParticle::WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMM
 		obj3d[i]->position.y += speedY;
 		obj3d[i]->position.z += speedZ;
 		obj3d[i]->UpdateMatrix(matView, matProjection);
+	}
+}
+
+void NParticle::BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection, NObj3d* block)
+{
+	srand(time(nullptr));
+
+	if (isParticle)
+	{
+		isActive = true;
+	}
+
+	if (isActive)
+	{
+		if (atOnce > maxObj)
+		{
+			atOnce = maxObj;
+		}
+
+		for (size_t i = 0; i < atOnce; i++)
+		{
+			//ƒ‰ƒ“ƒ_ƒ€‚Å‚¢‚ë‚¢‚ë“®‚©‚µ•ûŒˆ‚ß‚é
+			scale = static_cast<float>(rand() % 30 + 30) * 0.1f;
+			rot = static_cast<float>(rand() % 20) + 10.0f;
+			speedX = static_cast<float>(rand() % 40 - 20) * 0.1f;
+			speedY = static_cast<float>(rand() % 40 - 20) * 0.1f;
+			speedZ = static_cast<float>(rand() % 40 - 20) * 0.1f;
+
+			if (isParticle)
+			{
+				obj3d[i]->scale = { scale,scale,scale };
+				obj3d[i]->position = block->position;
+			}
+
+			//k¬‚µ‚Ä‚­
+			obj3d[i]->scale.x -= scale / maxTimer;
+			obj3d[i]->scale.y -= scale / maxTimer;
+			obj3d[i]->scale.z -= scale / maxTimer;
+
+			//‚®‚é‚®‚é
+			obj3d[i]->rotation.x -= rot;
+			obj3d[i]->rotation.y -= rot;
+			//‚Ô‚Á”ò‚ñ‚Å‚­
+			obj3d[i]->position.x += speedX;
+			obj3d[i]->position.y += speedY;
+			obj3d[i]->position.z += speedZ;
+			obj3d[i]->UpdateMatrix(matView, matProjection);
+		}
+
+		if (timer <= maxTimer)
+		{
+			timer++;
+		}
+		else
+		{
+			timer = 0;
+			for (size_t i = 0; i < atOnce; i++)
+			{
+				obj3d[i]->scale = { 0,0,0 };
+			}
+			isActive = false;
+		}
 	}
 }
 
