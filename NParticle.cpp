@@ -24,8 +24,20 @@ void NParticle::Initialize(ComPtr<ID3D12Device> device)
 	}
 }
 
-void NParticle::Initialize(ComPtr<ID3D12Device> device, NMaterial material, int modelNum)
+void NParticle::Initialize(ComPtr<ID3D12Device> device, int modelNum)
 {
+	//立方体情報
+	cube = std::make_unique<NCube>();
+	cube->Initialize(device, modelNum);
+
+	//オブジェクト(定数バッファ)
+	for (size_t i = 0; i < maxObj; i++)
+	{
+		obj3d[i] = std::make_unique<NObj3d>();
+		obj3d[i]->texNum = WHITEPNG;
+		obj3d[i]->scale = { 0.0f,0.0f,0.0f };
+		obj3d[i]->Initialize(device);
+	}
 }
 
 void NParticle::WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player)

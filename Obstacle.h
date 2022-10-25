@@ -8,6 +8,7 @@
 #include "NRootParam.h"
 #include "NMaterial.h"
 #include "NCube.h"
+#include "NParticle.h"
 #include "NGPipeline.h"
 #include "NRootSignature.h"
 #include "NObj3d.h"
@@ -35,6 +36,8 @@ private:
 
 	//リアクション//
 	NReaction* reaction;
+
+	std::unique_ptr<NParticle> particle;	//パーティクル
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///

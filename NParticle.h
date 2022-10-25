@@ -26,7 +26,7 @@ public:
 	//白くてアルファ値ちょい下げの汎用的な奴
 	void Initialize(ComPtr<ID3D12Device> device);
 	//マテリアルとモデルを指定できる
-	void Initialize(ComPtr<ID3D12Device> device, NMaterial material, int modelNum = CRYSTAL);
+	void Initialize(ComPtr<ID3D12Device> device, int modelNum);
 	//壁伝いの時出るパーティクル
 	void WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player);
 	//即死ブロック破壊時のパーティクル
@@ -34,5 +34,6 @@ public:
 	//描画
 	void Draw(NDX12* dx12, const ComPtr<ID3D12PipelineState> pipelineState, ComPtr<ID3D12RootSignature> rootSignature, UINT incrementSize);
 
-	bool GetIsActive() { return isActive; }
+	//マテリアルをセット
+	void SetMaterial(NMaterial material) { this->material = material; }
 };
