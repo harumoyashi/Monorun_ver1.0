@@ -19,10 +19,11 @@ public: // 関数
 	void Reset();
 
 #pragma region Effect一覧
-	void ExpandSquareUpdate();
-	void ExpandSquareDraw();
+	void ExpandSquareUpdate(void);
+	void ExpandSquareDraw(void);
 
-	
+	void BrokenDeathBlockUpdate(XMMATRIX matView, XMMATRIX matProjection);
+	void BrokenDeathBlockDraw(void);
 #pragma endregion
 
 	// getter
@@ -45,8 +46,8 @@ private: // 変数
 	int activeCount_{ 0 };
 
 	NMaterial material_;
+	std::vector<std::unique_ptr<NObj3d>> objs_;
 	std::unique_ptr<NCube> c_;
-	std::unique_ptr<NObj3d> p_;
 
 	// effect開始時点でのpc内部の時間を記録
 	int startTime_{ 0 };
