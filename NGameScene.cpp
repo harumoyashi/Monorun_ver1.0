@@ -537,7 +537,7 @@ void NGameScene::Update(NDX12* dx12)
 
 				else if (selectText == NextText) {
 					if (stage_->GetSelectStage() < 10) {
-						stage_->SetCSV(stage_->GetSelectStage() + 1);
+						selectScene_->SetSelectStage(stage_->GetSelectStage() + 1);
 						if (!NSceneManager::GetPlayEffect()) {
 							NSceneManager::SetScene(GAMESCENE);
 						}

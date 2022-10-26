@@ -245,6 +245,25 @@ void NStageSelectScene::Finalize()
 {
 }
 
+void NStageSelectScene::SetSelectStage(int selectStage) {
+	// --現在選んでいるステージ-- //
+	selectStage_ = selectStage;
+	stage_->SetCSV(selectStage_);
+
+	//selectStage -= 2;
+	//if (selectStage < 0) selectStage = 0;
+
+	for (size_t i = 0; i < maxNumSprite; i++) {
+		numSprite[i]->position.x = 300.0f;
+		numSprite[i]->position.y = 375.0f - ((selectStage_ - 1) * 250.0f) + (i * 250.0f);
+		numSprite[i]->UpdateMatrix();
+
+		// --イージング用変数初期化-- //
+		easeStartPos_[i] = { 300.0f, 375.0f - ((selectStage_ - 1) * 250.0f) + (i * 250.0f), 0.0f };
+		easeEndPos_[i] = { 300.0f, 375.0f - ((selectStage_ - 1) * 250.0f) + (i * 250.0f), 0.0f };
+	}
+}
+
 //void NStageSelectScene::SetStageSelect(int stage) {
 //	selectStage_ = stage;
 //	for (size_t i = 0; i < maxNumSprite; i++) {
