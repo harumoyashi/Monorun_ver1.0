@@ -63,6 +63,7 @@ private:
 	std::unique_ptr<NSprite> countSprite;//スタートまでのカウント
 	std::unique_ptr<NSprite> goSprite;//[GO]テキストスプライト
 	std::unique_ptr<NSprite> minusSprite;//[-]テキストスプライト
+	std::unique_ptr<NSprite> kmSprite;//[/km]テキストスプライト
 
 	XMFLOAT4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };

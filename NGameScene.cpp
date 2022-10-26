@@ -91,6 +91,14 @@ void NGameScene::Initialize(NDX12* dx12)
 	speedSprite[2] = std::make_unique<NSprite>();
 	speedSprite[2]->texNum = static_cast<int>(NUMBER);
 
+	kmSprite = std::make_unique<NSprite>();
+	kmSprite->texNum = static_cast<int>(KMTEXT);
+	kmSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[kmSprite->texNum].texBuff);
+	kmSprite->SetColor(1, 1, 1, 0.5f);
+	kmSprite->position.x = NWindows::win_width / 2.0f;
+	kmSprite->position.y = NWindows::win_height / 2.0f;
+	kmSprite->UpdateMatrix();
+
 	timeNumSprite[0] = std::make_unique<NSprite>();
 	timeNumSprite[0]->texNum = static_cast<int>(NUMBER);
 
@@ -214,6 +222,9 @@ void NGameScene::Update(NDX12* dx12)
 
 			speedSprite[2]->position = { 455.0f,464.0f,0 };
 			speedSprite[2]->UpdateMatrix();
+
+			kmSprite->position = { 455.0f, 360.0f, 0.0f };
+			kmSprite->UpdateMatrix();
 		}
 		else if (player_->GetDirectionY() == -1) {
 			speedSprite[0]->position = { 200.0f,NWindows::win_height / 2.0f,0 };
@@ -227,6 +238,9 @@ void NGameScene::Update(NDX12* dx12)
 
 			speedSprite[2]->position = { 425.0f,464.0f,0 };
 			speedSprite[2]->UpdateMatrix();
+
+			kmSprite->position = { 425.0f, 360.0f, 0.0f };
+			kmSprite->UpdateMatrix();
 		}
 
 		// --プレイヤーが死亡状態になったらウェーブを変える-- //
@@ -521,6 +535,7 @@ void NGameScene::Draw(NDX12* dx12)
 		decimalPointSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		speedSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		speedSprite[2]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		kmSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		if (player_->GetDirectionY() == 1) {
 			minusSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		}
