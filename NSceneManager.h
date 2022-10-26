@@ -29,6 +29,7 @@ enum Texture
 	GOTEXT,				//[GO]テキスト
 	MINUS,				//[-]テキスト
 	KMTEXT,				//[/km]テキスト
+	SLASHTEXT,			//[/]テキスト
 
 	MAXTEX
 };
