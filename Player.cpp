@@ -112,6 +112,32 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 		
 	}
 
+	else if (state_ == Goal) {
+		// --ゴール状態になってからの経過時間-- //
+		float nowCount = static_cast<float>(Util::GetNowCount());
+		float nowTime = (nowCount - easeStartCount_) / 1000.0f;
+
+		float easeRota = nowTime / goalEaseTime_;
+		easeRota = Util::Clamp(easeRota, 1.0f, 0.0f);
+
+		speedY_ = 0.0f;
+
+		object_->position.x = Util::EaseOutCubic(easeStartPosX_, easeEndPosX_, easeRota);
+
+		object_->rotation.z += rotaSpeed;
+	}
+
+	else if (state_ == DeathReaction) {
+		// --死亡状態になってからの経過時間-- //
+		float nowCount = static_cast<float>(Util::GetNowCount());
+		float nowTime = (nowCount - deathStartCount_) / 1000.0f;
+
+		if (nowTime >= deathWaitingTime) {
+			object_->position.y = 2000.0f;
+			state_ = Death;
+		}
+	}
+
 	else if (state_ == NormalWallHit) {
 		isParticle = true;	//パーティクル出せ～
 
@@ -259,32 +285,6 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 				SetCamShakeState(true);
 			}
 		}
-	}
-
-	else if (state_ == DeathReaction) {
-		// --死亡状態になってからの経過時間-- //
-		float nowCount = static_cast<float>(Util::GetNowCount());
-		float nowTime = (nowCount - deathStartCount_) / 1000.0f;
-
-		if (nowTime >= deathWaitingTime) {
-			object_->position.y = 2000.0f;
-			state_ = Death;
-		}
-	}
-
-	else if (state_ == Goal) {
-		// --ゴール状態になってからの経過時間-- //
-		float nowCount = static_cast<float>(Util::GetNowCount());
-		float nowTime = (nowCount - easeStartCount_) / 1000.0f;
-
-		float easeRota = nowTime / goalEaseTime_;
-		easeRota = Util::Clamp(easeRota, 1.0f, 0.0f);
-
-		speedY_ = 0.0f;
-
-		object_->position.x = Util::EaseOutCubic(easeStartPosX_, easeEndPosX_, easeRota);
-
-		object_->rotation.z += rotaSpeed;
 	}
 
 	object_->UpdateMatrix(matView, matProjection);

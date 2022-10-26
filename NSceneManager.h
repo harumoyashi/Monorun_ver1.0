@@ -27,6 +27,7 @@ enum Texture
 	TIMETEXT,			//タイムテキスト
 	BIGNUMBER,			//大きい数字+小数点
 	GOTEXT,				//[GO]テキスト
+	MINUS,				//[-]テキスト
 
 	MAXTEX
 };

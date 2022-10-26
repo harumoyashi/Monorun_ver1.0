@@ -166,6 +166,8 @@ public:
 	float GetSpeedX() { return speedX_; }
 	float GetSpeedY() { return speedY_; }
 
+	int GetDirectionY() { return directionY_; }
+
 	// --€–Só‘Ô‚É•ÏX-- //
 	void SetDeath();
 
