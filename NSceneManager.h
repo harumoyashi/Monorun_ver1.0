@@ -35,6 +35,7 @@ enum Texture
 	BOUND2,
 	WALL,
 	STAGESELECTNUMBER,
+	NICESTAMP,			//[NICE]テキスト
 
 	MAXTEX
 };

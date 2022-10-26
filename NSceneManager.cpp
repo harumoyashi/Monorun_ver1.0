@@ -46,6 +46,7 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[19].Load(L"Resources/bound2.png");
 	tex[20].Load(L"Resources/wall_tex.png");
 	tex[21].Load(L"Resources/dorppin_stageSelectNumber.png");
+	tex[22].Load(L"Resources/nice.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{
