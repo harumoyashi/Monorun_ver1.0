@@ -60,7 +60,7 @@ private:
 	const float maxSpeedY_ = 20.0f;
 
 	// --Y軸の最低速度-- //
-	const float minSpeedY_ = 2.5f;
+	const float minSpeedY_ = 4.0f;
 
 	// --壁キックの速度-- //
 	const float wallKickSpeedX_ = 20.0f;

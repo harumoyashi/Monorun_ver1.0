@@ -219,19 +219,19 @@ void StageManager::AddCoin() { coin_++; }
 // --読み込むファイルをセットする-- //
 void StageManager::SetCSV(int num) {
 	if (num == 1) {
-		path_ = "csv/check_progress_gimic1.csv";
+		path_ = "csv/a - check_stage_design1.csv";
 	}
 	else if (num == 2) {
-		path_ = "csv/check_progress_gimic2.csv";
+		path_ = "csv/a - check_stage_design2.csv";
 	}
 	else if (num == 3) {
-		path_ = "csv/check_progress_gimic3.csv";
+		path_ = "csv/a - check_stage_design3.csv";
 	}
 	else if (num == 4) {
-		path_ = "csv/check_progress_gimic4.csv";
+		path_ = "csv/a - check_stage_design4.csv";
 	}
 	else if (num == 5) {
-		path_ = "csv/check_progress_gimic5.csv";
+		path_ = "csv/a - check_stage_design5.csv";
 	}
 	else if (num == 6) {
 		path_ = "csv/check_progress_gimic6.csv";
