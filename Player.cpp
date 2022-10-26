@@ -68,6 +68,7 @@ void Player::Initialize(NDX12* dx12) {
 	audio = audio = new NAudio();
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("jump.wav");		// じゃんぷ音
+	soundData[1] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
 
 	//マテリアル(定数バッファ)
 	material.Initialize(dx12->GetDevice());
@@ -302,6 +303,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 			// --x座標を変更-- //
 			object_->position.x = minPosX_;
 
+			audio->PlayWave(soundData[1], false, 3.5f);
+
 			// --状態を変更-- //
 			if (state_ == RotateAir) {
 				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
@@ -324,6 +327,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 		else if (object_->position.x > maxPosX_) {
 			// --X座標を変更-- //
 			object_->position.x = maxPosX_;
+
+			audio->PlayWave(soundData[1], false, 3.5f);
 
 			if (state_ == RotateAir) {
 				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
