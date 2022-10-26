@@ -61,7 +61,7 @@ void NParticle::BlockBreakInitialize(ComPtr<ID3D12Device> device, int modelNum, 
 
 	//立方体情報
 	cube = std::make_unique<NCube>();
-	cube->Initialize(device,modelNum);
+	cube->Initialize(device, modelNum);
 
 	//オブジェクト(定数バッファ)
 	for (size_t i = 0; i < maxObj; i++)
@@ -171,6 +171,70 @@ void NParticle::BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection)
 			for (size_t i = 0; i < atOnce; i++)
 			{
 				obj3d[i]->scale = { 0,0,0 };
+			}
+			isActive = false;
+		}
+	}
+}
+
+
+void NParticle::PlayerBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection, NObj3d* obj,float maxTimer)
+{
+	srand(time(nullptr));
+
+	if (isParticle)
+	{
+		isActive = true;
+	}
+
+	if (isActive)
+	{
+		if (atOnce > maxObj)
+		{
+			atOnce = maxObj;
+		}
+
+		for (size_t i = 0; i < atOnce; i++)
+		{
+			//ランダムでいろいろ動かし方決める
+			scale = static_cast<float>(rand() % 10 + 15);
+			rot = static_cast<float>(rand() % 20) + 10.0f;
+			speedX = static_cast<float>(rand() % 10 - 5);
+			speedY = static_cast<float>(rand() % 10 - 5);
+			speedZ = static_cast<float>(rand() % 10 - 5);
+
+			if (isParticle)
+			{
+				obj3d[i]->scale = { scale,scale,scale };
+				obj3d[i]->position = obj->position;
+			}
+
+			//縮小してく
+			obj3d[i]->scale.x -= scale / maxTimer;
+			obj3d[i]->scale.y -= scale / maxTimer;
+			obj3d[i]->scale.z -= scale / maxTimer;
+
+			//ぐるぐる
+			obj3d[i]->rotation.x -= rot;
+			obj3d[i]->rotation.y -= rot;
+			//ぶっ飛んでく
+			obj3d[i]->position.x += speedX;
+			obj3d[i]->position.y += speedY;
+			obj3d[i]->position.z += speedZ;
+			obj3d[i]->UpdateMatrix(matView, matProjection);
+		}
+
+		if (timer <= maxTimer)
+		{
+			timer++;
+		}
+		else
+		{
+			timer = 0;
+			for (size_t i = 0; i < atOnce; i++)
+			{
+				obj3d[i]->scale = { 0,0,0 };
+				obj3d[i]->UpdateMatrix(matView, matProjection);
 			}
 			isActive = false;
 		}

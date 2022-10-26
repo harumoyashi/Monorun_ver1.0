@@ -11,6 +11,8 @@ NStageSelectScene* NStageSelectScene::GetInstance()
 }
 
 void NStageSelectScene::Reset() {
+	audio->StartWave(soundData[0]);
+
 	// --時間計測に必要なデータ変数-- //
 	nowCount_ = 0;
 	startCount_ = 0;
@@ -34,6 +36,15 @@ void NStageSelectScene::Reset() {
 
 void NStageSelectScene::Initialize(NDX12* dx12)
 {
+#pragma region	オーディオ初期化
+	audio = NAudio::GetInstance();
+	soundData[0] = audio->LoadWave("stageselect_BGM.wav");
+	soundData[1] = audio->LoadWave("mokugyo.wav");
+	soundData[2] = audio->LoadWave("fanfare.wav");
+	//BGM鳴らす
+	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
+	audio->StopWave(soundData[0]);
+#pragma endregion
 #pragma region	カメラ初期化
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
@@ -118,6 +129,7 @@ void NStageSelectScene::Update()
 		{
 			stage_->SetCSV(selectStage_);
 			if (!NSceneManager::GetPlayEffect()) {
+				audio->StopWave(soundData[0]);
 				NSceneManager::SetScene(GAMESCENE);
 			}
 		}

@@ -59,6 +59,8 @@ void Player::Reset() {
 	reactionCount_ = 0;
 
 	material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
+	isDeathParticle = true;
 }
 
 // --初期化処理-- //
@@ -78,6 +80,8 @@ void Player::Initialize(NDX12* dx12) {
 	//パーティクル
 	particle = std::make_unique<NParticle>();
 	particle->Initialize(dx12->GetDevice());
+	deathParticle = std::make_unique<NParticle>();
+	deathParticle->Initialize(dx12->GetDevice());
 
 	// --プレイヤーの状態-- //
 	state_ = Start;
@@ -150,6 +154,9 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 			object_->position.y = 2000.0f;
 			state_ = Death;
 		}
+
+		deathParticle->PlayerBreak(isDeathParticle, 50, matView, matProjection, object_.get());
+		isDeathParticle = false;
 	}
 
 	else if (state_ == NormalWallHit) {
@@ -334,10 +341,14 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 // --描画処理-- //
 void Player::Draw(NDX12* dx12, NCube* cube) {
 	particle->Draw(dx12);
+	deathParticle->Draw(dx12);
 
 	// --オブジェクト描画-- //
-	object_->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
-	object_->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+	if (state_ != Death && state_ != DeathReaction)
+	{
+		object_->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		object_->Draw(dx12->GetCommandList(), material, dx12->GetSRVHeap(), cube->vbView, cube->ibView, cube->numIB, NSceneManager::GetTex()[0].incrementSize);
+	}
 }
 
 // --終了処理-- //
@@ -379,7 +390,7 @@ void Player::ChangeDireY() {
 // --回転状態にする-- //
 void Player::SetRotate() {
 	speedY_ = maxSpeedY_;
-	material.SetColor({0.95f, 0.1f, 0.1f, 1.0f});
+	material.SetColor({ 0.95f, 0.1f, 0.1f, 1.0f });
 
 	if (state_ == NormalAir) state_ = RotateAir;
 	else if (state_ == NormalWallHit) state_ = RotateWallHit;

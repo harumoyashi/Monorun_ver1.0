@@ -42,6 +42,7 @@ private:
 	NMaterial material;				//マテリアル
 
 	std::unique_ptr<NParticle> particle;	//パーティクル
+	std::unique_ptr<NParticle> deathParticle;	//パーティクル
 #pragma endregion
 
 	// --プレイヤーの状態-- //
@@ -132,10 +133,11 @@ private:
 	// --死亡状態開始時のカウント-- //
 	int deathStartCount_;
 
-	const float deathWaitingTime = 3.0f;
+	const float deathWaitingTime = 1.5f;
 #pragma endregion
 
 	bool isParticle = false;	//パーティクル出すか否か
+	bool isDeathParticle = true;	//パーティクル出すか否か
 
 	/// --メンバ変数END-- ///
 	/// --------------- ///
