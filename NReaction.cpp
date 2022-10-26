@@ -41,6 +41,7 @@ void NReaction::Bounce(bool isReaction)
 		{
 			t = 0.0f;
 			isReaction2 = false;
+			objScale = { 32.0f,32.0f,32.0f };
 		}
 	}
 }
