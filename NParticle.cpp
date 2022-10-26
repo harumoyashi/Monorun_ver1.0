@@ -61,7 +61,7 @@ void NParticle::BlockBreakInitialize(ComPtr<ID3D12Device> device, int modelNum, 
 
 	//立方体情報
 	cube = std::make_unique<NCube>();
-	cube->Initialize(device);
+	cube->Initialize(device,modelNum);
 
 	//オブジェクト(定数バッファ)
 	for (size_t i = 0; i < maxObj; i++)
@@ -134,11 +134,11 @@ void NParticle::BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection)
 		for (size_t i = 0; i < atOnce; i++)
 		{
 			//ランダムでいろいろ動かし方決める
-			scale = static_cast<float>(rand() % 30 + 30) * 0.1f;
+			scale = static_cast<float>(rand() % 30 + 50) * 0.1f;
 			rot = static_cast<float>(rand() % 20) + 10.0f;
-			speedX = static_cast<float>(rand() % 40 - 20) * 0.1f;
-			speedY = static_cast<float>(rand() % 40 - 20) * 0.1f;
-			speedZ = static_cast<float>(rand() % 40 - 20) * 0.1f;
+			speedX = static_cast<float>(rand() % 80 - 40) * 0.1f;
+			speedY = static_cast<float>(rand() % 80 - 40) * 0.1f;
+			speedZ = static_cast<float>(rand() % 80 - 40) * 0.1f;
 
 			//if (isParticle)
 			//{
