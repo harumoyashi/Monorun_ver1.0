@@ -37,8 +37,6 @@ private:
 	//リアクション//
 	NReaction* reaction;
 
-	std::unique_ptr<NParticle> particle;	//パーティクル
-
 	/// --メンバ変数END-- ///
 	/// --------------- ///
 	/// --メンバ関数-- ///
