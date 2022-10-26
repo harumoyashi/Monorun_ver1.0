@@ -134,11 +134,11 @@ void NParticle::BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection)
 		for (size_t i = 0; i < atOnce; i++)
 		{
 			//ƒ‰ƒ“ƒ_ƒ€‚Å‚¢‚ë‚¢‚ë“®‚©‚µ•ûŒˆ‚ß‚é
-			scale = static_cast<float>(rand() % 30 + 30) * 0.1f;
+			scale = static_cast<float>(rand() % 30 + 50) * 0.1f;
 			rot = static_cast<float>(rand() % 20) + 10.0f;
-			speedX = static_cast<float>(rand() % 40 - 20) * 0.1f;
-			speedY = static_cast<float>(rand() % 40 - 20) * 0.1f;
-			speedZ = static_cast<float>(rand() % 40 - 20) * 0.1f;
+			speedX = static_cast<float>(rand() % 80 - 40) * 0.1f;
+			speedY = static_cast<float>(rand() % 80 - 40) * 0.1f;
+			speedZ = static_cast<float>(rand() % 80 - 40) * 0.1f;
 
 			//if (isParticle)
 			//{
