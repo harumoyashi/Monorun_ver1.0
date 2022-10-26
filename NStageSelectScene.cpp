@@ -40,8 +40,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	audio = new NAudio();
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("stageselect_BGM.wav");
-	soundData[1] = audio->LoadWave("mokugyo.wav");
-	soundData[2] = audio->LoadWave("fanfare.wav");
+	soundData[1] = audio->LoadWave("jump.wav");
 	//BGM�炷
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -128,6 +127,7 @@ void NStageSelectScene::Update()
 	{
 		if (NInput::IsKeyTrigger(DIK_SPACE))
 		{
+			audio->PlayWave(soundData[1], false, 2.0f);
 			stage_->SetCSV(selectStage_);
 			if (!NSceneManager::GetPlayEffect()) {
 				audio->StopWave(soundData[0]);

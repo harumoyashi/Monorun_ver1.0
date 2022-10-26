@@ -170,7 +170,7 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 		// --[SPACE]‚ğ‰Ÿ‚µ‚½‚ç-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
-			audio->PlayWave(soundData[0], false,1.5f);
+			audio->PlayWave(soundData[0], false,2.0f);
 
 			isReaction_ = true;
 
@@ -219,6 +219,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 	else if (state_ == RotateWallHit) {
 		// --[SPACE]‚ğ‰Ÿ‚µ‚½‚ç-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			audio->PlayWave(soundData[0], false, 2.0f);
+
 			isReaction_ = true;
 
 			// --¶‰E‚ÌŒü‚«‚ğ•Ï‚¦‚é-- //

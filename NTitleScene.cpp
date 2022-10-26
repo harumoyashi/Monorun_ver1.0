@@ -14,8 +14,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	audio = audio = new NAudio();
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("title_BGM.wav");
-	soundData[1] = audio->LoadWave("mokugyo.wav");
-	soundData[2] = audio->LoadWave("fanfare.wav");
+	soundData[1] = audio->LoadWave("jump.wav");
 	//BGM�炷
 	soundData[0] = audio->PlayWave(soundData[0], true,0.5f);
 #pragma endregion
@@ -78,6 +77,7 @@ void NTitleScene::Update()
 	{
 		if (NInput::IsKeyTrigger(DIK_SPACE))
 		{
+			audio->PlayWave(soundData[1], false, 2.0f);
 			if (audio->IsPlaying(soundData[0]))
 			{
 				audio->StopWave(soundData[0]);
