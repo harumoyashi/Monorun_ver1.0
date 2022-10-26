@@ -31,6 +31,9 @@ enum Texture
 	KMTEXT,				//[/km]テキスト
 	SLASHTEXT,			//[/]テキスト
 	CRYSTALTEXT,		//[CRYSTAL]テキスト
+	BOUND1,
+	BOUND2,
+	WALL,
 
 	MAXTEX
 };
