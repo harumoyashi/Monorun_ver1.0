@@ -36,6 +36,8 @@ enum Texture
 	WALL,
 	STAGESELECTNUMBER,
 	NICESTAMP,			//[NICE]テキスト
+	GREATSTAMP,			//[GREAT]テキスト
+	OMGSTAMP,			//[OMG]テキスト
 
 	MAXTEX
 };
