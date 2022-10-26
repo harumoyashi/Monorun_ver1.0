@@ -177,6 +177,14 @@ void NGameScene::Initialize(NDX12* dx12)
 
 	collectedCrystalSprite[1] = std::make_unique<NSprite>();
 	collectedCrystalSprite[1]->texNum = static_cast<int>(NUMBER);
+
+	niceSprite = std::make_unique<NSprite>();
+	niceSprite->texNum = static_cast<int>(NICESTAMP);
+	niceSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[niceSprite->texNum].texBuff);
+	niceSprite->position.x = 450.0f;
+	niceSprite->position.y = 390.0f;
+	niceSprite->rotation = 35.0f;
+	niceSprite->UpdateMatrix();
 	
 
 	goTextAlpha = 0.0f;
@@ -313,6 +321,11 @@ void NGameScene::Update(NDX12* dx12)
 			sceneWave_ = DeathResultScene;
 		}
 		else if (player_->GetState() == Goal) {
+			if (stageTime_[stage_->GetSelectStage() - 1] <= gameTime_) evaluation_ = 0;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 20.0f <= gameTime_) evaluation_ = 1;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 40.0f <= gameTime_) evaluation_ = 2;
+			else evaluation_ = 3;
+
 			sceneWave_ = GoalResultScene;
 			decimalPointSprite->SetColor(1, 1, 1, 1);
 			decimalPointSprite->size = { 48.0f, 69.0f };
@@ -694,6 +707,21 @@ void NGameScene::Draw(NDX12* dx12)
 		maxCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		collectedCrystalSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		collectedCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		if (evaluation_ == 0) {
+
+		}
+
+		else if (evaluation_ == 1) {
+
+		}
+
+		else if (evaluation_ == 2) {
+
+		}
+
+		else if (evaluation_ == 3) {
+			niceSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		}
 	}
 
 	if (sceneWave_ == DeathResultScene) {
