@@ -23,8 +23,8 @@ Player* Player::GetInstance()
 
 // --リセット処理-- //
 void Player::Reset() {
-	object_->position.x = minPosX_;
-	object_->position.y = 0.0f;
+	object_->position.x = -360.0f;
+	object_->position.y = -32.0f;
 	object_->rotation.z = 0.0f;
 	// --プレイヤーの状態-- //
 	state_ = Start;
@@ -66,7 +66,8 @@ void Player::Initialize(NDX12* dx12) {
 	object_->Initialize(dx12->GetDevice());
 	object_->texNum = PLAYER;
 	object_->scale = { 24.0f, 24.0f, 24.0f };
-	object_->position.x = minPosX_;
+	object_->position.x = -360.0f;
+	object_->position.x = -32.0f;
 
 	//パーティクル
 	particle = std::make_unique<NParticle>();
@@ -215,46 +216,48 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 	object_->position.y += speedY_ * directionY_;
 	scrollY_ = speedY_ * directionY_;
 
-	// --x座標が最低座標以下になったら-- //
-	if (object_->position.x < minPosX_) {
-		// --x座標を変更-- //
-		object_->position.x = minPosX_;
+	if (state_ != Start) {
+		// --x座標が最低座標以下になったら-- //
+		if (object_->position.x < minPosX_) {
+			// --x座標を変更-- //
+			object_->position.x = minPosX_;
 
-		// --状態を変更-- //
-		if (state_ == RotateAir) {
-			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			// --状態を変更-- //
+			if (state_ == RotateAir) {
+				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			}
+
+			else if (state_ == NormalAir) {
+				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+			}
+
+			// --X軸の速度を変える-- //
+			speedX_ = 0.0f;// -> 動かないように
+
+			if (!isCameraShake_) {
+				SetCamShakeState(true);
+			}
 		}
 
-		else if (state_ == NormalAir) {
-			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
-		}
+		// --x座標が最高座標以上になったら-- //
+		else if (object_->position.x > maxPosX_) {
+			// --X座標を変更-- //
+			object_->position.x = maxPosX_;
 
-		// --X軸の速度を変える-- //
-		speedX_ = 0.0f;// -> 動かないように
+			if (state_ == RotateAir) {
+				state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
+			}
 
-		if (!isCameraShake_) {
-			SetCamShakeState(true);
-		}
-	}
+			else if (state_ == NormalAir) {
+				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
+			}
 
-	// --x座標が最高座標以上になったら-- //
-	else if (object_->position.x > maxPosX_) {
-		// --X座標を変更-- //
-		object_->position.x = maxPosX_;
+			// --X軸の速度を変える-- //
+			speedX_ = 0.0f;// -> 動かないように
 
-		if (state_ == RotateAir) {
-			state_ = RotateWallHit;// -> 回転状態かつ壁伝い中
-		}
-
-		else if (state_ == NormalAir) {
-			state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
-		}
-
-		// --X軸の速度を変える-- //
-		speedX_ = 0.0f;// -> 動かないように
-
-		if (!isCameraShake_) {
-			SetCamShakeState(true);
+			if (!isCameraShake_) {
+				SetCamShakeState(true);
+			}
 		}
 	}
 

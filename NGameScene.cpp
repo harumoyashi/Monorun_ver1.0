@@ -93,6 +93,19 @@ void NGameScene::Initialize(NDX12* dx12)
 
 	countSprite = std::make_unique<NSprite>();
 	countSprite->texNum = static_cast<int>(BIGNUMBER);
+
+	goSprite = std::make_unique<NSprite>();
+	goSprite->texNum = static_cast<int>(GOTEXT);
+	goSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[goSprite->texNum].texBuff);
+	goSprite->SetColor(1, 1, 1, 0.8f);
+	goSprite->size = { 234.0f, 208.0f };
+	goSprite->TransferVertex();
+	goSprite->position.x = NWindows::win_width / 2.0f;
+	goSprite->position.y = NWindows::win_height / 2.0f;
+	goSprite->rotation = 30.0f;
+	goSprite->UpdateMatrix();
+
+	goTextAlpha = 0.0f;
 }
 
 void NGameScene::Update(NDX12* dx12)
@@ -112,10 +125,22 @@ void NGameScene::Update(NDX12* dx12)
 		if (gameStartCountTime_ <= 0) {
 			sceneWave_ = GameScene;
 			player_->SetState(NormalWallHit);
+			goTextAlpha = 0.8f;
 		}
 	}
 
 	if (sceneWave_ == GameScene) {
+		if (goTextAlpha > 0.0f) {
+			goTextAlpha -= 0.01f;
+			goSprite->SetColor(1.0f, 1.0f, 1.0f, goTextAlpha);
+			goSprite->size = { 234.0f, 208.0f };
+			goSprite->size.x = Util::EaseOutCubic(234.0f, 468.0f, 1.0f - goTextAlpha);
+			goSprite->size.y = Util::EaseOutCubic(208.0f, 416.0f, 1.0f - goTextAlpha);
+			goSprite->TransferVertex();
+			goSprite->rotation = Util::EaseOutCubic(30.0f, -30.0f, 1.0f - goTextAlpha);
+			goSprite->UpdateMatrix();
+		}
+
 		// --プレイ時間を計算-- //
 		int nowCount_ = Util::GetNowCount();
 		gameTime_ = (nowCount_ - startCount_) / 1000.0f;
@@ -166,7 +191,6 @@ void NGameScene::Update(NDX12* dx12)
 			decimalPointSprite->position.x = 350.0f;
 			decimalPointSprite->position.y = 400.0f;
 			decimalPointSprite->UpdateMatrix();
-
 		}
 	}
 
@@ -374,14 +398,15 @@ void NGameScene::Update(NDX12* dx12)
 
 void NGameScene::Draw(NDX12* dx12)
 {
-	// --プレイヤー描画処理-- //
-	player_->Draw(dx12, cube.get());
-
-	stage_->Draw(dx12, material_, cube.get());
-
-	col_->Draw(dx12);
 
 	if (sceneWave_ == StartScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
 		if (gameStartCountTime_ <= 2.9f) {
 			countSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 				NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
@@ -397,9 +422,27 @@ void NGameScene::Draw(NDX12* dx12)
 		decimalPointSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		speedSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		speedSprite[2]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
+		goSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		goSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 	}
 
 	else if (sceneWave_ == GoalResultScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
@@ -428,6 +471,13 @@ void NGameScene::Draw(NDX12* dx12)
 	}
 
 	if (sceneWave_ == DeathResultScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
@@ -473,6 +523,8 @@ void NGameScene::Reset(NDX12* dx12) {
 	isDisplayTimeChange = true;
 
 	sceneWave_ = StartScene;
+
+	goTextAlpha = 0.0f;
 }
 
 void NGameScene::Finalize()
