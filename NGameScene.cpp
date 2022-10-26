@@ -187,6 +187,21 @@ void NGameScene::Initialize(NDX12* dx12)
 	niceSprite->rotation = 35.0f;
 	niceSprite->UpdateMatrix();
 	
+	greatSprite = std::make_unique<NSprite>();
+	greatSprite->texNum = static_cast<int>(GREATSTAMP);
+	greatSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[greatSprite->texNum].texBuff);
+	greatSprite->position.x = 450.0f;
+	greatSprite->position.y = 390.0f;
+	greatSprite->rotation = 35.0f;
+	greatSprite->UpdateMatrix();
+
+	omgSprite = std::make_unique<NSprite>();
+	omgSprite->texNum = static_cast<int>(OMGSTAMP);
+	omgSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[omgSprite->texNum].texBuff);
+	omgSprite->position.x = 450.0f;
+	omgSprite->position.y = 390.0f;
+	omgSprite->rotation = 35.0f;
+	omgSprite->UpdateMatrix();
 
 	goTextAlpha = 0.0f;
 
@@ -709,7 +724,7 @@ void NGameScene::Draw(NDX12* dx12)
 		collectedCrystalSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		collectedCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		if (evaluation_ == 0) {
-
+			omgSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		}
 
 		else if (evaluation_ == 1) {
@@ -717,7 +732,7 @@ void NGameScene::Draw(NDX12* dx12)
 		}
 
 		else if (evaluation_ == 2) {
-
+			greatSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		}
 
 		else if (evaluation_ == 3) {

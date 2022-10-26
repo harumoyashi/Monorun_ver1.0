@@ -76,6 +76,8 @@ private:
 	std::unique_ptr<NSprite> maxCrystalSprite[2];//このステージの総クリスタル数
 	std::unique_ptr<NSprite> collectedCrystalSprite[2];//このステージで集めたクリスタル数
 	std::unique_ptr<NSprite> niceSprite;//[NICE]スプライト
+	std::unique_ptr<NSprite> greatSprite;//[NICE]スプライト
+	std::unique_ptr<NSprite> omgSprite;//[NICE]スプライト
 
 	// --集めたクリスタル数-- //
 	int collectedCrystal_;
