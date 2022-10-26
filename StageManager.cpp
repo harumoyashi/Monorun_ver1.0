@@ -49,7 +49,7 @@ StageManager::~StageManager()
 void StageManager::Initialize(NDX12* dx12)
 {
 	whiteMaterial_.Initialize(dx12->GetDevice());
-	whiteMaterial_.SetColor({0.9f, 0.9f, 0.9f, 1.0f });
+	whiteMaterial_.SetColor({0.3f, 0.3f, 0.3f, 1.0f });
 
 	blackMaterial_.Initialize(dx12->GetDevice());
 	blackMaterial_.SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
@@ -115,11 +115,11 @@ void StageManager::Draw(NDX12* dx12, NMaterial material,NCube*cube)
 	}
 
 	for (size_t i = 0; i < leftWalls_.size(); i++) {
-		leftWalls_[i].Draw(dx12, blackMaterial_, cube);
+		leftWalls_[i].Draw(dx12, whiteMaterial_, cube);
 	}
 
 	for (size_t i = 0; i < rightWalls_.size(); i++) {
-		rightWalls_[i].Draw(dx12, blackMaterial_, cube);
+		rightWalls_[i].Draw(dx12, whiteMaterial_, cube);
 	}
 }
 

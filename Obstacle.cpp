@@ -42,10 +42,17 @@ Obstacle::Obstacle(NDX12* dx12, XMFLOAT3 pos, int blockType) {
 		object_[0].scale = { 24.0f, 24.0f, 24.0f };
 		object_[0].position = pos;
 	}
+	else if (blockType == WallBlock) {
+		object_[0].Initialize(dx12->GetDevice());
+		object_[0].texNum = BOUND1;
+		object_[0].scale = { 32.0f, 32.0f, 32.0f };
+		object_[0].position = pos;
+	}
+
 	else {
 		// --プレイヤーオブジェクト(定数バッファ)-- //
 		object_[0].Initialize(dx12->GetDevice());
-		object_[0].texNum = BLOCK;
+		object_[0].texNum = BOUND1;
 		object_[0].scale = { 32.0f, 32.0f, 32.0f };
 		object_[0].position = pos;
 	}
