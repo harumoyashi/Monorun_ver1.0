@@ -21,7 +21,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 #pragma region オーディオ初期化
 	NAudio* audio = nullptr;
-	audio = NAudio::GetInstance();
+	audio = new NAudio();
 	audio->Initialize();
 #pragma endregion
 #pragma region ゲームシーン初期化
@@ -47,6 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	win->Finalize();
 	sceneMane->Finalize();
 	delete sceneMane;
+	delete audio;
 #pragma endregion
 	return 0;
 }

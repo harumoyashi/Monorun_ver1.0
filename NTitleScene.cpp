@@ -11,7 +11,8 @@ NTitleScene* NTitleScene::GetInstance()
 void NTitleScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
-	audio = NAudio::GetInstance();
+	audio = audio = new NAudio();
+	audio->Initialize();
 	soundData[0] = audio->LoadWave("title_BGM.wav");
 	soundData[1] = audio->LoadWave("mokugyo.wav");
 	soundData[2] = audio->LoadWave("fanfare.wav");
@@ -84,6 +85,11 @@ void NTitleScene::Update()
 			NSceneManager::SetScene(STAGESELECTSCENE);
 		}
 	}
+
+	if (NInput::IsKeyTrigger(DIK_1))
+	{
+		audio->PlayWave(soundData[2]);
+	}
 #pragma region 行列の計算
 	player->rotation.z += 18.0f;
 	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());
@@ -128,4 +134,5 @@ void NTitleScene::Reset()
 
 void NTitleScene::Finalize()
 {
+	delete audio;
 }

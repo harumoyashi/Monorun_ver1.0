@@ -10,10 +10,10 @@ NGameScene* NGameScene::GetInstance()
 void NGameScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
-	audio = NAudio::GetInstance();
+	audio = new NAudio();
+	audio->Initialize();
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
-	soundData[1] = audio->LoadWave("mokugyo.wav");
-	soundData[2] = audio->LoadWave("fanfare.wav");
+	soundData[1] = audio->LoadWave("clear_SE.wav");
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -161,6 +161,11 @@ void NGameScene::Update(NDX12* dx12)
 	cosRota += 0.1;
 
 	if (sceneWave_ == StartScene) {
+		if (isCrear)
+		{
+			isCrear = false;
+		}
+
 		gameStartCountTime_ -= 0.04f;
 
 		countSprite->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[countSprite->texNum].texBuff, { (static_cast<int>(gameStartCountTime_) + 1) * 128.0f, 0.0f }, { 128.0f, 208.0f });
@@ -300,6 +305,7 @@ void NGameScene::Update(NDX12* dx12)
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
 					audio->StopWave(soundData[0]);
+					isCrear = false;
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -325,6 +331,14 @@ void NGameScene::Update(NDX12* dx12)
 	}
 
 	if (sceneWave_ == GoalResultScene) {
+		audio->StopWave(soundData[0]);
+
+		if (!isCrear)
+		{
+			audio->PlayWave(soundData[1]);
+			isCrear = true;
+		}
+
 		if (isDisplayTimeChange == true) {
 			int saveNum = gameTime_ * 100;
 			displayNum[0] = static_cast<int>(saveNum / 10000);
@@ -468,6 +482,7 @@ void NGameScene::Update(NDX12* dx12)
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						audio->StopWave(soundData[0]);
+						isCrear = false;
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}
@@ -677,6 +692,7 @@ void NGameScene::Reset(NDX12* dx12) {
 
 void NGameScene::Finalize()
 {
+	delete audio;
 	stage_->Finalize();
 	stage_->Release();
 	player_->Finalize();

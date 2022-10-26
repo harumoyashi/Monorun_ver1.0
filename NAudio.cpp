@@ -6,18 +6,18 @@
 
 #pragma comment(lib, "xAudio2.lib")
 
-void NAudio::XAudio2VoiceCallback::OnBufferEnd(THIS_ void* pBufferContext) {
-
-	Voice* voice = reinterpret_cast<Voice*>(pBufferContext);
-	// 再生リストから除外
-	NAudio::GetInstance()->voices_.erase(voice);
-}
-
-NAudio* NAudio::GetInstance() {
-	static NAudio instance;
-
-	return &instance;
-}
+//void NAudio::XAudio2VoiceCallback::OnBufferEnd(THIS_ void* pBufferContext) {
+//
+//	Voice* voice = reinterpret_cast<Voice*>(pBufferContext);
+//	// 再生リストから除外
+//	NAudio::GetInstance()->voices_.erase(voice);
+//}
+//
+//NAudio* NAudio::GetInstance() {
+//	static NAudio instance;
+//
+//	return &instance;
+//}
 
 void NAudio::Initialize(const std::string& directoryPath) {
 	directoryPath_ = directoryPath;
@@ -154,7 +154,7 @@ uint32_t NAudio::PlayWave(uint32_t soundDataHandle, bool loopFlag, float volume)
 	uint32_t handle = indexVoice_;
 
 	// 波形フォーマットを元にSourceVoiceの生成
-	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData.wfex, 0, 2.0f, &voiceCallback_);
+	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData.wfex, 0, 2.0f/*, &voiceCallback_*/);
 	assert(SUCCEEDED(result));
 
 	// 再生中データ
@@ -183,6 +183,19 @@ uint32_t NAudio::PlayWave(uint32_t soundDataHandle, bool loopFlag, float volume)
 	indexVoice_++;
 
 	return handle;
+}
+
+void NAudio::DestroyWave(uint32_t voiceHandle)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->handle == voiceHandle; });
+	// 発見
+	if (it != voices_.end()) {
+		(*it)->sourceVoice->DestroyVoice();
+
+		voices_.erase(it);
+	}
 }
 
 void NAudio::StopWave(uint32_t voiceHandle) {
