@@ -14,10 +14,9 @@ void NGameScene::Initialize(NDX12* dx12)
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
 	soundData[1] = audio->LoadWave("clear_SE.wav");
-	soundData[2] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
-	soundData[3] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
-	soundData[4] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
-	soundData[5] = audio->LoadWave("jump.wav");			// じゃんぷ音
+	soundData[2] = audio->LoadWave("jump.wav");		// 決定音
+	soundData[3] = audio->LoadWave("moveCursor.wav");
+	
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -90,7 +89,6 @@ void NGameScene::Initialize(NDX12* dx12)
 	timeSprite = std::make_unique<NSprite>();
 	timeSprite->texNum = static_cast<int>(TIMETEXT);
 	timeSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeSprite->texNum].texBuff);
-	timeSprite->SetColor(0.1f, 0.6f, 0.6f, 1.0f);
 	timeSprite->position.x = NWindows::win_width / 2.0f;
 	timeSprite->position.y = 395.0f;
 	timeSprite->UpdateMatrix();
@@ -185,25 +183,33 @@ void NGameScene::Initialize(NDX12* dx12)
 	niceSprite = std::make_unique<NSprite>();
 	niceSprite->texNum = static_cast<int>(NICESTAMP);
 	niceSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[niceSprite->texNum].texBuff);
-	niceSprite->position.x = 450.0f;
+	niceSprite->position.x = 310.0f;
 	niceSprite->position.y = 390.0f;
-	niceSprite->rotation = 35.0f;
+	niceSprite->rotation = 15.0f;
 	niceSprite->UpdateMatrix();
-	
+
 	greatSprite = std::make_unique<NSprite>();
 	greatSprite->texNum = static_cast<int>(GREATSTAMP);
 	greatSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[greatSprite->texNum].texBuff);
-	greatSprite->position.x = 450.0f;
+	greatSprite->position.x = 310.0f;
 	greatSprite->position.y = 390.0f;
-	greatSprite->rotation = 35.0f;
+	greatSprite->rotation = 15.0f;
 	greatSprite->UpdateMatrix();
+
+	excellentSprite = std::make_unique<NSprite>();
+	excellentSprite->texNum = static_cast<int>(EXCELLENTSTAMP);
+	excellentSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[excellentSprite->texNum].texBuff);
+	excellentSprite->position.x = 310.0f;
+	excellentSprite->position.y = 390.0f;
+	excellentSprite->rotation = 15.0f;
+	excellentSprite->UpdateMatrix();
 
 	omgSprite = std::make_unique<NSprite>();
 	omgSprite->texNum = static_cast<int>(OMGSTAMP);
 	omgSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[omgSprite->texNum].texBuff);
-	omgSprite->position.x = 450.0f;
-	omgSprite->position.y = 390.0f;
-	omgSprite->rotation = 35.0f;
+	omgSprite->position.x = 380.0f;
+	omgSprite->position.y = 420.0f;
+	omgSprite->rotation = 15.0f;
 	omgSprite->UpdateMatrix();
 
 	goTextAlpha = 0.0f;
@@ -340,9 +346,9 @@ void NGameScene::Update(NDX12* dx12)
 			sceneWave_ = DeathResultScene;
 		}
 		else if (player_->GetState() == Goal) {
-			if (stageTime_[stage_->GetSelectStage() - 1] <= gameTime_) evaluation_ = 0;
-			else if (stageTime_[stage_->GetSelectStage() - 1] + 20.0f <= gameTime_) evaluation_ = 1;
-			else if (stageTime_[stage_->GetSelectStage() - 1] + 40.0f <= gameTime_) evaluation_ = 2;
+			if (stageTime_[stage_->GetSelectStage() - 1] >= gameTime_) evaluation_ = 0;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 20.0f >= gameTime_) evaluation_ = 1;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 40.0f >= gameTime_) evaluation_ = 2;
 			else evaluation_ = 3;
 
 			sceneWave_ = GoalResultScene;
@@ -373,6 +379,7 @@ void NGameScene::Update(NDX12* dx12)
 
 	if (sceneWave_ == DeathResultScene) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == RetryText) {
 				selectText = StageSelectText;
 				retrySprite->size.x = 197.0f;
@@ -385,6 +392,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
 				stageSelectSprite->size.x = 439.0f;
@@ -397,10 +405,10 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				audio->PlayWave(soundData[2], false, 2.0f);
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
 					audio->StopWave(soundData[0]);
-					isCrear = false;
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -549,6 +557,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == NextText) {
 				selectText = StageSelectText;
 				nextSprite->size.x = 162.0f;
@@ -561,6 +570,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = NextText;
 				stageSelectSprite->size.x = 439.0f;
@@ -574,10 +584,10 @@ void NGameScene::Update(NDX12* dx12)
 
 		if (isDecision_ == false) {
 			if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				audio->PlayWave(soundData[2], false, 1.5f);
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						audio->StopWave(soundData[0]);
-						isCrear = false;
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}
@@ -611,6 +621,50 @@ void NGameScene::Update(NDX12* dx12)
 			stageSelectSprite->size.x = 439.0f + 43.9f * cosf(cosRota);
 			stageSelectSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
 			stageSelectSprite->TransferVertex();
+		}
+
+		if (evaluationAlpha_ < 1.0f) {
+			evaluationAlpha_ += 0.01f;
+			float alpha = Util::EaseInCirc(0.0f, 1.0f, evaluationAlpha_);
+			niceSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
+			greatSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
+			excellentSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
+			omgSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
+
+			niceSprite->size.x = Util::EaseInCirc(194.0f * 12, 194.0f, evaluationAlpha_);
+			niceSprite->size.y = Util::EaseInCirc(87.0f * 12, 87.0f, evaluationAlpha_);
+			niceSprite->TransferVertex();
+			greatSprite->size.x = Util::EaseInCirc(249.0f * 12, 249.0f, evaluationAlpha_);
+			greatSprite->size.y = Util::EaseInCirc(87.0f * 12, 87.0f, evaluationAlpha_);
+			greatSprite->TransferVertex();
+			excellentSprite->size.x = Util::EaseInCirc(385.0f * 12, 385.0f, evaluationAlpha_);
+			excellentSprite->size.y = Util::EaseInCirc(87.0f * 12, 87.0f, evaluationAlpha_);
+			excellentSprite->TransferVertex();
+			omgSprite->size.x = Util::EaseInCirc(400.0f * 12, 400.0f, evaluationAlpha_);
+			omgSprite->size.y = Util::EaseInCirc(87.0f * 12, 87.0f, evaluationAlpha_);
+			omgSprite->TransferVertex();
+
+			if (evaluationAlpha_ >= 1.0f) {
+				niceSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+				greatSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+				excellentSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+				omgSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+				niceSprite->size.x = 194.0f;
+				niceSprite->size.y = 87.0f;
+				niceSprite->TransferVertex();
+				greatSprite->size.x = 249.0f;
+				greatSprite->size.y = 87.0f;
+				greatSprite->TransferVertex();
+				excellentSprite->size.x = 385.0f;
+				excellentSprite->size.y = 87.0f;
+				excellentSprite->TransferVertex();
+				omgSprite->size.x = 400.0f;
+				omgSprite->size.y = 87.0f;
+				omgSprite->TransferVertex();
+
+				evaluationAlpha_ = 2.0f;
+			}
 		}
 	}
 
@@ -731,7 +785,7 @@ void NGameScene::Draw(NDX12* dx12)
 		}
 
 		else if (evaluation_ == 1) {
-
+			excellentSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		}
 
 		else if (evaluation_ == 2) {
@@ -784,7 +838,7 @@ void NGameScene::Reset(NDX12* dx12) {
 	stage_->LoadCSV(dx12);
 
 	int num = stage_->GetMaxCoin();
-	maxCrystalSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[maxCrystalSprite[0]->texNum].texBuff, { (num / 10) * 48.0f, 0.0f}, {48.0f, 69.0f});
+	maxCrystalSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[maxCrystalSprite[0]->texNum].texBuff, { (num / 10) * 48.0f, 0.0f }, { 48.0f, 69.0f });
 	maxCrystalSprite[0]->size = { 48.0f, 69.0f };
 	maxCrystalSprite[0]->TransferVertex();
 	maxCrystalSprite[0]->position = { 348.0f, 275, 0.0f };
@@ -820,6 +874,8 @@ void NGameScene::Reset(NDX12* dx12) {
 	gameStartCountTime_ = 5.0f;
 
 	isDecision_ = false;
+
+	evaluationAlpha_ = 0.0f;
 }
 
 void NGameScene::Finalize()

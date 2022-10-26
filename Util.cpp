@@ -69,3 +69,9 @@ float Util::EaseInBack(float start, float end, float t) {
 
 	return start * (1.0f - time) + end * (1.0f - time);
 }
+
+float Util::EaseInCirc(float start, float end, float t) {
+	float time = 1 - sqrt(1 - pow(t, 2));
+	return start * (1.0f - time) + end * time;
+	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
+}

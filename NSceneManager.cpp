@@ -49,6 +49,7 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[22].Load(L"Resources/nice.png");
 	tex[23].Load(L"Resources/great.png");
 	tex[24].Load(L"Resources/omg.png");
+	tex[25].Load(L"Resources/excellent.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{
