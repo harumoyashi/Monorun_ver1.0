@@ -12,8 +12,8 @@ void NGameScene::Initialize(NDX12* dx12)
 #pragma region	カメラ初期化
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
-	camera->SetEye({ -100, -300, -1500 });
-	camera->SetTarget({ 0.0f, -300.0f, 0.0f });
+	camera->SetEye({ -100, -364, -1500 });
+	camera->SetTarget({ 0.0f, -364.0f, 0.0f });
 	camera->CreateMatView();
 #pragma endregion
 	//マテリアル(定数バッファ)
@@ -607,8 +607,8 @@ void NGameScene::Reset(NDX12* dx12) {
 	nextSprite->SetColor(yellowColor);
 	startCount_ = Util::GetNowCount();
 	selectText = 1;
-	camera->SetEye({ -100, -300, -1500 });
-	camera->SetTarget({ 0.0f, -300.0f, 0.0f });
+	camera->SetEye({ -100, -364, -1500 });
+	camera->SetTarget({ 0.0f, -364.0f, 0.0f });
 	camera->CreateMatView();
 	player_->Reset();
 	col_->Reset();

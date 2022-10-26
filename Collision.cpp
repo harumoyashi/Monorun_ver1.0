@@ -85,7 +85,7 @@ Collision::~Collision() {
 }
 
 void Collision::Reset() {
-	oldObj_ = { {0.0f, 0.0f}, 0.0f };
+	oldObj_ = { {-360.0f, -96.0f}, 0.0f };
 	//particles.clear();
 }
 
