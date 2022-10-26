@@ -34,6 +34,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	col_ = Collision::GetInstance();
 	col_->Initialize();
 
+	selectScene_ = NStageSelectScene::GetInstance();
+
 	//前景スプライト生成
 	resultSprite = std::make_unique<NSprite>();
 	resultSprite->texNum = RESULTTEXT;
@@ -141,6 +143,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	goTextAlpha = 0.0f;
 
 	gameStartCountTime_ = 5.0f;
+
+	isDecision_ = false;
 }
 
 void NGameScene::Update(NDX12* dx12)
@@ -217,7 +221,7 @@ void NGameScene::Update(NDX12* dx12)
 			speedSprite[1]->position = { 350.0f,NWindows::win_height / 2.0f,0 };
 			speedSprite[1]->UpdateMatrix();
 
-			decimalPointSprite->position = {420.0f, 464.0f, 0};
+			decimalPointSprite->position = { 420.0f, 464.0f, 0 };
 			decimalPointSprite->UpdateMatrix();
 
 			speedSprite[2]->position = { 455.0f,464.0f,0 };
@@ -449,26 +453,30 @@ void NGameScene::Update(NDX12* dx12)
 			}
 		}
 
-		if (NInput::IsKeyTrigger(DIK_SPACE)) {
-			if (selectText == StageSelectText) {
-				if (!NSceneManager::GetPlayEffect()) {
-					NSceneManager::SetScene(STAGESELECTSCENE);
-				}
-			}
-
-			else if (selectText == NextText) {
-				if (stage_->GetSelectStage() < 10) {
-					stage_->SetCSV(stage_->GetSelectStage() + 1);
-					if (!NSceneManager::GetPlayEffect()) {
-						NSceneManager::SetScene(GAMESCENE);
-					}
-				}
-
-				else {
+		if (isDecision_ == false) {
+			if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}
+
+				else if (selectText == NextText) {
+					if (stage_->GetSelectStage() < 10) {
+						stage_->SetCSV(stage_->GetSelectStage() + 1);
+						if (!NSceneManager::GetPlayEffect()) {
+							NSceneManager::SetScene(GAMESCENE);
+						}
+					}
+
+					else {
+						if (!NSceneManager::GetPlayEffect()) {
+							NSceneManager::SetScene(STAGESELECTSCENE);
+						}
+					}
+				}
+
+				isDecision_ = true;
 			}
 		}
 
@@ -650,6 +658,8 @@ void NGameScene::Reset(NDX12* dx12) {
 	goTextAlpha = 0.0f;
 
 	gameStartCountTime_ = 5.0f;
+
+	isDecision_ = false;
 }
 
 void NGameScene::Finalize()
