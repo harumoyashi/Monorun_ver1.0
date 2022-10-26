@@ -64,21 +64,6 @@ void NSceneManager::Initialize(NDX12* dx12)
 
 void NSceneManager::Update(NDX12* dx12)
 {
-	// --タイトルシーンの更新処理-- //
-	if (scene == TITLESCENE) {
-		titleScene->Update();
-	}
-
-	// --ステージセレクトシーンの更新処理-- //
-	else if (scene == STAGESELECTSCENE) {
-		stageSelectScene->Update();
-	}
-
-	// --ゲームシーンの更新処理-- //
-	else if (scene == GAMESCENE) {
-		gameScene->Update(dx12);
-	}
-
 	// --シーン変更がされたら-- //
 	if (isActiveEffect_) {
 		effect_.Activate();
@@ -89,6 +74,11 @@ void NSceneManager::Update(NDX12* dx12)
 		scene = nextScene_;
 		isSceneChange = true;
 	}
+
+	// エフェクトUpdate
+	effect_.ExpandSquareUpdate();
+
+	isPlayEffect_ = effect_.GetEffectPlay();
 
 	if (isSceneChange) {
 		// --タイトルシーンだったら-- //
@@ -116,10 +106,20 @@ void NSceneManager::Update(NDX12* dx12)
 
 	}
 
-	// エフェクトUpdate
-	effect_.ExpandSquareUpdate();
+	// --タイトルシーンの更新処理-- //
+	if (scene == TITLESCENE) {
+		titleScene->Update();
+	}
 
-	isPlayEffect_ = effect_.GetEffectPlay();
+	// --ステージセレクトシーンの更新処理-- //
+	else if (scene == STAGESELECTSCENE) {
+		stageSelectScene->Update();
+	}
+
+	// --ゲームシーンの更新処理-- //
+	else if (scene == GAMESCENE) {
+		gameScene->Update(dx12);
+	}
 }
 
 void NSceneManager::Draw(NDX12* dx12)
