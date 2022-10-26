@@ -323,6 +323,7 @@ void Player::SetDeath() {
 	speedY_ = 0.0f;
 	speedX_ = 0.0f;
 	deathStartCount_ = Util::GetNowCount();
+	isColActive_ = false;
 }
 
 // --XŽ²‚ÌŒü‚«‚ð•Ï‚¦‚é-- //

@@ -47,6 +47,8 @@ private:
 	// --プレイヤーの状態-- //
 	int state_;
 
+	bool isCollision_ = true;
+
 #pragma region プレイヤーの速度変数
 	// --実際に加算する速度変数-- //
 	float speedX_;// -> X軸
