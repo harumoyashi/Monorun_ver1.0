@@ -84,10 +84,10 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	//前景スプライト生成
 	for (size_t i = 0; i < maxNumSprite; i++) {
 		numSprite[i] = std::make_unique<NSprite>();
-		numSprite[i]->texNum = static_cast<int>(NUMBER);
-		numSprite[i]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[numSprite[i]->texNum].texBuff, {i * 48.0f, 0.0f}, {48.0f, 69.0f});
+		numSprite[i]->texNum = static_cast<int>(STAGESELECTNUMBER);
+		numSprite[i]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[numSprite[i]->texNum].texBuff, {i * 64.0f, 0.0f}, {64.0f, 69.0f});
 		numSprite[i]->SetColor(1, 1, 1, 1);
-		numSprite[i]->size = { 120.0f,180.0f };
+		numSprite[i]->size = { 128.0f, 138.0f };
 		numSprite[i]->TransferVertex();
 		numSprite[i]->position.x = 300.0f;
 		numSprite[i]->position.y = 375.0f + (i * 250.0f);
@@ -183,8 +183,8 @@ void NStageSelectScene::Update()
 		numSprite[i]->position.y = Util::EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
 		len[i] = abs(375.0f - numSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
-		numSprite[i]->size.x = 120 * (1.0f - len[i]);
-		numSprite[i]->size.y = 180 * (1.0f - len[i]);
+		numSprite[i]->size.x = 128 * (1.0f - len[i]);
+		numSprite[i]->size.y = 138 * (1.0f - len[i]);
 		numSprite[i]->TransferVertex();
 		numSprite[i]->UpdateMatrix();
 
