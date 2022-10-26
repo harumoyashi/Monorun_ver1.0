@@ -19,17 +19,17 @@ void NStageSelectScene::Reset() {
 	nowScrollTime_ = 0.0f;
 
 	// --現在選んでいるステージ-- //
-	selectStage_ = 1;
+	//selectStage_ = 1;
 
-	for (size_t i = 0; i < maxNumSprite; i++) {
-		numSprite[i]->position.x = 300.0f;
-		numSprite[i]->position.y = 400.0f + (i * 250.0f);
-		numSprite[i]->UpdateMatrix();
+	//for (size_t i = 0; i < maxNumSprite; i++) {
+	//	numSprite[i]->position.x = 300.0f;
+	//	numSprite[i]->position.y = 400.0f + (i * 250.0f);
+	//	numSprite[i]->UpdateMatrix();
 
-		// --イージング用変数初期化-- //
-		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
-		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
-	}
+	//	// --イージング用変数初期化-- //
+	//	easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
+	//	easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
+	//}
 }
 
 void NStageSelectScene::Initialize(NDX12* dx12)
