@@ -48,8 +48,8 @@ void NTitleScene::Initialize(NDX12* dx12)
 	//	backSprite[i]->texNum = static_cast<int>(i);
 	//	backSprite[i]->CreateSprite(dx12->GetDevice(), tex[backSprite[i]->texNum].texBuff);
 	//	//sprite[i]->CreateClipSprite(dx12->GetDevice(),tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//ˆê•”Ø‚èŽæ‚Á‚Ä¶¬
-	//	backSprite[i]->position.x = i * 300.0f + 400.0f;
-	//	backSprite[i]->position.y = 400.0f;
+	//	backSprite[i]->position.x = i * 300.0f + 375.0f;
+	//	backSprite[i]->position.y = 375.0f;
 	//	backSprite[i]->UpdateMatrix();
 	//	backSprite[i]->TransferMatrix();
 	//}
@@ -64,7 +64,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	startSprite = std::make_unique<NSprite>();
 	startSprite->texNum = START;
 	startSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[titleSprite->texNum].texBuff);
-	startSprite->position = { NWindows::win_width / 2,NWindows::win_height / 2,0 };
+	startSprite->position = { NWindows::win_width / 2,NWindows::win_height / 2 - 50,0 };
 	startSprite->UpdateMatrix();
 
 #pragma endregion

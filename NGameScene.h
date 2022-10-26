@@ -15,6 +15,7 @@
 #include "NPreDraw.h"
 #include "Player.h"
 #include "StageManager.h"
+#include "NStageSelectScene.h"
 #include "Collision.h"
 #include "NCamera.h"
 
@@ -43,8 +44,13 @@ private:
 
 	Collision* col_;
 
+	NStageSelectScene* selectScene_;
+
 	// --ゲームシーンの段階-- //
 	int sceneWave_;
+
+	// --決定した-- //
+	bool isDecision_;
 
 	// --オブジェクト-- //
 	NMaterial material_;// -> マテリアル
@@ -63,6 +69,7 @@ private:
 	std::unique_ptr<NSprite> countSprite;//スタートまでのカウント
 	std::unique_ptr<NSprite> goSprite;//[GO]テキストスプライト
 	std::unique_ptr<NSprite> minusSprite;//[-]テキストスプライト
+	std::unique_ptr<NSprite> kmSprite;//[/km]テキストスプライト
 
 	XMFLOAT4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };
