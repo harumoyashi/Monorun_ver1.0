@@ -57,6 +57,8 @@ void Player::Reset() {
 	isReaction_ = false;
 
 	reactionCount_ = 0;
+
+	material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 }
 
 // --‰Šú‰»ˆ—-- //
@@ -106,6 +108,8 @@ void Player::Initialize(NDX12* dx12) {
 	isReaction_ = false;
 
 	reactionCount_ = 0;
+
+	material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 }
 
 // --XVˆ—-- //
