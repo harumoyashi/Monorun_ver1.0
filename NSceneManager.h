@@ -30,6 +30,7 @@ enum Texture
 	MINUS,				//[-]テキスト
 	KMTEXT,				//[/km]テキスト
 	SLASHTEXT,			//[/]テキスト
+	CRYSTALTEXT,		//[CRYSTAL]テキスト
 
 	MAXTEX
 };
