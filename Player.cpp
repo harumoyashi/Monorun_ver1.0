@@ -269,8 +269,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 	if (isReaction_ == true) {
 		float easeRota = reactionCount_ / 10.0f;
-		object_->scale.x = Util::EaseOutCubic(100.0f, 24.0f, easeRota);
-		object_->scale.y = Util::EaseOutCubic(32.0f, 24.0f, easeRota);
+		object_->scale.x = Util::EaseOutCubic(70.0f, 24.0f, easeRota);
+		object_->scale.y = Util::EaseOutCubic(40.0f, 24.0f, easeRota);
 		reactionCount_++;
 
 		if (reactionCount_ >= 10) {
