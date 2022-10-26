@@ -236,10 +236,19 @@ void StageManager::SetCSV(int num) {
 		path_ = "csv/a - check_stage_design5.csv";
 	}
 	else if (num == 6) {
-		path_ = "csv/check_progress_gimic6.csv";
+		path_ = "csv/a - check_stage_design6.csv";
 	}
 	else if (num == 7) {
-		path_ = "csv/check_progress_gimic7.csv";
+		path_ = "csv/a - check_stage_design7.csv";
+	}
+	else if (num == 8) {
+		path_ = "csv/a - check_stage_design8.csv";
+	}
+	else if (num == 9) {
+		path_ = "csv/a - check_stage_design9.csv";
+	}
+	else if (num == 10) {
+		path_ = "csv/a - check_stage_design10.csv";
 	}
 	selectStage_ = num;
 }
