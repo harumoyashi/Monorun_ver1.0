@@ -14,10 +14,9 @@ void NGameScene::Initialize(NDX12* dx12)
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
 	soundData[1] = audio->LoadWave("clear_SE.wav");
-	soundData[2] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
-	soundData[3] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
-	soundData[4] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
-	soundData[5] = audio->LoadWave("jump.wav");			// じゃんぷ音
+	soundData[2] = audio->LoadWave("jump.wav");		// 決定音
+	soundData[3] = audio->LoadWave("moveCursor.wav");
+	
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -380,6 +379,7 @@ void NGameScene::Update(NDX12* dx12)
 
 	if (sceneWave_ == DeathResultScene) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == RetryText) {
 				selectText = StageSelectText;
 				retrySprite->size.x = 197.0f;
@@ -392,6 +392,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
 				stageSelectSprite->size.x = 439.0f;
@@ -404,10 +405,10 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				audio->PlayWave(soundData[2], false, 2.0f);
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
 					audio->StopWave(soundData[0]);
-					isCrear = false;
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -556,6 +557,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == NextText) {
 				selectText = StageSelectText;
 				nextSprite->size.x = 162.0f;
@@ -568,6 +570,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = NextText;
 				stageSelectSprite->size.x = 439.0f;
@@ -581,10 +584,10 @@ void NGameScene::Update(NDX12* dx12)
 
 		if (isDecision_ == false) {
 			if (NInput::IsKeyTrigger(DIK_SPACE)) {
+				audio->PlayWave(soundData[2], false, 1.5f);
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						audio->StopWave(soundData[0]);
-						isCrear = false;
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}

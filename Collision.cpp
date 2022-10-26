@@ -90,11 +90,19 @@ void Collision::Reset() {
 }
 
 void Collision::Finalize() {
-
+	delete audio;
 }
 
 // --初期化処理
 void Collision::Initialize() {
+	audio = audio = new NAudio();
+	audio->Initialize();
+	soundData[0] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
+	soundData[1] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
+	soundData[2] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
+	soundData[3] = audio->LoadWave("break.wav");		// デスブロック壊す音
+	soundData[4] = audio->LoadWave("coin_get.wav");		// コイン取る音
+
 	particles = std::make_unique<NParticle[]>(10);
 }
 
