@@ -15,6 +15,7 @@
 #include "NPreDraw.h"
 #include "Player.h"
 #include "StageManager.h"
+#include "NStageSelectScene.h"
 #include "Collision.h"
 #include "NCamera.h"
 
@@ -43,8 +44,13 @@ private:
 
 	Collision* col_;
 
+	NStageSelectScene* selectScene_;
+
 	// --ゲームシーンの段階-- //
 	int sceneWave_;
+
+	// --決定した-- //
+	bool isDecision_;
 
 	// --オブジェクト-- //
 	NMaterial material_;// -> マテリアル

@@ -232,3 +232,16 @@ void NStageSelectScene::Draw(NDX12* dx12)
 void NStageSelectScene::Finalize()
 {
 }
+
+//void NStageSelectScene::SetStageSelect(int stage) {
+//	selectStage_ = stage;
+//	for (size_t i = 0; i < maxNumSprite; i++) {
+//		numSprite[i]->position.x = 300.0f;
+//		numSprite[i]->position.y = 375.0f + (i * 250.0f) - (250 * (stage -2));
+//		numSprite[i]->UpdateMatrix();
+//
+//		// --イージング用変数初期化-- //
+//		easeStartPos_[i] = { 300.0f, 375.0f + (i * 250.0f) - (250 * (stage - 2)), 0.0f };
+//		easeEndPos_[i] = { 300.0f, 375.0f + (i * 250.0f) - (250 * (stage - 2)), 0.0f };
+//	}
+//}
