@@ -61,3 +61,11 @@ float Util::EaseOutCubic(float start, float end, float t) {
 	return start * (1.0f - time) + end * time;
 	//return start * (1.0f - pow(1.0f - t, 3)) + end * t;
 }
+
+float Util::EaseInBack(float start, float end, float t) {
+	const double c1 = 1.70158;
+	const double c3 = c1;
+	float time = static_cast<float>(c3 * t * t * t - c1 * t * t);
+
+	return start * (1.0f - time) + end * (1.0f - time);
+}

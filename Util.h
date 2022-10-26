@@ -88,6 +88,7 @@ namespace Util {
 
 	void CameraShake(NCamera* camera, int value);
 	float EaseOutCubic(float start, float end, float t);
+	float EaseInBack(float start, float end, float t);
 
 } // namespace MathUtility
 

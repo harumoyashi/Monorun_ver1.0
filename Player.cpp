@@ -53,6 +53,10 @@ void Player::Reset() {
 	isColActive_ = false;
 
 	deathStartCount_ = 0;
+
+	isReaction_ = false;
+
+	reactionCount_ = 0;
 }
 
 // --初期化処理-- //
@@ -98,6 +102,10 @@ void Player::Initialize(NDX12* dx12) {
 
 	// --衝突判定を行うか-- //
 	isColActive_ = false;
+
+	isReaction_ = false;
+
+	reactionCount_ = 0;
 }
 
 // --更新処理-- //
@@ -109,7 +117,7 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 #pragma region 通常状態かつ壁伝い中の処理
 	if (state_ == Start) {
-		
+
 	}
 
 	else if (state_ == Goal) {
@@ -147,6 +155,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 		// --[SPACE]を押したら-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			isReaction_ = true;
+
 			// --左右の向きを変える-- //
 			ChangeDireX();
 
@@ -192,11 +202,15 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 	else if (state_ == RotateWallHit) {
 		// --[SPACE]を押したら-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			isReaction_ = true;
+
 			// --左右の向きを変える-- //
 			ChangeDireX();
 
 			// --状態を変える-- //
 			state_ = NormalAir;// -> 通常状態かつ空中
+
+			material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 			// --X軸の速度を変える-- //
 			speedX_ = wallKickSpeedX_;// --壁キックしたときの速度-- //
@@ -216,6 +230,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 			// --ブースト状態から通常状態に変更-- //
 			state_ = NormalWallHit;
 
+			material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
 			object_->rotation.z = 0.0f;
 		}
 	}
@@ -231,6 +247,7 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 		if (rotateTime_ <= nowTime) {
 			// --ブースト状態から通常状態に変更-- //
 			state_ = NormalAir;
+			material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 			object_->rotation.z = 0.0f;
 		}
@@ -238,6 +255,20 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 		object_->rotation.z += rotaSpeed * directionX_;
 	}
 #pragma endregion
+
+	if (isReaction_ == true) {
+		float easeRota = reactionCount_ / 10.0f;
+		object_->scale.x = Util::EaseOutCubic(100.0f, 24.0f, easeRota);
+		object_->scale.y = Util::EaseOutCubic(32.0f, 24.0f, easeRota);
+		reactionCount_++;
+
+		if (reactionCount_ >= 10) {
+			isReaction_ = false;
+			reactionCount_ = 0;
+			object_->scale.x = 24.0f;
+			object_->scale.y = 24.0f;
+		}
+	}
 
 	// --プレイヤーのX軸に加算-- //
 	object_->position.x += speedX_ * directionX_;
@@ -258,6 +289,7 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 			}
 
 			else if (state_ == NormalAir) {
+				material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
 			}
 
@@ -279,6 +311,7 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 			}
 
 			else if (state_ == NormalAir) {
+				material.SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 				state_ = NormalWallHit;// -> 通常状態かつ壁伝い中
 			}
 
@@ -342,6 +375,7 @@ void Player::ChangeDireY() {
 // --回転状態にする-- //
 void Player::SetRotate() {
 	speedY_ = maxSpeedY_;
+	material.SetColor({0.95f, 0.1f, 0.1f, 1.0f});
 
 	if (state_ == NormalAir) state_ = RotateAir;
 	else if (state_ == NormalWallHit) state_ = RotateWallHit;
