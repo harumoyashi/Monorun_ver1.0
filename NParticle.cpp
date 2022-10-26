@@ -61,7 +61,7 @@ void NParticle::BlockBreakInitialize(ComPtr<ID3D12Device> device, int modelNum, 
 
 	//立方体情報
 	cube = std::make_unique<NCube>();
-	cube->Initialize(device);
+	cube->Initialize(device,modelNum);
 
 	//オブジェクト(定数バッファ)
 	for (size_t i = 0; i < maxObj; i++)
