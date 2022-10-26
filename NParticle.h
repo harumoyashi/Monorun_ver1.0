@@ -23,17 +23,24 @@ private:
 	float speedZ = 0.0f;
 
 public:
+	NParticle();
+	~NParticle();
 	//白くてアルファ値ちょい下げの汎用的な奴
 	void Initialize(ComPtr<ID3D12Device> device);
 	//マテリアルとモデルを指定できる
 	void Initialize(ComPtr<ID3D12Device> device, int modelNum);
+	//即死ブロック破壊する際の初期化
+	void BlockBreakInitialize(ComPtr<ID3D12Device> device, int modelNum, XMFLOAT2 pos);
 	//壁伝いの時出るパーティクル
 	void WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player);
 	//即死ブロック破壊時のパーティクル
-	void BlockBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection, NObj3d* block);
+	void BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection);
 	//描画
-	void Draw(NDX12* dx12, const ComPtr<ID3D12PipelineState> pipelineState, ComPtr<ID3D12RootSignature> rootSignature, UINT incrementSize);
+	void Draw(NDX12* dx12);
 
 	//マテリアルをセット
 	void SetMaterial(NMaterial material) { this->material = material; }
+
+	// --パーティクルが有効か取得-- //
+	bool GetIsActive() { return isActive; }
 };

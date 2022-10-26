@@ -2,6 +2,7 @@
 #include "NDX12.h"
 #include "Util.h"
 #include "NWindows.h"
+#include "NSceneManager.h"
 
 Effect::Effect(int indexType) :
 	effectType_(indexType),
@@ -16,7 +17,7 @@ Effect::~Effect()
 void Effect::Activate()
 {
 	if (effectType_ == static_cast<int>(EffectType::CToA)) {
-		particles_.push_back(std::make_unique<Particle>(NVector2{NWindows::win_width / 2, 0}, particleRaidus_, static_cast<int>(EffectType::CToA) ));
+		particles_.push_back(std::make_unique<Particle>(NVector2{ NWindows::win_width / 2, 0 }, particleRaidus_, static_cast<int>(EffectType::CToA)));
 		particles_.front().get()->Init();
 		particles_.front().get()->Activate();
 	}
@@ -24,7 +25,17 @@ void Effect::Activate()
 		material_.Initialize(ndx12_->GetDevice());
 
 		c_ = std::make_unique<NCube>();
-		c_->Initialize(ndx12_->GetDevice(), CUBE);
+		c_->Initialize(ndx12_->GetDevice(), CRYSTAL);
+
+		objs_.push_back(std::make_unique<NObj3d>());
+
+		for (int i = 0; i < objs_.size(); i++) {
+			objs_.at(i)->Initialize(ndx12_->GetDevice());
+			objs_.at(i)->texNum = WHITEPNG;
+			objs_.at(i)->scale = { 32.0f,32.0f,32.0f };
+			objs_.at(i)->position = { 0.0f,-100.0f,0.0f };
+			objs_.at(i)->UpdateMatrix();
+		}
 	}
 	startTime_ = Util::GetNowCount();
 	isPlay_ = true;
@@ -41,7 +52,7 @@ void Effect::Reset()
 	activeCount_ = 0;
 }
 
-void Effect::ExpandSquareUpdate()
+void Effect::ExpandSquareUpdate(void)
 {
 	if (isPlay_) {
 		// --エフェクト開始->経過時間-- //
@@ -76,22 +87,22 @@ void Effect::ExpandSquareUpdate()
 		}
 
 		// 再生終了後画面外に移動
-		if (1.6f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
-			particles_.front().get()->SetPos(NVector2{
-				particles_.front().get()->GetPos().x,
-				InOutBack((float)frameCount_, 30, NWindows::win_height + 30, NWindows::win_height / 2) }
-			);
-			frameCount_++;
+		if (1.7f <= elapsedTime_ /*&& elapsedTime_ <= 2.5f*/) {
+			//particles_.front().get()->SetPos(NVector2{
+			//	particles_.front().get()->GetPos().x,
+			//	InOutBack((float)frameCount_, 30, NWindows::win_height + 30, NWindows::win_height / 2) }
+			//);
+			//frameCount_++;
+			Reset();
 		}
 
 		// --指定されている時間が過ぎたら-- //
 		if (2.5f <= elapsedTime_) {
-			Reset();
 		}
 	}
 }
 
-void Effect::ExpandSquareDraw()
+void Effect::ExpandSquareDraw(void)
 {
 	if (isPlay_) {
 
@@ -126,6 +137,26 @@ void Effect::ExpandSquareDraw()
 		// --指定されている時間が過ぎたら-- //
 		if (2.5f <= elapsedTime_) {
 			//Reset();
+		}
+	}
+}
+
+void Effect::BrokenDeathBlockUpdate(XMMATRIX matView, XMMATRIX matProjection)
+{
+	if (isPlay_) {
+		//objs_.at(0)->position = {OutExpo()}
+		for (int i = 0; i < objs_.size(); i++) {
+			objs_.at(i)->UpdateMatrix(matView, matProjection);
+		}
+	}
+}
+
+void Effect::BrokenDeathBlockDraw(void)
+{
+	if (isPlay_) {
+		for (int i = 0; i < objs_.size(); i++) {
+			objs_.at(i)->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipeline3d()->pipelineSet.pipelineState, NSceneManager::GetPipeline3d()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
+			objs_.at(i)->Draw(ndx12_->GetCommandList(), material_, ndx12_->GetSRVHeap(), c_->vbView, c_->ibView, c_->numIB, NSceneManager::GetTex()[0].incrementSize);
 		}
 	}
 }

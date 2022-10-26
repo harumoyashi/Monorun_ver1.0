@@ -68,6 +68,7 @@ void NTitleScene::Initialize(NDX12* dx12)
 	startSprite->UpdateMatrix();
 
 #pragma endregion
+
 }
 
 void NTitleScene::Update()
@@ -89,6 +90,7 @@ void NTitleScene::Update()
 
 	camera->CreateMatView();
 #pragma endregion
+
 }
 
 void NTitleScene::Draw(NDX12* dx12)

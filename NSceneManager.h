@@ -25,6 +25,7 @@ enum Texture
 	NEXTTEXT,			//ネクストテキスト
 	STAGESELECTFRAME,	//ステージセレクト枠
 	TIMETEXT,			//タイムテキスト
+	BIGNUMBER,			//大きい数字+小数点
 
 	MAXTEX
 };

@@ -112,18 +112,18 @@ void Particle::InOutBoxAllUpdate()
 		// 縮小
 		if (1.3f <= elapsedTime_ && elapsedTime_ <= 1.7f) {
 
-			if (radius_ >= startRadius_)
+			if (radius_ >= 0)
 				radius_ -= static_cast<int>(radius_-- / 2);
 		}
 
 		// 終了まで待機
-		if (1.7f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
-
+		if (1.6f <= elapsedTime_) {
+			Reset();
 		}
 
 		// --指定されている時間が過ぎたら-- //
 		if (2.5f <= elapsedTime_) {
-			Reset();
+			//Reset();
 		}
 	}
 }
@@ -176,10 +176,10 @@ void Particle::InOutBoxAllDraw()
 
 		// 終了まで待機
 		if (1.7f <= elapsedTime_ && elapsedTime_ <= 2.5f) {
-			whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
-			whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
-			blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
-			blackBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
+			//whiteBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
+			//whiteBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
+			//blackBox_->CommonBeginDraw(ndx12_->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState, NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, ndx12_->GetSRVHeap());
+			//blackBox_->Draw(ndx12_->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, ndx12_->GetCommandList());
 		}
 
 		// --指定されている時間が過ぎたら-- //
