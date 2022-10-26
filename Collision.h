@@ -3,6 +3,7 @@
 #include "StageManager.h"
 #include "Util.h"
 #include "NParticle.h"
+#include "NAudio.h"
 #include <vector>
 
 class Collision {
@@ -18,6 +19,11 @@ private:
 	StageManager* stage_;
 
 	BoxObj oldObj_;
+
+	NAudio* audio = nullptr;
+
+	static const int maxSoundData = 10;
+	uint32_t soundData[maxSoundData] = {};
 
 	//std::vector<NParticle> particles;
 	std::unique_ptr<NParticle[]> particles;

@@ -78,6 +78,9 @@ private:
 	std::unique_ptr<NSprite> niceSprite;//[NICE]スプライト
 	std::unique_ptr<NSprite> greatSprite;//[NICE]スプライト
 	std::unique_ptr<NSprite> omgSprite;//[NICE]スプライト
+	std::unique_ptr<NSprite> excellentSprite;//[Excellent]スプライト
+
+	float evaluationAlpha_;
 
 	// --集めたクリスタル数-- //
 	int collectedCrystal_;

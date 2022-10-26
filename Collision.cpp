@@ -90,11 +90,18 @@ void Collision::Reset() {
 }
 
 void Collision::Finalize() {
-
+	delete audio;
 }
 
 // --初期化処理
 void Collision::Initialize() {
+	audio = audio = new NAudio();
+	audio->Initialize();
+	soundData[0] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
+	soundData[1] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
+	soundData[2] = audio->LoadWave("break.wav");		// デスブロック壊す音
+	soundData[3] = audio->LoadWave("coin_get.wav");		// コイン取る音
+
 	particles = std::make_unique<NParticle[]>(10);
 }
 
@@ -151,11 +158,13 @@ void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 				if (isCollision == true) {
 					if (stage_->obstacles_[closestObsIndex].GetBlockType() == DeathBlock) {
+						audio->PlayWave(soundData[2]);
 
 						// --プレイヤーの状態が通常状態なら-- //
 						if (player_->GetState() == NormalAir || player_->GetState() == NormalWallHit) {
 							// --プレイヤーの状態を変更-- //
 							player_->SetDeath();// -> 死亡状態
+							audio->PlayWave(soundData[1]);
 						}
 
 						for (size_t j = 0; j < 10; j++) {
@@ -176,11 +185,14 @@ void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 					}
 
 					else if (stage_->obstacles_[closestObsIndex].GetBlockType() == Coin) {
+						audio->PlayWave(soundData[3], false, 2.0f);
 						stage_->AddCoin();
 						stage_->obstacles_.erase(stage_->obstacles_.begin() + closestObsIndex);
 					}
 
 					else if (stage_->obstacles_[closestObsIndex].GetBlockType() == BoundBlock) {
+
+						audio->PlayWave(soundData[0]);
 
 						// --障害物の衝突フラグをONにする-- //
 						stage_->obstacles_[closestObsIndex].SetIsCol(true);
