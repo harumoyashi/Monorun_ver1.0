@@ -6,7 +6,7 @@ class NWindows
 {
 public:
 	static const int win_width = 600;
-	static const int win_height = 800;
+	static const int win_height = 750;
 
 private:
 	//ウィンドウクラスの生成＆登録

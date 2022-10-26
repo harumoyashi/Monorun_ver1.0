@@ -23,12 +23,12 @@ void NStageSelectScene::Reset() {
 
 	//for (size_t i = 0; i < maxNumSprite; i++) {
 	//	numSprite[i]->position.x = 300.0f;
-	//	numSprite[i]->position.y = 400.0f + (i * 250.0f);
+	//	numSprite[i]->position.y = 375.0f + (i * 250.0f);
 	//	numSprite[i]->UpdateMatrix();
 
 	//	// --イージング用変数初期化-- //
-	//	easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
-	//	easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f };
+	//	easeStartPos_[i] = { 300.0f, 375.0f + (i * 250.0f), 0.0f };
+	//	easeEndPos_[i] = { 300.0f, 375.0f + (i * 250.0f), 0.0f };
 	//}
 }
 
@@ -60,8 +60,8 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	//	backSprite[i]->texNum = static_cast<int>(i);
 	//	backSprite[i]->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[backSprite[i]->texNum].texBuff);
 	//	//sprite[i]->CreateClipSprite(dx12->GetDevice(),tex[sprite[i]->texNum].texBuff,{100.0f,0},{50.0f,100.0f});	//一部切り取って生成
-	//	backSprite[i]->position.x = i * 300.0f + 400.0f;
-	//	backSprite[i]->position.y = 400.0f;
+	//	backSprite[i]->position.x = i * 300.0f + 375.0f;
+	//	backSprite[i]->position.y = 375.0f;
 	//	backSprite[i]->UpdateMatrix();
 	//	backSprite[i]->TransferMatrix();
 	//}
@@ -78,12 +78,12 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 		numSprite[i]->size = { 120.0f,180.0f };
 		numSprite[i]->TransferVertex();
 		numSprite[i]->position.x = 300.0f;
-		numSprite[i]->position.y = 400.0f + (i * 250.0f);
+		numSprite[i]->position.y = 375.0f + (i * 250.0f);
 		numSprite[i]->UpdateMatrix();
 
 		// --イージング用変数初期化-- //
-		easeStartPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
-		easeEndPos_[i] = { 300.0f, 400.0f + (i * 250.0f), 0.0f};
+		easeStartPos_[i] = { 300.0f, 375.0f + (i * 250.0f), 0.0f};
+		easeEndPos_[i] = { 300.0f, 375.0f + (i * 250.0f), 0.0f};
 
 		frameSprite[i] = std::make_unique<NSprite>();
 		frameSprite[i]->texNum = STAGESELECTFRAME;
@@ -92,7 +92,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 		frameSprite[i]->size = { 250.0f,250.0f };
 		frameSprite[i]->TransferVertex();
 		frameSprite[i]->position.x = 300.0f;
-		frameSprite[i]->position.y = 400.0f + (i * 250.0f);
+		frameSprite[i]->position.y = 375.0f + (i * 250.0f);
 		frameSprite[i]->UpdateMatrix();
 	}
 
@@ -168,7 +168,7 @@ void NStageSelectScene::Update()
 	float len[10];
 	for (size_t i = 0; i < 10; i++) {
 		numSprite[i]->position.y = Util::EaseOutCubic(easeStartPos_[i].y, easeEndPos_[i].y, timeRate);
-		len[i] = abs(400.0f - numSprite[i]->position.y);
+		len[i] = abs(375.0f - numSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
 		numSprite[i]->size.x = 120 * (1.0f - len[i]);
 		numSprite[i]->size.y = 180 * (1.0f - len[i]);
@@ -176,7 +176,7 @@ void NStageSelectScene::Update()
 		numSprite[i]->UpdateMatrix();
 
 		frameSprite[i]->position.y = numSprite[i]->position.y;
-		len[i] = abs(400.0f - frameSprite[i]->position.y);
+		len[i] = abs(375.0f - frameSprite[i]->position.y);
 		len[i] = Util::Clamp(len[i] / 600.0f, 1.0f, 0.0f);
 		frameSprite[i]->size.x = 250.0f * (1.0f - len[i]);
 		frameSprite[i]->size.y = 250.0f * (1.0f - len[i]);
