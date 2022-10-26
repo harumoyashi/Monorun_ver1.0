@@ -35,6 +35,7 @@ public:
 	void WallHit(bool isParticle, int isDirectionR, XMMATRIX matView, XMMATRIX matProjection, NObj3d* player);
 	//即死ブロック破壊時のパーティクル
 	void BlockBreak(int atOnce, XMMATRIX matView, XMMATRIX matProjection);
+	void PlayerBreak(bool isParticle, int atOnce, XMMATRIX matView, XMMATRIX matProjection,NObj3d* obj,float maxTimer = 50);
 	//描画
 	void Draw(NDX12* dx12);
 

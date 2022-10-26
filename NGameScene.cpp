@@ -9,6 +9,15 @@ NGameScene* NGameScene::GetInstance()
 
 void NGameScene::Initialize(NDX12* dx12)
 {
+#pragma region	オーディオ初期化
+	audio = NAudio::GetInstance();
+	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
+	soundData[1] = audio->LoadWave("mokugyo.wav");
+	soundData[2] = audio->LoadWave("fanfare.wav");
+	//BGM鳴らす
+	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
+	audio->StopWave(soundData[0]);
+#pragma endregion
 #pragma region	カメラ初期化
 	camera = std::make_unique<NCamera>();
 	camera->ProjectiveProjection();
@@ -290,6 +299,7 @@ void NGameScene::Update(NDX12* dx12)
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
+					audio->StopWave(soundData[0]);
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -457,6 +467,7 @@ void NGameScene::Update(NDX12* dx12)
 			if (NInput::IsKeyTrigger(DIK_SPACE)) {
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
+						audio->StopWave(soundData[0]);
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}
@@ -624,6 +635,8 @@ void NGameScene::Draw(NDX12* dx12)
 
 // --リセット処理-- //
 void NGameScene::Reset(NDX12* dx12) {
+	audio->StartWave(soundData[0]);
+
 	isDisplayTimeChange = true;
 	stageSelectSprite->SetColor(whiteColor);
 	retrySprite->SetColor(yellowColor);

@@ -18,6 +18,7 @@
 #include "NStageSelectScene.h"
 #include "Collision.h"
 #include "NCamera.h"
+#include "NAudio.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -93,6 +94,10 @@ private:
 
 	// --ゲーム開始時のカウント-- //
 	float gameStartCountTime_ = 5.0f;
+
+	NAudio* audio = nullptr;
+	static const int maxSoundData = 3;
+	uint32_t soundData[maxSoundData] = {};
 
 public:
 
