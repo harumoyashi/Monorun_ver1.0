@@ -89,8 +89,8 @@ private:
 	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };
 
 	const float stageTime_[10] =
-	{10.0f, 10.0f, 10.0f, 10.0f, 10.0f,
-	10.0f, 10.0f, 10.0f, 10.0f, 10.0f};
+	{14.0f, 16.0f, 9.0f, 14.0f, 18.0f,
+	12.0f, 9.0f, 10.0f, 10.0f, 19.0f};
 
 	int evaluation_ = 0;
 
