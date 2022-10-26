@@ -14,6 +14,7 @@
 #include "NPreDraw.h"
 #include "StageManager.h"
 #include "NCamera.h"
+#include "NAudio.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -55,6 +56,11 @@ private:
 	int selectStage_;
 
 	std::unique_ptr<NCamera> camera;	//カメラ
+
+	NAudio* audio = nullptr;
+	static const int maxSoundData = 3;
+	uint32_t soundData[maxSoundData] = {};
+	bool isPlayBGM = true;
 
 public:
 	//インスタンス取得
