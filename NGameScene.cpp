@@ -106,6 +106,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	goSprite->UpdateMatrix();
 
 	goTextAlpha = 0.0f;
+
+	gameStartCountTime_ = 5.0f;
 }
 
 void NGameScene::Update(NDX12* dx12)
@@ -514,6 +516,7 @@ void NGameScene::Reset(NDX12* dx12) {
 
 	nextSprite->SetColor(yellowColor);
 
+	decimalPointSprite->SetColor(1, 1, 1, 0.5f);
 	decimalPointSprite->size = { 48.0f, 69.0f };
 	decimalPointSprite->TransferVertex();
 	decimalPointSprite->position.x = 390.0f;
@@ -525,6 +528,8 @@ void NGameScene::Reset(NDX12* dx12) {
 	sceneWave_ = StartScene;
 
 	goTextAlpha = 0.0f;
+
+	gameStartCountTime_ = 5.0f;
 }
 
 void NGameScene::Finalize()
