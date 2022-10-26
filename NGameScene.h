@@ -110,7 +110,8 @@ private:
 	float gameStartCountTime_ = 5.0f;
 
 	NAudio* audio = nullptr;
-	static const int maxSoundData = 5;
+
+	static const int maxSoundData = 10;
 	uint32_t soundData[maxSoundData] = {};
 
 	bool isCrear = false;
