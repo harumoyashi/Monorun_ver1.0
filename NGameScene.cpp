@@ -76,7 +76,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	decimalPointSprite = std::make_unique<NSprite>();
 	decimalPointSprite->texNum = static_cast<int>(NUMBER);
 	decimalPointSprite->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[decimalPointSprite->texNum].texBuff, { 10 * 48.0f, 0.0f }, { 48.0f, 69.0f });
-	decimalPointSprite->SetColor(1, 1, 1, 0.5f);
+	decimalPointSprite->SetColor(0.5, 0.5, 0.5, 0.5f);
 	decimalPointSprite->size = { 48.0f, 69.0f };
 	decimalPointSprite->TransferVertex();
 	decimalPointSprite->position.x = 410.0f;
@@ -107,7 +107,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	kmSprite = std::make_unique<NSprite>();
 	kmSprite->texNum = static_cast<int>(KMTEXT);
 	kmSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[kmSprite->texNum].texBuff);
-	kmSprite->SetColor(1, 1, 1, 0.5f);
+	kmSprite->SetColor(0.5, 0.5, 0.5, 0.5f);
 	kmSprite->position.x = NWindows::win_width / 2.0f;
 	kmSprite->position.y = NWindows::win_height / 2.0f;
 	kmSprite->UpdateMatrix();
@@ -144,7 +144,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	minusSprite = std::make_unique<NSprite>();
 	minusSprite->texNum = static_cast<int>(MINUS);
 	minusSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[minusSprite->texNum].texBuff);
-	minusSprite->SetColor(1, 1, 1, 0.5f);
+	minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
 	minusSprite->size = { 77.0f, 40.0f };
 	minusSprite->TransferVertex();
 	minusSprite->position.x = 125.0f;
@@ -239,17 +239,17 @@ void NGameScene::Update(NDX12* dx12)
 		disPlaySpeed[2] = static_cast<int>(saveNum / 1);
 
 		speedSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[0]->texNum].texBuff, { disPlaySpeed[0] * 128.0f, 0.0f }, { 128.0f, 208.0f });
-		speedSprite[0]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[0]->SetColor(0.5, 0.5, 0.5, 0.5f);
 		speedSprite[0]->size = { 128.0f, 208.0f };
 		speedSprite[0]->TransferVertex();
 
 		speedSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[1]->texNum].texBuff, { disPlaySpeed[1] * 128.0f, 0.0f }, { 128.0f, 208.0f });
-		speedSprite[1]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[1]->SetColor(0.5, 0.5, 0.5, 0.5f);
 		speedSprite[1]->size = { 128.0f, 208.0f };
 		speedSprite[1]->TransferVertex();
 
 		speedSprite[2]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[2]->texNum].texBuff, { disPlaySpeed[2] * 48.0f, 0.0f }, { 48.0f, 69.0f });
-		speedSprite[2]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[2]->SetColor(0.5, 0.5, 0.5, 0.5f);
 		speedSprite[2]->size = { 48.0f, 69.0f };
 		speedSprite[2]->TransferVertex();
 
@@ -292,7 +292,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 		else if (player_->GetState() == Goal) {
 			sceneWave_ = GoalResultScene;
-			decimalPointSprite->SetColor(1, 1, 1, 1.0f);
+			decimalPointSprite->SetColor(1, 1, 1, 1);
 			decimalPointSprite->size = { 48.0f, 69.0f };
 			decimalPointSprite->TransferVertex();
 			decimalPointSprite->position.x = 350.0f;
@@ -314,6 +314,23 @@ void NGameScene::Update(NDX12* dx12)
 			collectedCrystalSprite[1]->TransferVertex();
 			collectedCrystalSprite[1]->position = { 252.0f, 275, 0.0f };
 			collectedCrystalSprite[1]->UpdateMatrix();
+		}
+
+		if (player_->GetSpeedY() >= 20.0f) {
+			speedSprite[0]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[1]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[2]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			kmSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			decimalPointSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			minusSprite->SetColor(0.95f, 0.1f, 0.1f, 0.5f);
+		}
+		else {
+			speedSprite[0]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[1]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[2]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			kmSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			decimalPointSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
 		}
 	}
 
@@ -725,7 +742,7 @@ void NGameScene::Reset(NDX12* dx12) {
 
 	nextSprite->SetColor(yellowColor);
 
-	decimalPointSprite->SetColor(1, 1, 1, 0.5f);
+	decimalPointSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
 	decimalPointSprite->size = { 48.0f, 69.0f };
 	decimalPointSprite->TransferVertex();
 	decimalPointSprite->position.x = 410.0f;
