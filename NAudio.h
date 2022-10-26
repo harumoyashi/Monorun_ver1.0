@@ -69,26 +69,26 @@ private:
 	SoundData soundData = {};	//音声データ
 
 	//オーディオコールバック
-	class XAudio2VoiceCallback : public IXAudio2VoiceCallback {
-	public:
-		// ボイス処理パスの開始時
-		STDMETHOD_(void, OnVoiceProcessingPassStart)(THIS_ UINT32 BytesRequired) {};
-		// ボイス処理パスの終了時
-		STDMETHOD_(void, OnVoiceProcessingPassEnd)(THIS) {};
-		// バッファストリームの再生が終了した時
-		STDMETHOD_(void, OnStreamEnd)(THIS) {};
-		// バッファの使用開始時
-		STDMETHOD_(void, OnBufferStart)(THIS_ void* pBufferContext) {};
-		// バッファの末尾に達した時
-		STDMETHOD_(void, OnBufferEnd)(THIS_ void* pBufferContext);
-		// 再生がループ位置に達した時
-		STDMETHOD_(void, OnLoopEnd)(THIS_ void* pBufferContext) {};
-		// ボイスの実行エラー時
-		STDMETHOD_(void, OnVoiceError)(THIS_ void* pBufferContext, HRESULT Error) {};
-	};
+	//class XAudio2VoiceCallback : public IXAudio2VoiceCallback {
+	//public:
+	//	// ボイス処理パスの開始時
+	//	STDMETHOD_(void, OnVoiceProcessingPassStart)(THIS_ UINT32 BytesRequired) {};
+	//	// ボイス処理パスの終了時
+	//	STDMETHOD_(void, OnVoiceProcessingPassEnd)(THIS) {};
+	//	// バッファストリームの再生が終了した時
+	//	STDMETHOD_(void, OnStreamEnd)(THIS) {};
+	//	// バッファの使用開始時
+	//	STDMETHOD_(void, OnBufferStart)(THIS_ void* pBufferContext) {};
+	//	// バッファの末尾に達した時
+	//	STDMETHOD_(void, OnBufferEnd)(THIS_ void* pBufferContext);
+	//	// 再生がループ位置に達した時
+	//	STDMETHOD_(void, OnLoopEnd)(THIS_ void* pBufferContext) {};
+	//	// ボイスの実行エラー時
+	//	STDMETHOD_(void, OnVoiceError)(THIS_ void* pBufferContext, HRESULT Error) {};
+	//};
 
 public:
-	static NAudio* GetInstance();
+	/*static NAudio* GetInstance();*/
 
 	//初期化
 	//ディレクトリパスを指定しないと"Resources/sound/"になる
@@ -112,6 +112,10 @@ public:
 	//0で無音、1がデフォルト音量。あまり大きくしすぎると音割れする
 	//return 再生ハンドル
 	uint32_t PlayWave(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
+
+	//音声停止
+	//"voiceHandle" 再生ハンドル
+	void DestroyWave(uint32_t voiceHandle);
 
 	//音声一時停止
 	//"voiceHandle" 再生ハンドル
@@ -145,8 +149,6 @@ private:
 	uint32_t indexSoundData_ = 0u;
 	// 次に使う再生中データの番号
 	uint32_t indexVoice_ = 0u;
-	// オーディオコールバック
-	XAudio2VoiceCallback voiceCallback_;
-
-	IXAudio2* GetXAudio2() { return xAudio2.Get(); }
+	//// オーディオコールバック
+	//XAudio2VoiceCallback voiceCallback_;
 };

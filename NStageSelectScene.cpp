@@ -37,7 +37,8 @@ void NStageSelectScene::Reset() {
 void NStageSelectScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
-	audio = NAudio::GetInstance();
+	audio = new NAudio();
+	audio->Initialize();
 	soundData[0] = audio->LoadWave("stageselect_BGM.wav");
 	soundData[1] = audio->LoadWave("mokugyo.wav");
 	soundData[2] = audio->LoadWave("fanfare.wav");
@@ -243,6 +244,7 @@ void NStageSelectScene::Draw(NDX12* dx12)
 
 void NStageSelectScene::Finalize()
 {
+	delete audio;
 }
 
 void NStageSelectScene::SetSelectStage(int selectStage) {
