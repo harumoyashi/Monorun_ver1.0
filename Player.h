@@ -20,12 +20,13 @@
 #pragma comment(lib,"dxgi.lib")
 
 enum State {
+	Start,
 	NormalWallHit,// -> 通常状態で壁伝い中
 	NormalAir,// -> 通常状態で空中にいる
 	RotateWallHit,// -> 回転状態で壁伝い中
 	RotateAir,// -> 回転状態で空中にいる
-	Death,// --死亡状態
-	DeathResult,
+	DeathReaction,
+	Death,
 	Goal
 };
 
@@ -41,15 +42,10 @@ private:
 	NMaterial material;				//マテリアル
 
 	std::unique_ptr<NParticle> particle;	//パーティクル
-	std::unique_ptr<NSprite> speedSprite[3];	//速度表示用スプライト
-	std::unique_ptr<NSprite> decimalPointSprite;//小数点
 #pragma endregion
 
 	// --プレイヤーの状態-- //
 	int state_;
-
-	// --表示する速度の値-- //
-	int disPlaySpeed[3];
 
 #pragma region プレイヤーの速度変数
 	// --実際に加算する速度変数-- //
@@ -149,7 +145,7 @@ public:
 	void Initialize(NDX12* dx12);
 
 	// --更新処理-- //
-	void Update(XMMATRIX matView, XMMATRIX matProjection);
+	void Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection);
 
 	// --描画処理-- //
 	void Draw(NDX12* dx12,NCube* cube);
@@ -165,8 +161,10 @@ public:
 	// --プレイヤーの状態を変更-- //
 	void SetState(int state);
 
-	float& GetSpeedX();
-	float& GetSpeedY();
+	void SetGame();
+
+	float GetSpeedX() { return speedX_; }
+	float GetSpeedY() { return speedY_; }
 
 	// --死亡状態に変更-- //
 	void SetDeath();
