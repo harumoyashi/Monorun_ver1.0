@@ -65,6 +65,10 @@ void Player::Reset() {
 
 // --初期化処理-- //
 void Player::Initialize(NDX12* dx12) {
+	audio = audio = new NAudio();
+	audio->Initialize();
+	soundData[0] = audio->LoadWave("jump.wav");		// じゃんぷ音
+
 	//マテリアル(定数バッファ)
 	material.Initialize(dx12->GetDevice());
 	material.SetColor({ 1,1,1,1 });
@@ -166,6 +170,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 		// --[SPACE]を押したら-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			audio->PlayWave(soundData[0], false,1.5f);
+
 			isReaction_ = true;
 
 			// --左右の向きを変える-- //
@@ -353,7 +359,7 @@ void Player::Draw(NDX12* dx12, NCube* cube) {
 
 // --終了処理-- //
 void Player::Finalize() {
-
+	delete audio;
 }
 
 // --プレイヤーの状態を変更-- //

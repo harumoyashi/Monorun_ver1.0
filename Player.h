@@ -14,6 +14,7 @@
 #include "NSprite.h"
 #include "NCube.h"
 #include "NPreDraw.h"
+#include "NAudio.h"
 #include "Util.h"
 
 #pragma comment(lib,"d3d12.lib")
@@ -43,6 +44,11 @@ private:
 
 	std::unique_ptr<NParticle> particle;	//パーティクル
 	std::unique_ptr<NParticle> deathParticle;	//パーティクル
+
+	NAudio* audio = nullptr;
+
+	static const int maxSoundData = 10;
+	uint32_t soundData[maxSoundData] = {};
 #pragma endregion
 
 	// --プレイヤーの状態-- //

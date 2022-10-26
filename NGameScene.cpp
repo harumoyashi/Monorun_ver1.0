@@ -14,10 +14,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
 	soundData[1] = audio->LoadWave("clear_SE.wav");
-	soundData[2] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
-	soundData[3] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
-	soundData[4] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
-	soundData[5] = audio->LoadWave("jump.wav");			// じゃんぷ音
+	
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
