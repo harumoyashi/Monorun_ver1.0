@@ -74,7 +74,7 @@ private:
 
 #pragma region ブースト時間変数
 	// --ブーストの時間[s]-- //
-	const float rotateTime_ = 3.0f;
+	const float rotateTime_ = 0.7f;
 
 	// --ブーストの経過時間[s]-- //
 	float rotateTimer_;
