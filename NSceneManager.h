@@ -34,6 +34,7 @@ enum Texture
 	BOUND1,
 	BOUND2,
 	WALL,
+	STAGESELECTNUMBER,
 
 	MAXTEX
 };
