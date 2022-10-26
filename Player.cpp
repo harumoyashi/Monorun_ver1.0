@@ -132,6 +132,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 		float nowCount = static_cast<float>(Util::GetNowCount());
 		float nowTime = (nowCount - deathStartCount_) / 1000.0f;
 
+		speedY_ = 0.0f;
+
 		if (nowTime >= deathWaitingTime) {
 			object_->position.y = 2000.0f;
 			state_ = Death;
