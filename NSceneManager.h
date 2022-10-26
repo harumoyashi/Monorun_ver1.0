@@ -34,6 +34,10 @@ enum Texture
 	BOUND1,
 	BOUND2,
 	WALL,
+	STAGESELECTNUMBER,
+	NICESTAMP,			//[NICE]テキスト
+	GREATSTAMP,			//[GREAT]テキスト
+	OMGSTAMP,			//[OMG]テキスト
 
 	MAXTEX
 };

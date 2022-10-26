@@ -75,12 +75,21 @@ private:
 	std::unique_ptr<NSprite> crystalSprite;//[CRYSTAL]テキストスプライト
 	std::unique_ptr<NSprite> maxCrystalSprite[2];//このステージの総クリスタル数
 	std::unique_ptr<NSprite> collectedCrystalSprite[2];//このステージで集めたクリスタル数
-	
+	std::unique_ptr<NSprite> niceSprite;//[NICE]スプライト
+	std::unique_ptr<NSprite> greatSprite;//[NICE]スプライト
+	std::unique_ptr<NSprite> omgSprite;//[NICE]スプライト
+
 	// --集めたクリスタル数-- //
 	int collectedCrystal_;
 
 	XMFLOAT4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };
+
+	const float stageTime_[10] =
+	{10.0f, 10.0f, 10.0f, 10.0f, 10.0f,
+	10.0f, 10.0f, 10.0f, 10.0f, 10.0f};
+
+	int evaluation_ = 0;
 
 	float goTextAlpha;
 
@@ -103,8 +112,11 @@ private:
 	float gameStartCountTime_ = 5.0f;
 
 	NAudio* audio = nullptr;
-	static const int maxSoundData = 3;
+
+	static const int maxSoundData = 10;
 	uint32_t soundData[maxSoundData] = {};
+
+	bool isCrear = false;
 
 public:
 

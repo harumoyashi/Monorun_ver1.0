@@ -71,6 +71,7 @@ public:
 	void Update();
 	void Draw(NDX12* dx12);
 	void Finalize();
+	void SetSelectStage(int selectStage);
 
 	//void SetStageSelect(int stage);
 };

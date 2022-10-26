@@ -10,10 +10,14 @@ NGameScene* NGameScene::GetInstance()
 void NGameScene::Initialize(NDX12* dx12)
 {
 #pragma region	オーディオ初期化
-	audio = NAudio::GetInstance();
+	audio = new NAudio();
+	audio->Initialize();
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
-	soundData[1] = audio->LoadWave("mokugyo.wav");
-	soundData[2] = audio->LoadWave("fanfare.wav");
+	soundData[1] = audio->LoadWave("clear_SE.wav");
+	soundData[2] = audio->LoadWave("hit_bound.wav");	// バウンドブロックに当たる音
+	soundData[3] = audio->LoadWave("hit_wall.wav");		// 壁に当たる音
+	soundData[4] = audio->LoadWave("hit_deathBlock.wav");// デスブロックにあたる音
+	soundData[5] = audio->LoadWave("jump.wav");			// じゃんぷ音
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -177,7 +181,30 @@ void NGameScene::Initialize(NDX12* dx12)
 
 	collectedCrystalSprite[1] = std::make_unique<NSprite>();
 	collectedCrystalSprite[1]->texNum = static_cast<int>(NUMBER);
+
+	niceSprite = std::make_unique<NSprite>();
+	niceSprite->texNum = static_cast<int>(NICESTAMP);
+	niceSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[niceSprite->texNum].texBuff);
+	niceSprite->position.x = 450.0f;
+	niceSprite->position.y = 390.0f;
+	niceSprite->rotation = 35.0f;
+	niceSprite->UpdateMatrix();
 	
+	greatSprite = std::make_unique<NSprite>();
+	greatSprite->texNum = static_cast<int>(GREATSTAMP);
+	greatSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[greatSprite->texNum].texBuff);
+	greatSprite->position.x = 450.0f;
+	greatSprite->position.y = 390.0f;
+	greatSprite->rotation = 35.0f;
+	greatSprite->UpdateMatrix();
+
+	omgSprite = std::make_unique<NSprite>();
+	omgSprite->texNum = static_cast<int>(OMGSTAMP);
+	omgSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[omgSprite->texNum].texBuff);
+	omgSprite->position.x = 450.0f;
+	omgSprite->position.y = 390.0f;
+	omgSprite->rotation = 35.0f;
+	omgSprite->UpdateMatrix();
 
 	goTextAlpha = 0.0f;
 
@@ -191,6 +218,11 @@ void NGameScene::Update(NDX12* dx12)
 	cosRota += 0.1;
 
 	if (sceneWave_ == StartScene) {
+		if (isCrear)
+		{
+			isCrear = false;
+		}
+
 		gameStartCountTime_ -= 0.04f;
 
 		countSprite->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[countSprite->texNum].texBuff, { (static_cast<int>(gameStartCountTime_) + 1) * 128.0f, 0.0f }, { 128.0f, 208.0f });
@@ -286,11 +318,33 @@ void NGameScene::Update(NDX12* dx12)
 			kmSprite->UpdateMatrix();
 		}
 
+		if (player_->GetSpeedY() >= 20.0f) {
+			speedSprite[0]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[1]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[2]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			kmSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			decimalPointSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			minusSprite->SetColor(0.95f, 0.1f, 0.1f, 0.5f);
+		}
+		else {
+			speedSprite[0]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[1]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[2]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			kmSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			decimalPointSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
+		}
+
 		// --プレイヤーが死亡状態になったらウェーブを変える-- //
 		if (player_->GetState() == Death) {
 			sceneWave_ = DeathResultScene;
 		}
 		else if (player_->GetState() == Goal) {
+			if (stageTime_[stage_->GetSelectStage() - 1] <= gameTime_) evaluation_ = 0;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 20.0f <= gameTime_) evaluation_ = 1;
+			else if (stageTime_[stage_->GetSelectStage() - 1] + 40.0f <= gameTime_) evaluation_ = 2;
+			else evaluation_ = 3;
+
 			sceneWave_ = GoalResultScene;
 			decimalPointSprite->SetColor(1, 1, 1, 1);
 			decimalPointSprite->size = { 48.0f, 69.0f };
@@ -314,23 +368,6 @@ void NGameScene::Update(NDX12* dx12)
 			collectedCrystalSprite[1]->TransferVertex();
 			collectedCrystalSprite[1]->position = { 252.0f, 275, 0.0f };
 			collectedCrystalSprite[1]->UpdateMatrix();
-		}
-
-		if (player_->GetSpeedY() >= 20.0f) {
-			speedSprite[0]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			speedSprite[1]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			speedSprite[2]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			kmSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			decimalPointSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			minusSprite->SetColor(0.95f, 0.1f, 0.1f, 0.5f);
-		}
-		else {
-			speedSprite[0]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			speedSprite[1]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			speedSprite[2]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			kmSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			decimalPointSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
 		}
 	}
 
@@ -363,6 +400,7 @@ void NGameScene::Update(NDX12* dx12)
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
 					audio->StopWave(soundData[0]);
+					isCrear = false;
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -388,6 +426,14 @@ void NGameScene::Update(NDX12* dx12)
 	}
 
 	if (sceneWave_ == GoalResultScene) {
+		audio->StopWave(soundData[0]);
+
+		if (!isCrear)
+		{
+			audio->PlayWave(soundData[1]);
+			isCrear = true;
+		}
+
 		if (isDisplayTimeChange == true) {
 			int saveNum = gameTime_ * 100;
 			displayNum[0] = static_cast<int>(saveNum / 10000);
@@ -531,13 +577,14 @@ void NGameScene::Update(NDX12* dx12)
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						audio->StopWave(soundData[0]);
+						isCrear = false;
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}
 
 				else if (selectText == NextText) {
 					if (stage_->GetSelectStage() < 10) {
-						stage_->SetCSV(stage_->GetSelectStage() + 1);
+						selectScene_->SetSelectStage(stage_->GetSelectStage() + 1);
 						if (!NSceneManager::GetPlayEffect()) {
 							NSceneManager::SetScene(GAMESCENE);
 						}
@@ -679,6 +726,21 @@ void NGameScene::Draw(NDX12* dx12)
 		maxCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		collectedCrystalSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		collectedCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		if (evaluation_ == 0) {
+			omgSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		}
+
+		else if (evaluation_ == 1) {
+
+		}
+
+		else if (evaluation_ == 2) {
+			greatSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		}
+
+		else if (evaluation_ == 3) {
+			niceSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		}
 	}
 
 	if (sceneWave_ == DeathResultScene) {
@@ -762,6 +824,7 @@ void NGameScene::Reset(NDX12* dx12) {
 
 void NGameScene::Finalize()
 {
+	delete audio;
 	stage_->Finalize();
 	stage_->Release();
 	player_->Finalize();
