@@ -65,11 +65,11 @@ void NGameScene::Initialize(NDX12* dx12)
 	decimalPointSprite = std::make_unique<NSprite>();
 	decimalPointSprite->texNum = static_cast<int>(NUMBER);
 	decimalPointSprite->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[decimalPointSprite->texNum].texBuff, { 10 * 48.0f, 0.0f }, { 48.0f, 69.0f });
-	decimalPointSprite->SetColor(1, 1, 1, 1);
-	decimalPointSprite->size = { 96.0f,138.0f };
+	decimalPointSprite->SetColor(1, 1, 1, 0.5f);
+	decimalPointSprite->size = { 48.0f, 69.0f };
 	decimalPointSprite->TransferVertex();
-	decimalPointSprite->position.x = 348.0f;
-	decimalPointSprite->position.y = 400.0f;
+	decimalPointSprite->position.x = 390.0f;
+	decimalPointSprite->position.y = 464.0f;
 	decimalPointSprite->UpdateMatrix();
 
 	timeSprite = std::make_unique<NSprite>();
@@ -79,36 +79,174 @@ void NGameScene::Initialize(NDX12* dx12)
 	timeSprite->UpdateMatrix();
 
 	isDisplayTimeChange = true;
+
+	sceneWave_ = StartScene;
+
+	speedSprite[0] = std::make_unique<NSprite>();
+	speedSprite[0]->texNum = static_cast<int>(BIGNUMBER);
+
+	speedSprite[1] = std::make_unique<NSprite>();
+	speedSprite[1]->texNum = static_cast<int>(BIGNUMBER);
+
+	speedSprite[2] = std::make_unique<NSprite>();
+	speedSprite[2]->texNum = static_cast<int>(NUMBER);
+
+	countSprite = std::make_unique<NSprite>();
+	countSprite->texNum = static_cast<int>(BIGNUMBER);
+
+	goSprite = std::make_unique<NSprite>();
+	goSprite->texNum = static_cast<int>(GOTEXT);
+	goSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[goSprite->texNum].texBuff);
+	goSprite->SetColor(1, 1, 1, 0.8f);
+	goSprite->size = { 234.0f, 208.0f };
+	goSprite->TransferVertex();
+	goSprite->position.x = NWindows::win_width / 2.0f;
+	goSprite->position.y = NWindows::win_height / 2.0f;
+	goSprite->rotation = 30.0f;
+	goSprite->UpdateMatrix();
+
+	goTextAlpha = 0.0f;
 }
 
 void NGameScene::Update(NDX12* dx12)
 {
 	cosRota += 0.1;
 
-	// --プレイヤー更新処理-- //
-	player_->Update(camera->GetMatView(), camera->GetMatProjection());
-	camera->SetScrollY(player_->GetScrollY());
+	if (sceneWave_ == StartScene) {
+		gameStartCountTime_ -= 0.04f;
 
-	col_->Update(dx12, camera->GetMatView(), camera->GetMatProjection());
-	camera->SetScrollY(col_->GetScrollY());
+		countSprite->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[countSprite->texNum].texBuff, { (static_cast<int>(gameStartCountTime_) + 1) * 128.0f, 0.0f }, { 128.0f, 208.0f });
+		countSprite->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+		countSprite->size = { 128.0f, 208.0f };
+		countSprite->TransferVertex();
+		countSprite->position = { NWindows::win_width / 2.0f,NWindows::win_height / 2.0f,0 };
+		countSprite->UpdateMatrix();
 
-	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
-
-	camera->CreateMatView();
-
-	if (NSceneManager::GetPlayEffect() == false)
-	{
-		if (NInput::IsKeyTrigger(DIK_Q)) {
-			NSceneManager::SetScene(TITLESCENE);
+		if (gameStartCountTime_ <= 0) {
+			sceneWave_ = GameScene;
+			player_->SetState(NormalWallHit);
+			goTextAlpha = 0.8f;
 		}
 	}
 
-	if (player_->GetState() < Death) {
+	if (sceneWave_ == GameScene) {
+		if (goTextAlpha > 0.0f) {
+			goTextAlpha -= 0.01f;
+			goSprite->SetColor(1.0f, 1.0f, 1.0f, goTextAlpha);
+			goSprite->size = { 234.0f, 208.0f };
+			goSprite->size.x = Util::EaseOutCubic(234.0f, 468.0f, 1.0f - goTextAlpha);
+			goSprite->size.y = Util::EaseOutCubic(208.0f, 416.0f, 1.0f - goTextAlpha);
+			goSprite->TransferVertex();
+			goSprite->rotation = Util::EaseOutCubic(30.0f, -30.0f, 1.0f - goTextAlpha);
+			goSprite->UpdateMatrix();
+		}
+
+		// --プレイ時間を計算-- //
 		int nowCount_ = Util::GetNowCount();
 		gameTime_ = (nowCount_ - startCount_) / 1000.0f;
+
+		if (player_->GetCamShake() || col_->GetCamShake()) {
+			camera.get()->SetShakeCount(27);
+			player_->SetCamShakeState(false);
+			col_->SetCamShakeState(false);
+		}
+
+		int saveNum = player_->GetSpeedY() * 10;
+		disPlaySpeed[0] = static_cast<int>(saveNum / 100);
+		saveNum = saveNum % 100;
+		disPlaySpeed[1] = static_cast<int>(saveNum / 10);
+		saveNum = saveNum % 10;
+		disPlaySpeed[2] = static_cast<int>(saveNum / 1);
+
+		speedSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[0]->texNum].texBuff, { disPlaySpeed[0] * 128.0f, 0.0f }, { 128.0f, 208.0f });
+		speedSprite[0]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[0]->size = { 128.0f, 208.0f };
+		speedSprite[0]->TransferVertex();
+		speedSprite[0]->position = { 190.0f,NWindows::win_height / 2.0f,0 };
+		speedSprite[0]->UpdateMatrix();
+
+		speedSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[1]->texNum].texBuff, { disPlaySpeed[1] * 128.0f, 0.0f }, { 128.0f, 208.0f });
+		speedSprite[1]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[1]->size = { 128.0f, 208.0f };
+		speedSprite[1]->TransferVertex();
+		speedSprite[1]->position = { 310.0f,NWindows::win_height / 2.0f,0 };
+		speedSprite[1]->UpdateMatrix();
+
+		speedSprite[2]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[speedSprite[2]->texNum].texBuff, { disPlaySpeed[2] * 48.0f, 0.0f }, { 48.0f, 69.0f });
+		speedSprite[2]->SetColor(1.0f, 1.0f, 1.0f, 0.5f);
+		speedSprite[2]->size = { 48.0f, 69.0f };
+		speedSprite[2]->TransferVertex();
+		speedSprite[2]->position = { 425.0f,464.0f,0 };
+		speedSprite[2]->UpdateMatrix();
+
+		// --プレイヤーが死亡状態になったらウェーブを変える-- //
+		if (player_->GetState() == Death) {
+			sceneWave_ = DeathResultScene;
+		}
+		else if (player_->GetState() == Goal) {
+			sceneWave_ = GoalResultScene;
+			decimalPointSprite->SetColor(1, 1, 1, 1.0f);
+			decimalPointSprite->size = { 96.0f,138.0f };
+			decimalPointSprite->TransferVertex();
+			decimalPointSprite->position.x = 350.0f;
+			decimalPointSprite->position.y = 400.0f;
+			decimalPointSprite->UpdateMatrix();
+		}
 	}
 
-	else if (player_->GetState() == Goal) {
+	if (sceneWave_ == DeathResultScene) {
+		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			if (selectText == RetryText) {
+				selectText = StageSelectText;
+				retrySprite->size.x = 197.0f;
+				retrySprite->size.y = 69.0f;
+				retrySprite->TransferVertex();
+				retrySprite->SetColor(whiteColor);
+				stageSelectSprite->SetColor(yellowColor);
+				cosRota = 0.0f;
+			}
+		}
+
+		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			if (selectText == StageSelectText) {
+				selectText = RetryText;
+				stageSelectSprite->size.x = 439.0f;
+				stageSelectSprite->size.y = 69.0f;
+				stageSelectSprite->TransferVertex();
+				stageSelectSprite->SetColor(whiteColor);
+				retrySprite->SetColor(yellowColor);
+				cosRota = 0.0f;
+			}
+		}
+
+		if (NInput::IsKeyTrigger(DIK_SPACE)) {
+			if (selectText == StageSelectText) {
+				if (!NSceneManager::GetPlayEffect()) {
+					NSceneManager::SetScene(STAGESELECTSCENE);
+				}
+			}
+
+			else if (selectText == RetryText) {
+				if (!NSceneManager::GetPlayEffect()) {
+					NSceneManager::SetScene(GAMESCENE);
+				}
+			}
+		}
+
+		if (selectText == RetryText) {
+			retrySprite->size.x = 197.0f + 19.7f * cosf(cosRota);
+			retrySprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			retrySprite->TransferVertex();
+		}
+
+		else if (selectText == StageSelectText) {
+			stageSelectSprite->size.x = 439.0f + 43.9f * cosf(cosRota);
+			stageSelectSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
+			stageSelectSprite->TransferVertex();
+		}
+	}
+
+	if (sceneWave_ == GoalResultScene) {
 		if (isDisplayTimeChange == true) {
 			int saveNum = gameTime_ * 100;
 			displayNum[0] = static_cast<int>(saveNum / 10000);
@@ -234,78 +372,77 @@ void NGameScene::Update(NDX12* dx12)
 		}
 	}
 
-	else if (player_->GetState() == DeathResult) {
-		if (NInput::IsKeyTrigger(DIK_DOWN)) {
-			if (selectText == RetryText) {
-				selectText = StageSelectText;
-				retrySprite->size.x = 197.0f;
-				retrySprite->size.y = 69.0f;
-				retrySprite->TransferVertex();
-				retrySprite->SetColor(whiteColor);
-				stageSelectSprite->SetColor(yellowColor);
-				cosRota = 0.0f;
-			}
-		}
-
-		else if (NInput::IsKeyTrigger(DIK_UP)) {
-			if (selectText == StageSelectText) {
-				selectText = RetryText;
-				stageSelectSprite->size.x = 439.0f;
-				stageSelectSprite->size.y = 69.0f;
-				stageSelectSprite->TransferVertex();
-				stageSelectSprite->SetColor(whiteColor);
-				retrySprite->SetColor(yellowColor);
-				cosRota = 0.0f;
-			}
-		}
-
-		if (NInput::IsKeyTrigger(DIK_SPACE)) {
-			if (selectText == StageSelectText) {
-				if (!NSceneManager::GetPlayEffect()) {
-					NSceneManager::SetScene(STAGESELECTSCENE);
-				}
-			}
-
-			else if (selectText == RetryText) {
-				if (!NSceneManager::GetPlayEffect()) {
-					NSceneManager::SetScene(GAMESCENE);
-				}
-			}
-		}
-
-		if (selectText == RetryText) {
-			retrySprite->size.x = 197.0f + 19.7f * cosf(cosRota);
-			retrySprite->size.y = 69.0f + 6.9f * cosf(cosRota);
-			retrySprite->TransferVertex();
-		}
-
-		else if (selectText == StageSelectText) {
-			stageSelectSprite->size.x = 439.0f + 43.9f * cosf(cosRota);
-			stageSelectSprite->size.y = 69.0f + 6.9f * cosf(cosRota);
-			stageSelectSprite->TransferVertex();
+#ifdef _DEBUG
+	if (NSceneManager::GetPlayEffect() == false)
+	{
+		if (NInput::IsKeyTrigger(DIK_Q)) {
+			NSceneManager::SetScene(STAGESELECTSCENE);
 		}
 	}
-
-	if (player_->GetCamShake() || col_->GetCamShake()) {
-		camera.get()->SetShakeCount(27);
-		player_->SetCamShakeState(false);
-		col_->SetCamShakeState(false);
-	}
+#endif
 
 	// 常に実行されてよい
 	Util::CameraShake(camera.get(), camera.get()->GetShakeCount());
+	
+	// --プレイヤー更新処理-- //
+	player_->Update(dx12, camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(player_->GetScrollY());
+
+	col_->Update(dx12, camera->GetMatView(), camera->GetMatProjection());
+	camera->SetScrollY(col_->GetScrollY());
+
+	stage_->Update(camera->GetMatView(), camera->GetMatProjection());
+
+	camera->CreateMatView();
 }
 
 void NGameScene::Draw(NDX12* dx12)
 {
-	// --プレイヤー描画処理-- //
-	player_->Draw(dx12, cube.get());
 
-	stage_->Draw(dx12, material_, cube.get());
+	if (sceneWave_ == StartScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
 
-	col_->Draw(dx12);
+		stage_->Draw(dx12, material_, cube.get());
 
-	if (player_->GetState() == Goal) {
+		col_->Draw(dx12);
+
+		if (gameStartCountTime_ <= 2.9f) {
+			countSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+				NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+			countSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		}
+	}
+
+	else if (sceneWave_ == GameScene) {
+		// --速度表示-- //
+		speedSprite[0]->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		speedSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		decimalPointSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		speedSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		speedSprite[2]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
+		goSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
+			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
+		goSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+	}
+
+	else if (sceneWave_ == GoalResultScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
@@ -333,7 +470,14 @@ void NGameScene::Draw(NDX12* dx12)
 		decimalPointSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 	}
 
-	if (player_->GetState() == DeathResult) {
+	if (sceneWave_ == DeathResultScene) {
+		// --プレイヤー描画処理-- //
+		player_->Draw(dx12, cube.get());
+
+		stage_->Draw(dx12, material_, cube.get());
+
+		col_->Draw(dx12);
+
 		resultSprite->CommonBeginDraw(dx12->GetCommandList(), NSceneManager::GetPipelineSprite()->pipelineSet.pipelineState,
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		resultSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
@@ -363,6 +507,24 @@ void NGameScene::Reset(NDX12* dx12) {
 	col_->Reset();
 	stage_->Reset();
 	stage_->LoadCSV(dx12);
+
+	stageSelectSprite->SetColor(whiteColor);
+
+	retrySprite->SetColor(yellowColor);
+
+	nextSprite->SetColor(yellowColor);
+
+	decimalPointSprite->size = { 48.0f, 69.0f };
+	decimalPointSprite->TransferVertex();
+	decimalPointSprite->position.x = 390.0f;
+	decimalPointSprite->position.y = 464.0f;
+	decimalPointSprite->UpdateMatrix();
+
+	isDisplayTimeChange = true;
+
+	sceneWave_ = StartScene;
+
+	goTextAlpha = 0.0f;
 }
 
 void NGameScene::Finalize()

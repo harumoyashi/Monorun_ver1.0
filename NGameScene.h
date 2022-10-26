@@ -27,6 +27,13 @@ enum SelectText {
 	StageSelectText = 2
 };
 
+enum Wave {
+	StartScene,
+	GameScene,
+	DeathResultScene,
+	GoalResultScene
+};
+
 class NGameScene
 {
 private:
@@ -35,6 +42,9 @@ private:
 	StageManager* stage_;
 
 	Collision* col_;
+
+	// --ゲームシーンの段階-- //
+	int sceneWave_;
 
 	// --オブジェクト-- //
 	NMaterial material_;// -> マテリアル
@@ -49,9 +59,14 @@ private:
 	std::unique_ptr<NSprite> timeNumSprite[5];//数字
 	std::unique_ptr<NSprite> decimalPointSprite;//小数点
 	std::unique_ptr<NSprite> timeSprite;//タイムテキスト
+	std::unique_ptr<NSprite> speedSprite[3];	//速度表示用スプライト
+	std::unique_ptr<NSprite> countSprite;//スタートまでのカウント
+	std::unique_ptr<NSprite> goSprite;//[GO]テキストスプライト
 
 	XMFLOAT4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	XMFLOAT4 yellowColor = { 0.9f, 0.9f, 0.3f, 1.0f };
+
+	float goTextAlpha;
 
 	int displayNum[5] = {0, 0, 0, 0, 0};
 
@@ -64,6 +79,12 @@ private:
 	float gameTime_;
 
 	bool isDisplayTimeChange;
+
+	// --表示する速度の値-- //
+	int disPlaySpeed[3];
+
+	// --ゲーム開始時のカウント-- //
+	float gameStartCountTime_ = 5.0f;
 
 public:
 

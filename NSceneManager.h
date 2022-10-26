@@ -26,6 +26,7 @@ enum Texture
 	STAGESELECTFRAME,	//ステージセレクト枠
 	TIMETEXT,			//タイムテキスト
 	BIGNUMBER,			//大きい数字+小数点
+	GOTEXT,				//[GO]テキスト
 
 	MAXTEX
 };
