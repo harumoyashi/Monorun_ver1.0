@@ -85,11 +85,6 @@ void NTitleScene::Update()
 			NSceneManager::SetScene(STAGESELECTSCENE);
 		}
 	}
-
-	if (NInput::IsKeyTrigger(DIK_1))
-	{
-		audio->PlayWave(soundData[2]);
-	}
 #pragma region s—ñ‚ÌŒvŽZ
 	player->rotation.z += 18.0f;
 	player->UpdateMatrix(camera->GetMatView(), camera->GetMatProjection());

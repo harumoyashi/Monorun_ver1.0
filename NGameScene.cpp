@@ -15,6 +15,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	soundData[0] = audio->LoadWave("gamescene_BGM.wav");
 	soundData[1] = audio->LoadWave("clear_SE.wav");
 	soundData[2] = audio->LoadWave("jump.wav");		// Œˆ’è‰¹
+	soundData[3] = audio->LoadWave("moveCursor.wav");
 	
 	//BGM–Â‚ç‚·
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
@@ -371,6 +372,7 @@ void NGameScene::Update(NDX12* dx12)
 
 	if (sceneWave_ == DeathResultScene) {
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == RetryText) {
 				selectText = StageSelectText;
 				retrySprite->size.x = 197.0f;
@@ -383,6 +385,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
 				stageSelectSprite->size.x = 439.0f;
@@ -399,7 +402,6 @@ void NGameScene::Update(NDX12* dx12)
 			if (selectText == StageSelectText) {
 				if (!NSceneManager::GetPlayEffect()) {
 					audio->StopWave(soundData[0]);
-					isCrear = false;
 					NSceneManager::SetScene(STAGESELECTSCENE);
 				}
 			}
@@ -548,6 +550,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == NextText) {
 				selectText = StageSelectText;
 				nextSprite->size.x = 162.0f;
@@ -560,6 +563,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		else if (NInput::IsKeyTrigger(DIK_UP)) {
+			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = NextText;
 				stageSelectSprite->size.x = 439.0f;
@@ -577,7 +581,6 @@ void NGameScene::Update(NDX12* dx12)
 				if (selectText == StageSelectText) {
 					if (!NSceneManager::GetPlayEffect()) {
 						audio->StopWave(soundData[0]);
-						isCrear = false;
 						NSceneManager::SetScene(STAGESELECTSCENE);
 					}
 				}

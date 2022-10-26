@@ -41,6 +41,7 @@ void NStageSelectScene::Initialize(NDX12* dx12)
 	audio->Initialize();
 	soundData[0] = audio->LoadWave("stageselect_BGM.wav");
 	soundData[1] = audio->LoadWave("jump.wav");
+	soundData[2] = audio->LoadWave("moveCursor.wav");
 	//BGM鳴らす
 	soundData[0] = audio->PlayWave(soundData[0], true, 0.5f);
 	audio->StopWave(soundData[0]);
@@ -138,6 +139,7 @@ void NStageSelectScene::Update()
 
 	// --[↑]を押したら-- //
 	if (NInput::IsKeyTrigger(DIK_UP)) {
+		audio->PlayWave(soundData[2], false);
 		// --選んでいるステージの値が1より大きいなら-- //
 		if (selectStage_ > 1) {
 			// --現在のカウントを取得-- //
@@ -155,6 +157,7 @@ void NStageSelectScene::Update()
 
 	// --[↓]を押したら-- //
 	if (NInput::IsKeyTrigger(DIK_DOWN)) {
+		audio->PlayWave(soundData[2], false);
 		// --選んでいるステージの値が10より小さいなら-- //
 		if (selectStage_ < 10) {
 			// --現在のカウントを取得-- //
