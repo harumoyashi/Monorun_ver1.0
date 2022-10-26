@@ -86,6 +86,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	timeSprite = std::make_unique<NSprite>();
 	timeSprite->texNum = static_cast<int>(TIMETEXT);
 	timeSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeSprite->texNum].texBuff);
+	timeSprite->SetColor(0.1f, 0.6f, 0.6f, 1.0f);
 	timeSprite->position.x = NWindows::win_width / 2.0f;
 	timeSprite->position.y = 395.0f;
 	timeSprite->UpdateMatrix();
@@ -160,6 +161,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	crystalSprite = std::make_unique<NSprite>();
 	crystalSprite->texNum = static_cast<int>(CRYSTALTEXT);
 	crystalSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[crystalSprite->texNum].texBuff);
+	crystalSprite->SetColor(0.1f, 0.9f, 0.1f, 1.0f);
 	crystalSprite->position.x = NWindows::win_width / 2.0f;
 	crystalSprite->position.y = 200.0f;
 	crystalSprite->UpdateMatrix();
