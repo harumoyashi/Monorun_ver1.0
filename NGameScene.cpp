@@ -286,6 +286,23 @@ void NGameScene::Update(NDX12* dx12)
 			kmSprite->UpdateMatrix();
 		}
 
+		if (player_->GetSpeedY() >= 20.0f) {
+			speedSprite[0]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[1]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			speedSprite[2]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			kmSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			decimalPointSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
+			minusSprite->SetColor(0.95f, 0.1f, 0.1f, 0.5f);
+		}
+		else {
+			speedSprite[0]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[1]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			speedSprite[2]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			kmSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			decimalPointSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
+			minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
+		}
+
 		// --プレイヤーが死亡状態になったらウェーブを変える-- //
 		if (player_->GetState() == Death) {
 			sceneWave_ = DeathResultScene;
@@ -314,23 +331,6 @@ void NGameScene::Update(NDX12* dx12)
 			collectedCrystalSprite[1]->TransferVertex();
 			collectedCrystalSprite[1]->position = { 252.0f, 275, 0.0f };
 			collectedCrystalSprite[1]->UpdateMatrix();
-		}
-
-		if (player_->GetSpeedY() >= 20.0f) {
-			speedSprite[0]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			speedSprite[1]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			speedSprite[2]->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			kmSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			decimalPointSprite->SetColor({ 0.95f, 0.1f, 0.1f, 0.5f });
-			minusSprite->SetColor(0.95f, 0.1f, 0.1f, 0.5f);
-		}
-		else {
-			speedSprite[0]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			speedSprite[1]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			speedSprite[2]->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			kmSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			decimalPointSprite->SetColor({ 0.5, 0.5, 0.5, 0.5f });
-			minusSprite->SetColor(0.5f, 0.5f, 0.5f, 0.5f);
 		}
 	}
 
