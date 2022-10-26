@@ -24,7 +24,7 @@ Player* Player::GetInstance()
 // --リセット処理-- //
 void Player::Reset() {
 	object_->position.x = -360.0f;
-	object_->position.y = -32.0f;
+	object_->position.y = -96.0f;
 	object_->rotation.z = 0.0f;
 	// --プレイヤーの状態-- //
 	state_ = Start;
@@ -50,7 +50,7 @@ void Player::Reset() {
 	isAirKickActive_ = true;
 
 	// --衝突判定を行うか-- //
-	isColActive_ = true;
+	isColActive_ = false;
 
 	deathStartCount_ = 0;
 }
@@ -67,7 +67,7 @@ void Player::Initialize(NDX12* dx12) {
 	object_->texNum = PLAYER;
 	object_->scale = { 24.0f, 24.0f, 24.0f };
 	object_->position.x = -360.0f;
-	object_->position.x = -32.0f;
+	object_->position.y = -96.0f;
 
 	//パーティクル
 	particle = std::make_unique<NParticle>();
@@ -97,7 +97,7 @@ void Player::Initialize(NDX12* dx12) {
 	isAirKickActive_ = true;
 
 	// --衝突判定を行うか-- //
-	isColActive_ = true;
+	isColActive_ = false;
 }
 
 // --更新処理-- //
@@ -142,6 +142,8 @@ void Player::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 	else if (state_ == NormalWallHit) {
 		isParticle = true;	//パーティクル出せ～
+
+		isColActive_ = true;
 
 		// --[SPACE]を押したら-- //
 		if (NInput::IsKeyTrigger(DIK_SPACE)) {
