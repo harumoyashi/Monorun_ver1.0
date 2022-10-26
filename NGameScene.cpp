@@ -87,7 +87,7 @@ void NGameScene::Initialize(NDX12* dx12)
 	timeSprite->texNum = static_cast<int>(TIMETEXT);
 	timeSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeSprite->texNum].texBuff);
 	timeSprite->position.x = NWindows::win_width / 2.0f;
-	timeSprite->position.y = 375.0f;
+	timeSprite->position.y = 395.0f;
 	timeSprite->UpdateMatrix();
 
 	isDisplayTimeChange = true;
@@ -153,8 +153,8 @@ void NGameScene::Initialize(NDX12* dx12)
 	slashSprite = std::make_unique<NSprite>();
 	slashSprite->texNum = static_cast<int>(SLASHTEXT);
 	slashSprite->CreateSprite(dx12->GetDevice(), NSceneManager::GetTex()[slashSprite->texNum].texBuff);
-	slashSprite->position.x = 125.0f;
-	slashSprite->position.y = NWindows::win_height / 2.0f;
+	slashSprite->position.x = NWindows::win_width / 2.0f;
+	slashSprite->position.y = 275.0f;
 	slashSprite->UpdateMatrix();
 
 	crystalSprite = std::make_unique<NSprite>();
@@ -163,6 +163,19 @@ void NGameScene::Initialize(NDX12* dx12)
 	crystalSprite->position.x = NWindows::win_width / 2.0f;
 	crystalSprite->position.y = 200.0f;
 	crystalSprite->UpdateMatrix();
+
+	maxCrystalSprite[0] = std::make_unique<NSprite>();
+	maxCrystalSprite[0]->texNum = static_cast<int>(NUMBER);
+
+	maxCrystalSprite[1] = std::make_unique<NSprite>();
+	maxCrystalSprite[1]->texNum = static_cast<int>(NUMBER);
+
+	collectedCrystalSprite[0] = std::make_unique<NSprite>();
+	collectedCrystalSprite[0]->texNum = static_cast<int>(NUMBER);
+
+	collectedCrystalSprite[1] = std::make_unique<NSprite>();
+	collectedCrystalSprite[1]->texNum = static_cast<int>(NUMBER);
+	
 
 	goTextAlpha = 0.0f;
 
@@ -283,6 +296,22 @@ void NGameScene::Update(NDX12* dx12)
 			decimalPointSprite->position.x = 350.0f;
 			decimalPointSprite->position.y = 375.0f;
 			decimalPointSprite->UpdateMatrix();
+
+			int num = stage_->GetCoin();
+
+			collectedCrystalSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[collectedCrystalSprite[0]->texNum].texBuff, { (num / 10) * 48.0f, 0.0f }, { 48.0f, 69.0f });
+			collectedCrystalSprite[0]->size = { 48.0f, 69.0f };
+			collectedCrystalSprite[0]->TransferVertex();
+			collectedCrystalSprite[0]->position = { 204.0f, 275, 0.0f };
+			collectedCrystalSprite[0]->UpdateMatrix();
+
+			num = num % 10;
+
+			collectedCrystalSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[collectedCrystalSprite[1]->texNum].texBuff, { (num / 1) * 48.0f, 0.0f }, { 48.0f, 69.0f });
+			collectedCrystalSprite[1]->size = { 48.0f, 69.0f };
+			collectedCrystalSprite[1]->TransferVertex();
+			collectedCrystalSprite[1]->position = { 252.0f, 275, 0.0f };
+			collectedCrystalSprite[1]->UpdateMatrix();
 		}
 	}
 
@@ -357,38 +386,38 @@ void NGameScene::Update(NDX12* dx12)
 				timeNumSprite[0]->SetColor(1, 1, 1, 1);
 				timeNumSprite[0]->size = { 48.0f,69.0f };
 				timeNumSprite[0]->TransferVertex();
-				timeNumSprite[0]->position = { 204.0f, 450.0f, 0.0f };
+				timeNumSprite[0]->position = { 204.0f, 470.0f, 0.0f };
 				timeNumSprite[0]->UpdateMatrix();
 
 				timeNumSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[1]->texNum].texBuff, { displayNum[1] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[1]->SetColor(1, 1, 1, 1);
 				timeNumSprite[1]->size = { 48.0f,69.0f };
 				timeNumSprite[1]->TransferVertex();
-				timeNumSprite[1]->position = { 252.0f, 450.0f, 0.0f };
+				timeNumSprite[1]->position = { 252.0f, 470.0f, 0.0f };
 				timeNumSprite[1]->UpdateMatrix();
 
 				timeNumSprite[2]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[2]->texNum].texBuff, { displayNum[2] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[2]->SetColor(1, 1, 1, 1);
 				timeNumSprite[2]->size = { 48.0f,69.0f };
 				timeNumSprite[2]->TransferVertex();
-				timeNumSprite[2]->position = { 300.0f, 450.0f, 0.0f };
+				timeNumSprite[2]->position = { 300.0f, 470.0f, 0.0f };
 				timeNumSprite[2]->UpdateMatrix();
 
-				decimalPointSprite->position = { 325.0f, 450.0f, 0 };
+				decimalPointSprite->position = { 325.0f, 470.0f, 0 };
 				decimalPointSprite->UpdateMatrix();
 
 				timeNumSprite[3]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[3]->texNum].texBuff, { displayNum[3] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[3]->SetColor(1, 1, 1, 1);
 				timeNumSprite[3]->size = { 48.0f,69.0f };
 				timeNumSprite[3]->TransferVertex();
-				timeNumSprite[3]->position = { 350.0f, 450.0f, 0.0f };
+				timeNumSprite[3]->position = { 350.0f, 470.0f, 0.0f };
 				timeNumSprite[3]->UpdateMatrix();
 
 				timeNumSprite[4]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[4]->texNum].texBuff, { displayNum[4] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[4]->SetColor(1, 1, 1, 1);
 				timeNumSprite[4]->size = { 48.0f,69.0f };
 				timeNumSprite[4]->TransferVertex();
-				timeNumSprite[4]->position = { 398.0f, 450.0f, 0.0f };
+				timeNumSprite[4]->position = { 398.0f, 470.0f, 0.0f };
 				timeNumSprite[4]->UpdateMatrix();
 			}
 			else if (gameTime_ >= 10.0f) {
@@ -397,31 +426,31 @@ void NGameScene::Update(NDX12* dx12)
 				timeNumSprite[1]->SetColor(1, 1, 1, 1);
 				timeNumSprite[1]->size = { 48.0f,69.0f };
 				timeNumSprite[1]->TransferVertex();
-				timeNumSprite[1]->position = { 227.0f, 450.0f, 0.0f };
+				timeNumSprite[1]->position = { 227.0f, 470.0f, 0.0f };
 				timeNumSprite[1]->UpdateMatrix();
 
 				timeNumSprite[2]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[2]->texNum].texBuff, { displayNum[2] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[2]->SetColor(1, 1, 1, 1);
 				timeNumSprite[2]->size = { 48.0f,69.0f };
 				timeNumSprite[2]->TransferVertex();
-				timeNumSprite[2]->position = { 275.0f, 450.0f, 0.0f };
+				timeNumSprite[2]->position = { 275.0f, 470.0f, 0.0f };
 				timeNumSprite[2]->UpdateMatrix();
 
-				decimalPointSprite->position = { 300.0f, 450.0f, 0 };
+				decimalPointSprite->position = { 300.0f, 470.0f, 0 };
 				decimalPointSprite->UpdateMatrix();
 
 				timeNumSprite[3]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[3]->texNum].texBuff, { displayNum[3] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[3]->SetColor(1, 1, 1, 1);
 				timeNumSprite[3]->size = { 48.0f,69.0f };
 				timeNumSprite[3]->TransferVertex();
-				timeNumSprite[3]->position = { 325.0f, 450.0f, 0.0f };
+				timeNumSprite[3]->position = { 325.0f, 470.0f, 0.0f };
 				timeNumSprite[3]->UpdateMatrix();
 
 				timeNumSprite[4]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[4]->texNum].texBuff, { displayNum[4] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[4]->SetColor(1, 1, 1, 1);
 				timeNumSprite[4]->size = { 48.0f,69.0f };
 				timeNumSprite[4]->TransferVertex();
-				timeNumSprite[4]->position = { 373.0f, 450.0f, 0.0f };
+				timeNumSprite[4]->position = { 373.0f, 470.0f, 0.0f };
 				timeNumSprite[4]->UpdateMatrix();
 			}
 			else {
@@ -430,24 +459,24 @@ void NGameScene::Update(NDX12* dx12)
 				timeNumSprite[2]->SetColor(1, 1, 1, 1);
 				timeNumSprite[2]->size = { 48.0f,69.0f };
 				timeNumSprite[2]->TransferVertex();
-				timeNumSprite[2]->position = { 250.0f, 450.0f, 0.0f };
+				timeNumSprite[2]->position = { 250.0f, 470.0f, 0.0f };
 				timeNumSprite[2]->UpdateMatrix();
 
-				decimalPointSprite->position = { 275.0f, 450.0f, 0 };
+				decimalPointSprite->position = { 275.0f, 470.0f, 0 };
 				decimalPointSprite->UpdateMatrix();
 
 				timeNumSprite[3]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[3]->texNum].texBuff, { displayNum[3] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[3]->SetColor(1, 1, 1, 1);
 				timeNumSprite[3]->size = { 48.0f,69.0f };
 				timeNumSprite[3]->TransferVertex();
-				timeNumSprite[3]->position = { 300.0f, 450.0f, 0.0f };
+				timeNumSprite[3]->position = { 300.0f, 470.0f, 0.0f };
 				timeNumSprite[3]->UpdateMatrix();
 
 				timeNumSprite[4]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[timeNumSprite[4]->texNum].texBuff, { displayNum[4] * 48.0f, 0.0f }, { 48.0f, 69.0f });
 				timeNumSprite[4]->SetColor(1, 1, 1, 1);
 				timeNumSprite[4]->size = { 48.0f,69.0f };
 				timeNumSprite[4]->TransferVertex();
-				timeNumSprite[4]->position = { 348.0f, 450.0f, 0.0f };
+				timeNumSprite[4]->position = { 348.0f, 470.0f, 0.0f };
 				timeNumSprite[4]->UpdateMatrix();
 			}
 
@@ -625,8 +654,12 @@ void NGameScene::Draw(NDX12* dx12)
 			NSceneManager::GetPipelineSprite()->pipelineSet.rootSig.entity, dx12->GetSRVHeap());
 		decimalPointSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 
-		//slashSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		slashSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 		crystalSprite->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		maxCrystalSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		maxCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		collectedCrystalSprite[0]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
+		collectedCrystalSprite[1]->Draw(dx12->GetSRVHeap(), NSceneManager::GetTex()[0].incrementSize, dx12->GetCommandList());
 	}
 
 	if (sceneWave_ == DeathResultScene) {
@@ -668,6 +701,21 @@ void NGameScene::Reset(NDX12* dx12) {
 	col_->Reset();
 	stage_->Reset();
 	stage_->LoadCSV(dx12);
+
+	int num = stage_->GetMaxCoin();
+	maxCrystalSprite[0]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[maxCrystalSprite[0]->texNum].texBuff, { (num / 10) * 48.0f, 0.0f}, {48.0f, 69.0f});
+	maxCrystalSprite[0]->size = { 48.0f, 69.0f };
+	maxCrystalSprite[0]->TransferVertex();
+	maxCrystalSprite[0]->position = { 348.0f, 275, 0.0f };
+	maxCrystalSprite[0]->UpdateMatrix();
+
+	num = num % 10;
+	maxCrystalSprite[1]->CreateClipSprite(dx12->GetDevice(), NSceneManager::GetTex()[maxCrystalSprite[1]->texNum].texBuff, { (num / 1) * 48.0f, 0.0f }, { 48.0f, 69.0f });
+	maxCrystalSprite[1]->size = { 48.0f, 69.0f };
+	maxCrystalSprite[1]->TransferVertex();
+	maxCrystalSprite[1]->position = { 396.0f, 275, 0.0f };
+	maxCrystalSprite[1]->UpdateMatrix();
+
 
 	stageSelectSprite->SetColor(whiteColor);
 

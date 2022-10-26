@@ -131,6 +131,8 @@ void StageManager::Reset() {
 
 	// --Œ»İ‚ÌƒRƒCƒ“”-- //
 	coin_ = 0;
+
+	maxCoin_ = 0;
 }
 
 // --I—¹ˆ—-- //

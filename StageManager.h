@@ -92,6 +92,10 @@ public:
 	// --コインの数に1追加-- //
 	void AddCoin();
 
+	int GetMaxCoin() { return maxCoin_; }
+
+	int GetCoin() { return coin_; }
+
 	// --読み込むファイルをセットする-- //
 	void SetCSV(int num);
 
