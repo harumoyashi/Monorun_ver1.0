@@ -162,12 +162,12 @@ void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 						if (player_->GetState() == NormalAir || player_->GetState() == NormalWallHit) {
 							// --プレイヤーの状態を変更-- //
 							player_->SetDeath();// -> 死亡状態
-							audio->PlayWave(soundData[1],false,1.5f);
+							audio->PlayWave(soundData[1],false,2.0f);
 						}
 
 						if (audio->IsPlaying(soundData[1]))
 						{
-							audio->PlayWave(soundData[2], false, 2.0f);
+							audio->PlayWave(soundData[2], false, 2.5f);
 						}
 
 						for (size_t j = 0; j < 10; j++) {
@@ -195,7 +195,7 @@ void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 
 					else if (stage_->obstacles_[closestObsIndex].GetBlockType() == BoundBlock) {
 
-						audio->PlayWave(soundData[0]);
+						audio->PlayWave(soundData[0],false,1.2f);
 
 						// --障害物の衝突フラグをONにする-- //
 						stage_->obstacles_[closestObsIndex].SetIsCol(true);
