@@ -32,8 +32,6 @@ enum Texture
 	SLASHTEXT,			//[/]テキスト
 	CRYSTALTEXT,		//[CRYSTAL]テキスト
 	BOUND1,
-	BOUND2,
-	WALL,
 	STAGESELECTNUMBER,
 	NICESTAMP,			//[NICE]テキスト
 	GREATSTAMP,			//[GREAT]テキスト

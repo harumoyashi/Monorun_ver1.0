@@ -159,7 +159,7 @@ void Collision::Update(NDX12* dx12, XMMATRIX matView, XMMATRIX matProjection) {
 				if (isCollision == true) {
 					if (stage_->obstacles_[closestObsIndex].GetBlockType() == DeathBlock) {
 						// --プレイヤーの状態が通常状態なら-- //
-						if (player_->GetState() == NormalAir || player_->GetState() == NormalWallHit) {
+						if (player_->GetState() == NormalAir || player_->GetState() == NormalWallHit) { 
 							// --プレイヤーの状態を変更-- //
 							player_->SetDeath();// -> 死亡状態
 							audio->PlayWave(soundData[1],false,2.0f);

@@ -43,13 +43,11 @@ void NSceneManager::Initialize(NDX12* dx12)
 	tex[16].Load(L"Resources/dorppin_slash.png");
 	tex[17].Load(L"Resources/doroppin_crystal.png");
 	tex[18].Load(L"Resources/bound1.png");
-	tex[19].Load(L"Resources/bound2.png");
-	tex[20].Load(L"Resources/wall_tex.png");
-	tex[21].Load(L"Resources/dorppin_stageSelectNumber.png");
-	tex[22].Load(L"Resources/nice.png");
-	tex[23].Load(L"Resources/great.png");
-	tex[24].Load(L"Resources/omg.png");
-	tex[25].Load(L"Resources/excellent.png");
+	tex[19].Load(L"Resources/dorppin_stageSelectNumber.png");
+	tex[20].Load(L"Resources/nice.png");
+	tex[21].Load(L"Resources/great.png");
+	tex[22].Load(L"Resources/omg.png");
+	tex[23].Load(L"Resources/excellent.png");
 
 	for (int i = 0; i < maxTex; i++)
 	{
