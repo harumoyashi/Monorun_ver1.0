@@ -884,6 +884,7 @@ void NGameScene::Finalize()
 	stage_->Finalize();
 	stage_->Release();
 	player_->Finalize();
+	col_->Release();
 	//col_->Release();
 	/*for (size_t i = 0; i < maxForeSprite; i++)
 	{
