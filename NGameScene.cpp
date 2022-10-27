@@ -624,7 +624,7 @@ void NGameScene::Update(NDX12* dx12)
 		}
 
 		if (evaluationAlpha_ < 1.0f) {
-			evaluationAlpha_ += 0.01f;
+			evaluationAlpha_ += 0.032f;
 			float alpha = Util::EaseInCirc(0.0f, 1.0f, evaluationAlpha_);
 			niceSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
 			greatSprite->SetColor(1.0f, 1.0f, 1.0f, alpha);
