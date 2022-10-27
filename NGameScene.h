@@ -90,7 +90,7 @@ private:
 
 	const float stageTime_[10] =
 	{14.0f, 16.0f, 9.0f, 14.0f, 18.0f,
-	12.0f, 9.0f, 10.0f, 10.0f, 19.0f};
+	9.0f, 9.0f, 10.0f, 10.0f, 19.0f};
 
 	int evaluation_ = 0;
 
