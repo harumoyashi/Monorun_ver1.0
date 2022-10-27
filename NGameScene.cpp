@@ -378,7 +378,7 @@ void NGameScene::Update(NDX12* dx12)
 	}
 
 	if (sceneWave_ == DeathResultScene) {
-		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+		if (NInput::IsKeyTrigger(DIK_DOWN)|| NInput::IsKeyTrigger(DIK_S)) {
 			audio->PlayWave(soundData[3], false);
 			if (selectText == RetryText) {
 				selectText = StageSelectText;
@@ -391,7 +391,7 @@ void NGameScene::Update(NDX12* dx12)
 			}
 		}
 
-		else if (NInput::IsKeyTrigger(DIK_UP)) {
+		else if (NInput::IsKeyTrigger(DIK_UP)|| NInput::IsKeyTrigger(DIK_W)) {
 			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = RetryText;
@@ -556,7 +556,7 @@ void NGameScene::Update(NDX12* dx12)
 			isDisplayTimeChange = false;
 		}
 
-		if (NInput::IsKeyTrigger(DIK_DOWN)) {
+		if (NInput::IsKeyTrigger(DIK_DOWN)|| NInput::IsKeyTrigger(DIK_S)) {
 			audio->PlayWave(soundData[3], false);
 			if (selectText == NextText) {
 				selectText = StageSelectText;
@@ -569,7 +569,7 @@ void NGameScene::Update(NDX12* dx12)
 			}
 		}
 
-		else if (NInput::IsKeyTrigger(DIK_UP)) {
+		else if (NInput::IsKeyTrigger(DIK_UP)|| NInput::IsKeyTrigger(DIK_W)) {
 			audio->PlayWave(soundData[3], false);
 			if (selectText == StageSelectText) {
 				selectText = NextText;

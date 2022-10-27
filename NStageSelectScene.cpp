@@ -138,7 +138,7 @@ void NStageSelectScene::Update()
 	}
 
 	// --[↑]を押したら-- //
-	if (NInput::IsKeyTrigger(DIK_UP)) {
+	if (NInput::IsKeyTrigger(DIK_UP)|| NInput::IsKeyTrigger(DIK_W)) {
 		audio->PlayWave(soundData[2], false);
 		// --選んでいるステージの値が1より大きいなら-- //
 		if (selectStage_ > 1) {
@@ -156,7 +156,7 @@ void NStageSelectScene::Update()
 	}
 
 	// --[↓]を押したら-- //
-	if (NInput::IsKeyTrigger(DIK_DOWN)) {
+	if (NInput::IsKeyTrigger(DIK_DOWN)|| NInput::IsKeyTrigger(DIK_S)) {
 		audio->PlayWave(soundData[2], false);
 		// --選んでいるステージの値が10より小さいなら-- //
 		if (selectStage_ < 10) {
