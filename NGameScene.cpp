@@ -603,6 +603,7 @@ void NGameScene::Update(NDX12* dx12)
 					else if (stage_->GetSelectStage() == 10) {
 						if (!NSceneManager::GetPlayEffect()) {
 							NSceneManager::SetScene(TITLESCENE);
+							selectScene_->SetSelectStage(1);
 						}
 					}
 
