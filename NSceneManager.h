@@ -36,7 +36,7 @@ enum Texture
 	NICESTAMP,			//[NICE]テキスト
 	GREATSTAMP,			//[GREAT]テキスト
 	OMGSTAMP,			//[OMG]テキスト
-	EXCELLENTSTAMP,			//[EXCELLENT]テキスト
+	EXCELLENTSTAMP,		//[EXCELLENT]テキスト
 
 	MAXTEX
 };
